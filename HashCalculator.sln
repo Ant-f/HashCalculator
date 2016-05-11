@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashCalculator", "HashCalculator\HashCalculator.csproj", "{35B6AE24-5270-4FE6-9CF2-21097E71E850}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashCalculatorTests", "HashCalculatorTests\HashCalculatorTests.csproj", "{EAE67A15-49FC-457B-9FFC-7C8DAE89E200}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35B6AE24-5270-4FE6-9CF2-21097E71E850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B6AE24-5270-4FE6-9CF2-21097E71E850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B6AE24-5270-4FE6-9CF2-21097E71E850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B6AE24-5270-4FE6-9CF2-21097E71E850}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE67A15-49FC-457B-9FFC-7C8DAE89E200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE67A15-49FC-457B-9FFC-7C8DAE89E200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE67A15-49FC-457B-9FFC-7C8DAE89E200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE67A15-49FC-457B-9FFC-7C8DAE89E200}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

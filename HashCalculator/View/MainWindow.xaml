@@ -1,0 +1,260 @@
+﻿<!--HashCalculator
+    Tool for calculating and comparing file hash sums, e.g. sha1
+    Copyright(C) 2016 Anthony Fung
+   
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+   
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+   
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see<http://www.gnu.org/licenses/>.-->
+
+<Window x:Class="HashCalculator.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        DataContext="{Binding ViewModel, Source={StaticResource ViewModelService}}"
+        Height="300"
+        Title="File Hash Calculator"
+        Width="700">
+    <Grid Cursor="{Binding HashCalculationIsRunning, Converter={StaticResource IsBusyToCursorNameConverter}}"
+          Margin="5"
+          Name="LayoutRoot">
+        
+        <Grid.Resources>
+            <Thickness x:Key="LabelMarginThickness">0,0,0,2</Thickness>
+            <Thickness x:Key="ControlMarginThickness">0,0,0,5</Thickness>
+            
+            <Style x:Key="FullPathCheckBoxStyle" TargetType="CheckBox">
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="Margin" Value="{StaticResource LabelMarginThickness}" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition MinHeight="48" />
+            <RowDefinition MinHeight="48" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--Input Files textblock-->
+        <TextBlock Grid.Row="0"
+                   Margin="{StaticResource LabelMarginThickness}"
+                   Text="Input Files">
+        </TextBlock>
+
+        <CheckBox Background="Transparent"
+                  IsChecked="{Binding MatchFullFilePath, Mode=TwoWay}"
+                  Grid.Row="0"
+                  Style="{StaticResource FullPathCheckBoxStyle}">
+            
+            <TextBlock Text="Use full path when processing file names" />
+            
+            <ToolTipService.ToolTip>
+                <TextBlock Text="Select this to use a file's full path when comparing/exporting files. Unselect this to only use the file name." />
+            </ToolTipService.ToolTip>
+        </CheckBox>
+
+        <!--DataGrid-->
+        <DataGrid AutoGenerateColumns="False"
+                  Grid.Row="1"
+                  IsEnabled="{Binding HashCalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
+                  ItemsSource="{Binding InputFileList}"
+                  Margin="0,0,0,2"
+                  MouseLeave="inputFileDataGridMouseLeave"
+                  Name="InputFileDataGrid">
+            <DataGrid.Resources>
+                <ControlTemplate x:Key="DataGridRowTextBoxTemplate" TargetType="TextBox">
+                    <ScrollViewer LostFocus="PART_ContentHost_LostFocus" Margin="0" x:Name="PART_ContentHost" />
+                </ControlTemplate>
+            </DataGrid.Resources>
+            
+            <DataGrid.Columns>
+                <!--'File' Column-->
+                <DataGridTemplateColumn Header="File" Width="180">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Border Background="{Binding FileExistsAtFilePath, Converter={StaticResource ValidFilePathToBackgroundBrushConverter}}"
+                                        Opacity="0.92" />
+                                <TextBox Text="{Binding FilePath}" Template="{StaticResource DataGridRowTextBoxTemplate}" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <!--Hash Column-->
+                <DataGridTemplateColumn Width="*">
+                    <!--Column Header-->
+                    <DataGridTemplateColumn.Header>
+                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                            <ToolTipService.ToolTip>
+                                <ToolTip>
+                                    <ToolTip.Template>
+                                        <ControlTemplate>
+                                            <Border BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
+                                                <StackPanel>
+                                                    <StackPanel.Resources>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+                                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                                        </Style>
+                                                    </StackPanel.Resources>
+
+                                                    <Border Background="{Binding SuccessBrush, Source={StaticResource AppBrushes}}">
+                                                        <TextBlock Margin="2" Text="Filename and file hash match" />
+                                                    </Border>
+
+                                                    <Border Background="{Binding IndeterminateBrush, Source={StaticResource AppBrushes}}">
+                                                        <TextBlock Margin="2" Text="File hash match, no file name match" />
+                                                    </Border>
+
+                                                    <Border Background="{Binding ErrorBrush, Source={StaticResource AppBrushes}}">
+                                                        <TextBlock Margin="2" Text="Filename match, file hash mismatch" />
+                                                    </Border>
+
+                                                    <Border Background="{Binding DefaultBrush, Source={StaticResource AppBrushes}}" BorderThickness="0">
+                                                        <TextBlock Margin="2" Text="Neither file name nor file hash match" />
+                                                    </Border>
+                                                </StackPanel>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </ToolTip.Template>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                            
+                            <TextBlock Text="Hash" IsHitTestVisible="False" />
+                            <TextBlock Margin="5,0,0,0" Text="(Mouse-over for background colour key)" IsHitTestVisible="False" />
+                        </StackPanel>
+                    </DataGridTemplateColumn.Header>
+                    
+                    <!--Column Body-->
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Border Background="{Binding HashCodeMatch, Converter={StaticResource HashCodeMatchCriteriaToBackgroundConverter}}"
+                                        Opacity="0.92" />
+                                <TextBox IsReadOnly="True" Text="{Binding CalculatedFileHash, Mode=OneWay}" Template="{StaticResource DataGridRowTextBoxTemplate}" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!--Drag & Drop overlay-->
+        <Border AllowDrop="True"
+                Background="Transparent"
+                DragEnter="DropTargetBorderDragEnter"
+                DragLeave="DropTargetBorderDragLeave"
+                Drop="DropTargetBorderDrop"
+                Grid.Row="1"
+                IsEnabled="{Binding HashCalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
+                Margin="0,0,0,2"
+                Name="DropTargetBorder"
+                PreviewDragOver="DropTargetBorderPreviewDragOver">
+        </Border>
+
+        <!--Grid splitter-->
+        <GridSplitter Background="Transparent" Grid.Row="2" Height="9" HorizontalAlignment="Stretch" VerticalAlignment="Top" Canvas.ZIndex="2" />
+        <Separator Grid.Row="2" IsHitTestVisible="False" Margin="0,3,0,0" Opacity="0.4" VerticalAlignment="Top" />
+        
+        <!--Known File Hashes-->
+        <Grid Grid.Row="2" Margin="0,8,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Margin="{StaticResource LabelMarginThickness}"
+                       Text="Known File Hashes">
+            </TextBlock>
+
+            <CheckBox IsChecked="{Binding MatchFullFilePath, Mode=TwoWay}"
+                      Grid.Row="0"
+                      Style="{StaticResource FullPathCheckBoxStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Use full path when processing file names">
+                        <ToolTipService.ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Select this to use a file's full path when comparing files. Unselect this to only use the file name." />
+                                <TextBlock Text="The state of this check box should usually match that of the check box for input files." />
+                            </StackPanel>
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </StackPanel>
+            </CheckBox>
+
+            <TextBox AcceptsReturn="True"
+                     FontFamily="Courier New"
+                     FontSize="12"
+                     Grid.Column="0"
+                     Grid.Row="1"
+                     IsEnabled="{Binding HashCalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
+                     Margin="{StaticResource ControlMarginThickness}"
+                     Text="{Binding KnownFileHashCodesText, Mode=TwoWay, UpdateSourceTrigger=Default}">
+            </TextBox>
+        </Grid>
+
+        <!--Hash calculation actions/options-->
+        <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
+            
+            <!--Algorithm Selection-->
+            <TextBlock Text="Algorithm"
+                       VerticalAlignment="Center">
+            </TextBlock>
+
+            <ComboBox IsEnabled="{Binding HashCalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
+                      ItemsSource="{Binding HashAlgorithmOptions}"
+                      Margin="5,0,10,0"
+                      SelectedItem="{Binding SelectedHashAlgorithm}"
+                      Width="100">
+            </ComboBox>
+            
+            <!--Buttons-->
+            <Button Click="CalculateHashButtonClick"
+                    Content="Calculate Hash"
+                    IsEnabled="{Binding HashCalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
+                    Margin="0,0,10,0"
+                    Width="90">
+            </Button>
+
+            <Button Click="CancelButtonClick"
+                    Content="Cancel"
+                    Cursor="Arrow"
+                    IsEnabled="{Binding HashCalculationIsRunning}"
+                    Margin="0,0,10,0"
+                    Width="90">
+            </Button>
+
+            <Button Command="{Binding ExportHashListCommand}"
+                    Content="Export"
+                    Width="90">
+            </Button>
+        </StackPanel>
+
+        <!--Progress bar-->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center" Visibility="{Binding HashCalculationIsRunning, Converter={StaticResource BoolToVisibilityConverter}}">
+
+            <TextBlock Text="{Binding FileListProgress, Mode=OneWay}" />
+
+            <ProgressBar Margin="5,0"
+                         Maximum="1"
+                         Minimum="0"
+                         Value="{Binding NormalizedFileCalculationProgress, Mode=OneWay}"
+                         Width="150">
+            </ProgressBar>
+
+            <TextBlock Text="{Binding FileCalculationProgressPercentage, Mode=OneWay, StringFormat=\{0\}%}" />
+        </StackPanel>
+    </Grid>
+</Window>
