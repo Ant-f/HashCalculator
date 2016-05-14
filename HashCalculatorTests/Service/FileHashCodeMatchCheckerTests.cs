@@ -29,6 +29,16 @@ namespace HashCalculatorTests.Service
         private const string UnexpectedFileNameMatchMessage = "Unexpected FileNameMatch Value";
         private const string UnexpectedHashCodeMatchMessage = "Unexpected HashCodeMatch Value";
 
+        private static FileHashMetadata CreateFileHashMetadata(string filePath, string hashCode)
+        {
+            var metadata = new FileHashMetadata
+            {
+                FilePath = filePath,
+                FileHashCode = hashCode
+            };
+            return metadata;
+        }
+
         private static InputFileListEntry CreateInputFileListEntry(string filePath, string hashCode)
         {
             var inputFileListEntry = new InputFileListEntry(filePath)
@@ -46,7 +56,7 @@ namespace HashCalculatorTests.Service
 
             var knownHashCodes = new List<FileHashMetadata>
             {
-                new FileHashMetadata("HashCode", "Testfile.txt")
+                CreateFileHashMetadata("Testfile.txt", "HashCode")
             };
             
             var checker = new FileHashCodeMatchChecker();
@@ -63,7 +73,7 @@ namespace HashCalculatorTests.Service
 
             var knownHashCodes = new List<FileHashMetadata>
             {
-                new FileHashMetadata("AnotherHashCode", "Testfile.txt")
+                CreateFileHashMetadata("Testfile.txt", "AnotherHashCode")
             };
 
             var checker = new FileHashCodeMatchChecker();
@@ -80,7 +90,7 @@ namespace HashCalculatorTests.Service
 
             var knownHashCodes = new List<FileHashMetadata>
             {
-                new FileHashMetadata("HashCode", "AnotherFile.txt")
+                CreateFileHashMetadata("AnotherFile.txt", "HashCode")
             };
 
             var checker = new FileHashCodeMatchChecker();
@@ -97,7 +107,7 @@ namespace HashCalculatorTests.Service
 
             var knownHashCodes = new List<FileHashMetadata>
             {
-                new FileHashMetadata("AnotherHashCode", "AnotherFile.txt")
+                CreateFileHashMetadata("AnotherFile.txt", "AnotherHashCode")
             };
 
             var checker = new FileHashCodeMatchChecker();
@@ -114,7 +124,7 @@ namespace HashCalculatorTests.Service
 
             var knownHashCodes = new List<FileHashMetadata>
             {
-                new FileHashMetadata("HashCode", "X:\\Testfile.txt")
+                CreateFileHashMetadata("X:\\Testfile.txt", "HashCode")
             };
 
             var checker = new FileHashCodeMatchChecker();
@@ -131,7 +141,7 @@ namespace HashCalculatorTests.Service
 
             var knownHashCodes = new List<FileHashMetadata>
             {
-                new FileHashMetadata("AnotherHashCode", "X:\\Testfile.txt")
+                CreateFileHashMetadata("X:\\Testfile.txt", "AnotherHashCode")
             };
 
             var checker = new FileHashCodeMatchChecker();
@@ -148,7 +158,7 @@ namespace HashCalculatorTests.Service
 
             var knownHashCodes = new List<FileHashMetadata>
             {
-                new FileHashMetadata("HashCode", "X:\\AnotherFile.txt")
+                CreateFileHashMetadata("X:\\AnotherFile.txt", "HashCode")
             };
 
             var checker = new FileHashCodeMatchChecker();
@@ -165,7 +175,7 @@ namespace HashCalculatorTests.Service
 
             var knownHashCodes = new List<FileHashMetadata>
             {
-                new FileHashMetadata("AnotherHashCode", "X:\\AnotherFile.txt")
+                CreateFileHashMetadata("X:\\AnotherFile.txt", "AnotherHashCode")
             };
 
             var checker = new FileHashCodeMatchChecker();

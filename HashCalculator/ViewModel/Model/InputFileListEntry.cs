@@ -116,7 +116,7 @@ namespace HashCalculator.ViewModel.Model
 
         public InputFileListEntry(string filepath)
         {
-            HashMetadata = new FileHashMetadata(string.Empty, filepath);
+            HashMetadata = new FileHashMetadata();
             FilePath = filepath;
         }
         

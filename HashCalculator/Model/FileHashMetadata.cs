@@ -22,13 +22,7 @@ namespace HashCalculator.Model
     /// </summary>
     public class FileHashMetadata
     {
-        public string FilePath { get; set; }
-        public string FileHashCode { get; set; }
-
-        public FileHashMetadata(string hashCode, string filePath)
-        {
-            FileHashCode = hashCode;
-            FilePath = filePath;
-        }
+        public string FilePath { get; set; } = string.Empty;
+        public string FileHashCode { get; set; } = string.Empty;
     }
 }

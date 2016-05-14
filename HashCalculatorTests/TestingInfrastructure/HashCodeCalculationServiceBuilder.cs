@@ -22,9 +22,9 @@ using Moq;
 namespace HashCalculatorTests.TestingInfrastructure
 {
     /// <summary>
-    /// Builds HashAlgorithmCalculationServiceBuilder instances for use in unit tests
+    /// Builds HashCodeCalculationServiceBuilder instances for use in unit tests
     /// </summary>
-    internal class HashAlgorithmCalculationServiceBuilder
+    internal class HashCodeCalculationServiceBuilder
     {
         /// <summary>
         /// A mock IFileOperations that can be used to specify desired behaviour
@@ -32,9 +32,9 @@ namespace HashCalculatorTests.TestingInfrastructure
         public Mock<IFileOperations> FileOperationsMock { get; }
             = new Mock<IFileOperations>();
 
-        public HashAlgorithmCalculationService Build()
+        public HashCodeCalculationService Build()
         {
-            var service = new HashAlgorithmCalculationService(FileOperationsMock.Object);
+            var service = new HashCodeCalculationService(FileOperationsMock.Object);
             return service;
         }
     }

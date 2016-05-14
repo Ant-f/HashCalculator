@@ -18,36 +18,35 @@
 using System.Security.Cryptography;
 using System.Text;
 using HashCalculator.Interface;
-using HashCalculator.ViewModel.Model;
 
 namespace HashCalculator.Service
 {
-    public class HashAlgorithmCalculationService
+    /// <summary>
+    /// Provides methods related to calculating hash codes for files
+    /// </summary>
+    public class HashCodeCalculationService
     {
         private readonly IFileOperations _fileOperations;
 
-        public HashAlgorithmCalculationService(IFileOperations fileOperation)
+        public HashCodeCalculationService(IFileOperations fileOperation)
         {
             _fileOperations = fileOperation;
         }
 
-        public void CalculateHashCodes(HashAlgorithm algorithm, InputFileListEntry[] listEntries)
+        public string CalculateHashCodes(HashAlgorithm algorithm, string filePath)
         {
             using (algorithm)
             {
-                foreach (var listEntry in listEntries)
+                using (var fileStream = _fileOperations.ReadFile(filePath))
                 {
-                    using (var fileStream = _fileOperations.ReadFile(listEntry.FilePath))
-                    {
-                        var hash = algorithm.ComputeHash(fileStream);
-                        var hex = ConvertBytesToHexString(hash);
-                        listEntry.CalculatedFileHash = hex;
-                    }
+                    var hash = algorithm.ComputeHash(fileStream);
+                    var hex = ConvertBytesToHexString(hash);
+                    return hex;
                 }
             }
         }
 
-        public string ConvertBytesToHexString(byte[] bytes)
+        internal string ConvertBytesToHexString(byte[] bytes)
         {
             var sb = new StringBuilder();
 

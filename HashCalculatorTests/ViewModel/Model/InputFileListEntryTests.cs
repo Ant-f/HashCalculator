@@ -123,5 +123,17 @@ namespace HashCalculatorTests.ViewModel.Model
             Assert.IsFalse(timeout);
             Assert.AreEqual(nameof(entry.HashCodeMatch), raisedPropertyName);
         }
+
+        [Test]
+        public void SettingFilePathSetsHashMetadataFilePath()
+        {
+            const string newPath = "newPath";
+
+            var input = new InputFileListEntry(string.Empty);
+
+            input.FilePath = newPath;
+
+            Assert.AreEqual(newPath, input.HashMetadata.FilePath);
+        }
     }
 }

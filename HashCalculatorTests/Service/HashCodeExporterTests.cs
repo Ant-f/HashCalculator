@@ -28,6 +28,16 @@ namespace HashCalculatorTests.Service
     {
         private const string ExportPath = "X:\\ExportedFile.txt";
 
+        private static FileHashMetadata CreateFileHashMetadata(string filePath, string hashCode)
+        {
+            var metadata = new FileHashMetadata
+            {
+                FilePath = filePath,
+                FileHashCode = hashCode
+            };
+            return metadata;
+        }
+
         [Test]
         public void SingleMetadataEntryIsFormattedCorrectlyWithFullFilePath()
         {
@@ -35,7 +45,7 @@ namespace HashCalculatorTests.Service
 
             var metadataList = new List<FileHashMetadata>
             {
-                new FileHashMetadata("HashCode", "X:\\FileToGetHashCodeFrom.txt")
+                CreateFileHashMetadata("X:\\FileToGetHashCodeFrom.txt", "HashCode")
             };
 
             var builder = new HashCodeExporterBuilder();
@@ -61,8 +71,8 @@ namespace HashCalculatorTests.Service
 
             var metadataList = new List<FileHashMetadata>
             {
-                new FileHashMetadata("HashCode1", "X:\\FileToGetHashCodeFrom1.txt"),
-                new FileHashMetadata("HashCode2", "X:\\FileToGetHashCodeFrom2.txt")
+                CreateFileHashMetadata("X:\\FileToGetHashCodeFrom1.txt", "HashCode1"),
+                CreateFileHashMetadata("X:\\FileToGetHashCodeFrom2.txt", "HashCode2")
             };
 
             var builder = new HashCodeExporterBuilder();
@@ -89,7 +99,7 @@ namespace HashCalculatorTests.Service
 
             var metadataList = new List<FileHashMetadata>
             {
-                new FileHashMetadata("HashCode", "X:\\FileToGetHashCodeFrom.txt")
+                CreateFileHashMetadata("X:\\FileToGetHashCodeFrom.txt", "HashCode")
             };
 
             var builder = new HashCodeExporterBuilder();
@@ -115,8 +125,8 @@ namespace HashCalculatorTests.Service
 
             var metadataList = new List<FileHashMetadata>
             {
-                new FileHashMetadata("HashCode1", "X:\\FileToGetHashCodeFrom1.txt"),
-                new FileHashMetadata("HashCode2", "X:\\FileToGetHashCodeFrom2.txt")
+                CreateFileHashMetadata("X:\\FileToGetHashCodeFrom1.txt", "HashCode1"),
+                CreateFileHashMetadata("X:\\FileToGetHashCodeFrom2.txt", "HashCode2")
             };
 
             var builder = new HashCodeExporterBuilder();

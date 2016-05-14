@@ -312,7 +312,11 @@ namespace HashCalculator.ViewModel
                 var tokens = entry.Split(HashSeparators, StringSplitOptions.RemoveEmptyEntries);
                 var hash = tokens[0].Trim();
                 var fileName = tokens.Length > 1 ? tokens[1].Trim() : string.Empty;
-                var metadata = new FileHashMetadata(hash, fileName);
+                var metadata = new FileHashMetadata
+                {
+                    FilePath = fileName,
+                    FileHashCode = hash
+                };
                 KnownFileHashList.Add(metadata);
             }
         }

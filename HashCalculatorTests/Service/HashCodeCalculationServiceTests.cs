@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.ViewModel.Model;
+using HashCalculator.Model;
 using HashCalculatorTests.TestingInfrastructure;
 using NUnit.Framework;
 using System.IO;
@@ -25,30 +25,46 @@ using System.Text;
 namespace HashCalculatorTests.Service
 {
     [TestFixture]
-    public class HashAlgorithmCalculationServiceTests
+    public class HashCodeCalculationServiceTests
     {
-        [Test]
-        public void HashAlgorithmIsUsedOnCollectionWithOneInputFileListEntry()
+        private static Stream CreateMemoryStream(string content)
         {
+            var testingStreamBytes = Encoding.UTF8.GetBytes(content);
+            var testingStream = new MemoryStream(testingStreamBytes);
+            return testingStream;
+        }
+
+        public static FileHashMetadata CreateFileHashMetadata(string filePath)
+        {
+            var metadata = new FileHashMetadata
+            {
+                FilePath = filePath
+            };
+            return metadata;
+        }
+
+        [Test]
+        public void HashCodeIsCalculatedUsingProvidedHashAlgorithm()
+        {
+            // Arrange
+
             const string fileName = "File1.txt";
 
-            var testingStreamBytes = Encoding.UTF8.GetBytes("Stream");
-            var testingStream = new MemoryStream(testingStreamBytes);
+            var testingStream = CreateMemoryStream("Stream");
 
-            var builder = new HashAlgorithmCalculationServiceBuilder();
+            var builder = new HashCodeCalculationServiceBuilder();
             builder.FileOperationsMock.Setup(f => f.ReadFile(fileName)).Returns(testingStream);
 
             var service = builder.Build();
             var algorithm = SHA1.Create();
-            var entry = new InputFileListEntry(fileName);
-            var collection = new[]
-            {
-                entry
-            };
 
-            service.CalculateHashCodes(algorithm, collection);
+            //Act
 
-            Assert.AreEqual("DF063869E11D7A9AA132CD4A984F7B5EB870D656", entry.CalculatedFileHash);
+            var hashCode = service.CalculateHashCodes(algorithm, fileName);
+
+            // Assert
+
+            Assert.AreEqual("DF063869E11D7A9AA132CD4A984F7B5EB870D656", hashCode);
         }
 
         [TestCase(new byte[] {8}, "08")]
@@ -57,7 +73,7 @@ namespace HashCalculatorTests.Service
         [TestCase(new byte[] {8, 10, 30}, "080A1E")]
         public void ByteArrayIsCorrectlyConvertedToUpperCaseHexString(byte[] bytes, string expectedHexString)
         {
-            var builder = new HashAlgorithmCalculationServiceBuilder();
+            var builder = new HashCodeCalculationServiceBuilder();
             var service = builder.Build();
 
             var hex = service.ConvertBytesToHexString(bytes);

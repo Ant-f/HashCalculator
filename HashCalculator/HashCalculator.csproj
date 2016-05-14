@@ -70,7 +70,7 @@
     <Compile Include="Service\FileOperations.cs" />
     <Compile Include="Service\FileExistenceChecker.cs" />
     <Compile Include="Service\FileHashCodeMatchChecker.cs" />
-    <Compile Include="Service\HashAlgorithmCalculationService.cs" />
+    <Compile Include="Service\HashCodeCalculationService.cs" />
     <Compile Include="Service\HashAlgorithmService.cs" />
     <Compile Include="Service\PropertyChangedSubscriber.cs" />
     <Compile Include="ViewModel\HashCalculatorViewModel.cs" />
