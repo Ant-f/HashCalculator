@@ -35,7 +35,7 @@ namespace HashCalculator.Service
                 return _listProgress;
             }
 
-            set
+            private set
             {
                 if (_listProgress != value)
                 {
@@ -60,6 +60,8 @@ namespace HashCalculator.Service
                 var hashCode = _hashCodeCalculationService.CalculateHashCodes(algorithm, listEntry.FilePath);
                 listEntry.CalculatedFileHash = hashCode;
             }
+
+            ListProgress = string.Empty;
         }
     }
 }

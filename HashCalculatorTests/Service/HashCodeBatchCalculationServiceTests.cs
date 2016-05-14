@@ -15,18 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using HashCalculator.Interface;
 using HashCalculator.Service;
 using HashCalculator.ViewModel.Model;
 using Moq;
 using NUnit.Framework;
-using static HashCalculatorTests.TestingInfrastructure.FileHashMetadataFactory;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace HashCalculatorTests.Service
 {
@@ -89,10 +84,6 @@ namespace HashCalculatorTests.Service
         {
             // Arrange
 
-            const string fileName1 = "File1.txt";
-            const string fileName2 = "File2.txt";
-            const string fileName3 = "File3.txt";
-
             var progressHistory = new List<string>();
 
             HashCodeBatchCalculationService batchCalculationService = null;
@@ -103,15 +94,11 @@ namespace HashCalculatorTests.Service
 
             batchCalculationService = new HashCodeBatchCalculationService(calculationService.Object);
 
-            var entry1 = new InputFileListEntry(fileName1);
-            var entry2 = new InputFileListEntry(fileName2);
-            var entry3 = new InputFileListEntry(fileName3);
-
             var collection = new[]
             {
-                entry1,
-                entry2,
-                entry3
+                new InputFileListEntry("File1.txt"),
+                new InputFileListEntry("File2.txt"),
+                new InputFileListEntry("File3.txt")
             };
 
             // Act
@@ -128,6 +115,33 @@ namespace HashCalculatorTests.Service
             Assert.AreEqual("1/3", progressHistory[0]);
             Assert.AreEqual("2/3", progressHistory[1]);
             Assert.AreEqual("3/3", progressHistory[2]);
+        }
+
+        [Test]
+        public void ListProgressIsClearedAfterCalculation()
+        {
+            // Arrange
+
+            var calculationService = new Mock<IHashCodeCalculationService>();
+            var batchCalculationService = new HashCodeBatchCalculationService(calculationService.Object);
+
+            var collection = new[]
+            {
+                new InputFileListEntry("File1.txt"),
+                new InputFileListEntry("File2.txt"),
+                new InputFileListEntry("File3.txt")
+            };
+
+            // Act
+
+            using (var algorithm = SHA1.Create())
+            {
+                batchCalculationService.CalculateHashCodes(algorithm, collection);
+            }
+
+            //Assert
+
+            Assert.IsTrue(string.IsNullOrWhiteSpace(batchCalculationService.ListProgress));
         }
     }
 }
