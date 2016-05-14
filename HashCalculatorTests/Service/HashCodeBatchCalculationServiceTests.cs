@@ -83,5 +83,51 @@ namespace HashCalculatorTests.Service
             Assert.AreEqual(fileHash2, entry2.CalculatedFileHash, $"Unexpected hash result for {nameof(entry2)}");
             Assert.AreEqual(fileHash3, entry3.CalculatedFileHash, $"Unexpected hash result for {nameof(entry3)}");
         }
+
+        [Test]
+        public void ServiceShowsProgressThroughInputListDuringBatchCalculation()
+        {
+            // Arrange
+
+            const string fileName1 = "File1.txt";
+            const string fileName2 = "File2.txt";
+            const string fileName3 = "File3.txt";
+
+            var progressHistory = new List<string>();
+
+            HashCodeBatchCalculationService batchCalculationService = null;
+            var calculationService = new Mock<IHashCodeCalculationService>();
+
+            calculationService.Setup(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), It.IsAny<string>()))
+                .Callback(() => progressHistory.Add(batchCalculationService.ListProgress));
+
+            batchCalculationService = new HashCodeBatchCalculationService(calculationService.Object);
+
+            var entry1 = new InputFileListEntry(fileName1);
+            var entry2 = new InputFileListEntry(fileName2);
+            var entry3 = new InputFileListEntry(fileName3);
+
+            var collection = new[]
+            {
+                entry1,
+                entry2,
+                entry3
+            };
+
+            // Act
+
+            using (var algorithm = SHA1.Create())
+            {
+                batchCalculationService.CalculateHashCodes(algorithm, collection);
+            }
+
+            //Assert
+
+            Assert.AreEqual(3, progressHistory.Count);
+
+            Assert.AreEqual("1/3", progressHistory[0]);
+            Assert.AreEqual("2/3", progressHistory[1]);
+            Assert.AreEqual("3/3", progressHistory[2]);
+        }
     }
 }

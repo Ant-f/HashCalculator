@@ -15,13 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using HashCalculator.Model;
 
 namespace HashCalculator.ViewModel.Model
 {
-    public class InputFileListEntry : INotifyPropertyChanged
+    public class InputFileListEntry : PropertyChangedNotifier
     {
         private bool _fileExistsAtFilePath = false;
         private HashCodeMatchCriteria _hashCodeMatch = HashCodeMatchCriteria.None;
@@ -112,17 +110,10 @@ namespace HashCalculator.ViewModel.Model
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public InputFileListEntry(string filepath)
         {
             HashMetadata = new FileHashMetadata();
             FilePath = filepath;
-        }
-        
-        private void OnPropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

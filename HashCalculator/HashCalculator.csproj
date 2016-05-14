@@ -79,6 +79,7 @@
     <Compile Include="Service\HashCodeExporter.cs" />
     <Compile Include="ViewModel\Model\HashCodeMatchCriteria.cs" />
     <Compile Include="ViewModel\ProgressUpdateStream.cs" />
+    <Compile Include="ViewModel\PropertyChangedNotifier.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="Service\ViewModelService.cs" />
     <Page Include="View\MainWindow.xaml">

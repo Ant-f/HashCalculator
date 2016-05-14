@@ -18,12 +18,32 @@
 using HashCalculator.Interface;
 using HashCalculator.ViewModel.Model;
 using System.Security.Cryptography;
+using HashCalculator.ViewModel;
 
 namespace HashCalculator.Service
 {
-    public class HashCodeBatchCalculationService
+    public class HashCodeBatchCalculationService : PropertyChangedNotifier
     {
         private readonly IHashCodeCalculationService _hashCodeCalculationService;
+
+        private string _listProgress;
+
+        public string ListProgress
+        {
+            get
+            {
+                return _listProgress;
+            }
+
+            set
+            {
+                if (_listProgress != value)
+                {
+                    _listProgress = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public HashCodeBatchCalculationService(IHashCodeCalculationService hashCodeCalculationService)
         {
@@ -32,8 +52,11 @@ namespace HashCalculator.Service
 
         public void CalculateHashCodes(HashAlgorithm algorithm, InputFileListEntry[] collection)
         {
-            foreach (var listEntry in collection)
+            for (int i = 0; i < collection.Length; i++)
             {
+                ListProgress = $"{i + 1}/{collection.Length}";
+
+                var listEntry = collection[i];
                 var hashCode = _hashCodeCalculationService.CalculateHashCodes(algorithm, listEntry.FilePath);
                 listEntry.CalculatedFileHash = hashCode;
             }

@@ -27,14 +27,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 
 namespace HashCalculator.ViewModel
 {
-    public class HashCalculatorViewModel : IHashCalculatorViewModel, INotifyPropertyChanged
+    public class HashCalculatorViewModel : PropertyChangedNotifier, IHashCalculatorViewModel
     {
         private const string HashAlgorithmMd5 = "MD5";
         private const string HashAlgorithmSha1 = "SHA1";
@@ -200,8 +199,6 @@ namespace HashCalculator.ViewModel
         }
 
         public RelayCommand ExportHashListCommand { get; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public HashCalculatorViewModel(
             IDispatcherService dispatcherService,
@@ -485,11 +482,6 @@ namespace HashCalculator.ViewModel
         {
             NormalizedFileCalculationProgress = normalizedProgress;
             FileCalculationProgressPercentage = (int)(normalizedProgress * 100);
-        }
-
-        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
