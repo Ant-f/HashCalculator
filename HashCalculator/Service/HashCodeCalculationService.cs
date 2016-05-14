@@ -24,7 +24,7 @@ namespace HashCalculator.Service
     /// <summary>
     /// Provides methods related to calculating hash codes for files
     /// </summary>
-    public class HashCodeCalculationService
+    public class HashCodeCalculationService : IHashCodeCalculationService
     {
         private readonly IFileOperations _fileOperations;
 
@@ -35,14 +35,11 @@ namespace HashCalculator.Service
 
         public string CalculateHashCodes(HashAlgorithm algorithm, string filePath)
         {
-            using (algorithm)
+            using (var fileStream = _fileOperations.ReadFile(filePath))
             {
-                using (var fileStream = _fileOperations.ReadFile(filePath))
-                {
-                    var hash = algorithm.ComputeHash(fileStream);
-                    var hex = ConvertBytesToHexString(hash);
-                    return hex;
-                }
+                var hash = algorithm.ComputeHash(fileStream);
+                var hex = ConvertBytesToHexString(hash);
+                return hex;
             }
         }
 

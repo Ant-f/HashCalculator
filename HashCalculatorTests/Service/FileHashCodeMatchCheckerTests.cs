@@ -16,10 +16,11 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using HashCalculator.Model;
+using HashCalculator.Service;
 using HashCalculator.ViewModel.Model;
 using NUnit.Framework;
 using System.Collections.Generic;
-using HashCalculator.Service;
+using static HashCalculatorTests.TestingInfrastructure.FileHashMetadataFactory;
 
 namespace HashCalculatorTests.Service
 {
@@ -28,16 +29,6 @@ namespace HashCalculatorTests.Service
     {
         private const string UnexpectedFileNameMatchMessage = "Unexpected FileNameMatch Value";
         private const string UnexpectedHashCodeMatchMessage = "Unexpected HashCodeMatch Value";
-
-        private static FileHashMetadata CreateFileHashMetadata(string filePath, string hashCode)
-        {
-            var metadata = new FileHashMetadata
-            {
-                FilePath = filePath,
-                FileHashCode = hashCode
-            };
-            return metadata;
-        }
 
         private static InputFileListEntry CreateInputFileListEntry(string filePath, string hashCode)
         {

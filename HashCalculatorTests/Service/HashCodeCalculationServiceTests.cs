@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Model;
 using HashCalculatorTests.TestingInfrastructure;
 using NUnit.Framework;
 using System.IO;
@@ -34,15 +33,6 @@ namespace HashCalculatorTests.Service
             return testingStream;
         }
 
-        public static FileHashMetadata CreateFileHashMetadata(string filePath)
-        {
-            var metadata = new FileHashMetadata
-            {
-                FilePath = filePath
-            };
-            return metadata;
-        }
-
         [Test]
         public void HashCodeIsCalculatedUsingProvidedHashAlgorithm()
         {
@@ -56,11 +46,14 @@ namespace HashCalculatorTests.Service
             builder.FileOperationsMock.Setup(f => f.ReadFile(fileName)).Returns(testingStream);
 
             var service = builder.Build();
-            var algorithm = SHA1.Create();
 
             //Act
 
-            var hashCode = service.CalculateHashCodes(algorithm, fileName);
+            string hashCode;
+            using (var algorithm = SHA1.Create())
+            {
+                hashCode = service.CalculateHashCodes(algorithm, fileName);
+            }
 
             // Assert
 

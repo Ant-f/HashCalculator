@@ -20,6 +20,7 @@ using HashCalculatorTests.TestingInfrastructure;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using static HashCalculatorTests.TestingInfrastructure.FileHashMetadataFactory;
 
 namespace HashCalculatorTests.Service
 {
@@ -27,16 +28,6 @@ namespace HashCalculatorTests.Service
     public class HashCodeExporterTests
     {
         private const string ExportPath = "X:\\ExportedFile.txt";
-
-        private static FileHashMetadata CreateFileHashMetadata(string filePath, string hashCode)
-        {
-            var metadata = new FileHashMetadata
-            {
-                FilePath = filePath,
-                FileHashCode = hashCode
-            };
-            return metadata;
-        }
 
         [Test]
         public void SingleMetadataEntryIsFormattedCorrectlyWithFullFilePath()
