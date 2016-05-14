@@ -16,23 +16,26 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using HashCalculator.Interface;
-using HashCalculator.Service;
-using Moq;
+using System.IO;
 
-namespace HashCalculatorTests.TestingInfrastructure
+namespace HashCalculator.Service
 {
-    internal class HashCodeExporterBuilder
+    public class FileOperations : IFileOperations
     {
-        public TestingStreamWriter StreamWriter { get; } = new TestingStreamWriter();
-        public Mock<IFileOperations> FileCreatorMock { get; } = new Mock<IFileOperations>();
-
-        public HashCodeExporter CreateHashCodeExporter()
+        /// <summary>
+        /// Create a new text file, or overwrite the file at the specified path
+        /// </summary>
+        /// <param name="path">Path to create a new file</param>
+        /// <returns>A TextWriter object to write text with</returns>
+        public TextWriter CreateTextFile(string path)
         {
-            FileCreatorMock.Setup(c => c.CreateTextFile(It.IsAny<string>()))
-                .Returns(StreamWriter);
+            var streamWriter = File.CreateText(path);
+            return streamWriter;
+        }
 
-            var exporter = new HashCodeExporter(FileCreatorMock.Object);
-            return exporter;
+        public Stream ReadFile(string path)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

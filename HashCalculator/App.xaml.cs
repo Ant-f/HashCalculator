@@ -35,7 +35,7 @@ namespace HashCalculator
             var kernel = new StandardKernel();
             kernel.Bind<IDispatcherService>().To<DispatcherService>().InSingletonScope();
             kernel.Bind<IExportPathPrompter>().To<ExportPathPrompter>().InSingletonScope();
-            kernel.Bind<IFileCreator>().To<FileCreator>().InSingletonScope();
+            kernel.Bind<IFileOperations>().To<FileOperations>().InSingletonScope();
             kernel.Bind<IFileExistenceChecker>().To<FileExistenceChecker>().InSingletonScope();
             kernel.Bind<IFileHashCodeMatchChecker>().To<FileHashCodeMatchChecker>().InSingletonScope();
             kernel.Bind<IHashCalculatorViewModel>().To<HashCalculatorViewModel>().InSingletonScope();

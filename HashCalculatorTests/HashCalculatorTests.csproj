@@ -67,7 +67,10 @@
     <Compile Include="Converter\ValidFilePathToBackgroundBrushConverterTests.cs" />
     <Compile Include="Service\FileHashCodeMatchCheckerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\HashAlgorithmCalculationServiceTests.cs" />
+    <Compile Include="Service\HashAlgorithmServiceTests.cs" />
     <Compile Include="Service\PropertyChangedSubscriberTests.cs" />
+    <Compile Include="TestingInfrastructure\HashAlgorithmCalculationServiceBuilder.cs" />
     <Compile Include="TestingInfrastructure\HashCalculatorViewModelBuilder.cs" />
     <Compile Include="TestingInfrastructure\HashCodeExporterBuilder.cs" />
     <Compile Include="TestingInfrastructure\TestingStreamWriter.cs" />

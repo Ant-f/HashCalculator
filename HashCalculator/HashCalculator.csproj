@@ -61,15 +61,17 @@
     <Compile Include="Interface\IExportPathPrompter.cs" />
     <Compile Include="Interface\IFileExistenceChecker.cs" />
     <Compile Include="Interface\IFileHashCodeMatchChecker.cs" />
-    <Compile Include="Interface\IFileCreator.cs" />
+    <Compile Include="Interface\IFileOperations.cs" />
     <Compile Include="Interface\IHashCalculatorViewModel.cs" />
     <Compile Include="Interface\IHashCodeExporter.cs" />
     <Compile Include="Interface\IPropertyChangedSubscriber.cs" />
     <Compile Include="Service\DispatcherService.cs" />
     <Compile Include="Service\ExportPathPrompter.cs" />
-    <Compile Include="Service\FileCreator.cs" />
+    <Compile Include="Service\FileOperations.cs" />
     <Compile Include="Service\FileExistenceChecker.cs" />
     <Compile Include="Service\FileHashCodeMatchChecker.cs" />
+    <Compile Include="Service\HashAlgorithmCalculationService.cs" />
+    <Compile Include="Service\HashAlgorithmService.cs" />
     <Compile Include="Service\PropertyChangedSubscriber.cs" />
     <Compile Include="ViewModel\HashCalculatorViewModel.cs" />
     <Compile Include="Service\HashCodeExporter.cs" />
@@ -113,7 +115,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

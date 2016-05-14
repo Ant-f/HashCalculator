@@ -15,12 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System.IO;
+using HashCalculator.Interface;
+using HashCalculator.Service;
+using Moq;
 
-namespace HashCalculator.Interface
+namespace HashCalculatorTests.TestingInfrastructure
 {
-    public interface IFileCreator
+    /// <summary>
+    /// Builds HashAlgorithmCalculationServiceBuilder instances for use in unit tests
+    /// </summary>
+    internal class HashAlgorithmCalculationServiceBuilder
     {
-        TextWriter CreateTextFile(string path);
+        /// <summary>
+        /// A mock IFileOperations that can be used to specify desired behaviour
+        /// </summary>
+        public Mock<IFileOperations> FileOperationsMock { get; }
+            = new Mock<IFileOperations>();
+
+        public HashAlgorithmCalculationService Build()
+        {
+            var service = new HashAlgorithmCalculationService(FileOperationsMock.Object);
+            return service;
+        }
     }
 }

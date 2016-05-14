@@ -24,13 +24,13 @@ namespace HashCalculator.Service
 {
     public class HashCodeExporter : IHashCodeExporter
     {
-        private readonly IFileCreator _fileCreator;
+        private readonly IFileOperations _fileCreator;
 
         /// <summary>
         /// Provides methods to write FileHashMetadata objects to a file
         /// </summary>
         /// <param name="fileCreator">An IFileCreator, used when creating files on the filesystem</param>
-        public HashCodeExporter(IFileCreator fileCreator)
+        public HashCodeExporter(IFileOperations fileCreator)
         {
             _fileCreator = fileCreator;
         }

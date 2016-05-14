@@ -15,24 +15,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Interface;
 using HashCalculator.Service;
-using Moq;
+using NUnit.Framework;
+using System.Security.Cryptography;
 
-namespace HashCalculatorTests.TestingInfrastructure
+namespace HashCalculatorTests.Service
 {
-    internal class HashCodeExporterBuilder
+    [TestFixture]
+    public class HashAlgorithmServiceTests
     {
-        public TestingStreamWriter StreamWriter { get; } = new TestingStreamWriter();
-        public Mock<IFileOperations> FileCreatorMock { get; } = new Mock<IFileOperations>();
-
-        public HashCodeExporter CreateHashCodeExporter()
+        [TestCase(HashAlgorithmService.HashAlgorithmMd5, typeof(MD5))]
+        [TestCase(HashAlgorithmService.HashAlgorithmSha1, typeof(SHA1))]
+        [TestCase(HashAlgorithmService.HashAlgorithmSha256, typeof(SHA256))]
+        [TestCase(HashAlgorithmService.HashAlgorithmSha512, typeof(SHA512))]
+        public void ReturnedHashAlgorithmCorrespondsToParameterName<T>(
+            string algorithmName,
+            T expectedAlgorithmType)
         {
-            FileCreatorMock.Setup(c => c.CreateTextFile(It.IsAny<string>()))
-                .Returns(StreamWriter);
+            var service = new HashAlgorithmService();
 
-            var exporter = new HashCodeExporter(FileCreatorMock.Object);
-            return exporter;
+            var algorithm = service.GetAlgorithm(algorithmName);
+
+            Assert.IsTrue(algorithm.GetType() is T);
         }
     }
 }
