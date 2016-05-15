@@ -25,8 +25,6 @@ namespace HashCalculator.Interface
 {
     public interface IHashCalculatorViewModel
     {
-        string FileListProgress { get; }
-        List<string> HashAlgorithmOptions { get; }
         bool HashCalculationIsRunning { get; set; }
         bool MatchFullFilePath { get; set; }
         double NormalizedFileCalculationProgress { get; }
@@ -34,7 +32,6 @@ namespace HashCalculator.Interface
         ObservableCollection<InputFileListEntry> InputFileList { get; }
         List<FileHashMetadata> KnownFileHashList { get; }
         string KnownFileHashCodesText { get; set; }
-        string SelectedHashAlgorithm { get; set; }
 
         RelayCommand ExportHashListCommand { get; }
 

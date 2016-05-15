@@ -24,10 +24,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 
@@ -35,11 +33,6 @@ namespace HashCalculator.ViewModel
 {
     public class HashCalculatorViewModel : PropertyChangedNotifier, IHashCalculatorViewModel
     {
-        private const string HashAlgorithmMd5 = "MD5";
-        private const string HashAlgorithmSha1 = "SHA1";
-        private const string HashAlgorithmSha256 = "SHA256";
-        private const string HashAlgorithmSha512 = "SHA512";
-
         private readonly IExportPathPrompter _exportPathPrompter;
         private readonly IFileExistenceChecker _fileExistenceChecker;
         private readonly IFileHashCodeMatchChecker _fileHashCodeMatchChecker;
@@ -51,56 +44,12 @@ namespace HashCalculator.ViewModel
 
         private Thread hashCalcThread;
 
-        private string _fileListProgress;
         private bool hashCalculationIsRunning = false;
         private double _normalizedFileCalculationProgress = 0;
         private int _fileCalculationProgressPercentage;
         private string _knownFileHashCodesText = string.Empty;
         private bool _matchFullFilePath = false;
-        private string selectedHashAlgorithm = HashAlgorithmSha256;
 
-        public string FileListProgress
-        {
-            get
-            {
-                return _fileListProgress;
-            }
-
-            private set
-            {
-                if (_fileListProgress != value)
-                {
-                    _fileListProgress = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public List<string> HashAlgorithmOptions { get; } = new List<string>
-        {
-            HashAlgorithmMd5,
-            HashAlgorithmSha1,
-            HashAlgorithmSha256,
-            HashAlgorithmSha512
-        };
-
-        public string SelectedHashAlgorithm
-        {
-            get
-            {
-                return selectedHashAlgorithm;
-            }
-
-            set
-            {
-                if (selectedHashAlgorithm != value)
-                {
-                    selectedHashAlgorithm = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        
         public bool HashCalculationIsRunning
         {
             get
@@ -341,84 +290,84 @@ namespace HashCalculator.ViewModel
 
         private void CalculateFileHash()
         {
-            HashAlgorithm algorithm = null;
-            ProgressUpdateStream stream = null;
-            bool subscribed = false;
-            try
-            {
-                /**
-                    * http://msdn.microsoft.com/en-us/library/windows/desktop/ms724832(v=vs.85).aspx
-                    * 
-                    * Windows 7                    6.1
-                    * Windows Server 2008 R2       6.1
-                    * Windows Server 2008          6.0
-                    * Windows Vista                6.0
-                    * Windows Server 2003 R2       5.2
-                    * Windows Server 2003          5.2
-                    * Windows XP 64-Bit Edition    5.2
-                    * Windows XP                   5.1
-                    * Windows 2000                 5.0 */
+            //HashAlgorithm algorithm = null;
+            //ProgressUpdateStream stream = null;
+            //bool subscribed = false;
+            //try
+            //{
+            //    /**
+            //        * http://msdn.microsoft.com/en-us/library/windows/desktop/ms724832(v=vs.85).aspx
+            //        * 
+            //        * Windows 7                    6.1
+            //        * Windows Server 2008 R2       6.1
+            //        * Windows Server 2008          6.0
+            //        * Windows Vista                6.0
+            //        * Windows Server 2003 R2       5.2
+            //        * Windows Server 2003          5.2
+            //        * Windows XP 64-Bit Edition    5.2
+            //        * Windows XP                   5.1
+            //        * Windows 2000                 5.0 */
 
-                int osVersion = Environment.OSVersion.Version.Major;
+            //    int osVersion = Environment.OSVersion.Version.Major;
 
-                if (SelectedHashAlgorithm == HashAlgorithmMd5)
-                    algorithm = osVersion > 5 ? (HashAlgorithm)new MD5Cng() : (HashAlgorithm)new MD5CryptoServiceProvider();
+            //    if (SelectedHashAlgorithm == HashAlgorithmMd5)
+            //        algorithm = osVersion > 5 ? (HashAlgorithm)new MD5Cng() : (HashAlgorithm)new MD5CryptoServiceProvider();
 
-                else if (SelectedHashAlgorithm == HashAlgorithmSha1)
-                    algorithm = osVersion > 5 ? (HashAlgorithm)new SHA1Cng() : (HashAlgorithm)new SHA1CryptoServiceProvider();
+            //    else if (SelectedHashAlgorithm == HashAlgorithmSha1)
+            //        algorithm = osVersion > 5 ? (HashAlgorithm)new SHA1Cng() : (HashAlgorithm)new SHA1CryptoServiceProvider();
 
-                else if (SelectedHashAlgorithm == HashAlgorithmSha256)
-                    algorithm = osVersion > 5 ? (HashAlgorithm)new SHA256Cng() : (HashAlgorithm)new SHA256Managed();
+            //    else if (SelectedHashAlgorithm == HashAlgorithmSha256)
+            //        algorithm = osVersion > 5 ? (HashAlgorithm)new SHA256Cng() : (HashAlgorithm)new SHA256Managed();
 
-                else if (SelectedHashAlgorithm == HashAlgorithmSha512)
-                    algorithm = osVersion > 5 ? (HashAlgorithm)new SHA512Cng() : (HashAlgorithm)new SHA512Managed();
+            //    else if (SelectedHashAlgorithm == HashAlgorithmSha512)
+            //        algorithm = osVersion > 5 ? (HashAlgorithm)new SHA512Cng() : (HashAlgorithm)new SHA512Managed();
 
-                Debug.Assert(stream == null);
+            //    Debug.Assert(stream == null);
 
-                SetCurrentFileCalculationProgress(0);
+            //    SetCurrentFileCalculationProgress(0);
 
-                for (int i = 0; i < InputFileList.Count; i++)
-                {
-                    var entry = InputFileList[i];
-                    if (File.Exists(entry.FilePath))
-                    {
-                        stream = new ProgressUpdateStream(entry.FilePath);
-                        FileListProgress = $"{i + 1}/{InputFileList.Count}";
+            //    for (int i = 0; i < InputFileList.Count; i++)
+            //    {
+            //        var entry = InputFileList[i];
+            //        if (File.Exists(entry.FilePath))
+            //        {
+            //            stream = new ProgressUpdateStream(entry.FilePath);
+            //            FileListProgress = $"{i + 1}/{InputFileList.Count}";
 
-                        subscribed = true;
-                        stream.ProgressUpdate += stream_ProgressUpdate;
+            //            subscribed = true;
+            //            stream.ProgressUpdate += stream_ProgressUpdate;
 
-                        entry.CalculatedFileHash = PrintByteArray(algorithm.ComputeHash(stream));
-                        stream.Close();
+            //            entry.CalculatedFileHash = PrintByteArray(algorithm.ComputeHash(stream));
+            //            stream.Close();
 
-                        stream.ProgressUpdate -= stream_ProgressUpdate;
-                        subscribed = false;
-                    }
-                }
-            }
-            catch (ArgumentException)
-            {
-            }
-            catch (FileNotFoundException)
-            {
-            }
-            catch (ThreadAbortException)
-            {
-            }
-            finally
-            {
-                if (algorithm != null)
-                    algorithm.Dispose();
+            //            stream.ProgressUpdate -= stream_ProgressUpdate;
+            //            subscribed = false;
+            //        }
+            //    }
+            //}
+            //catch (ArgumentException)
+            //{
+            //}
+            //catch (FileNotFoundException)
+            //{
+            //}
+            //catch (ThreadAbortException)
+            //{
+            //}
+            //finally
+            //{
+            //    if (algorithm != null)
+            //        algorithm.Dispose();
 
-                if (stream != null)
-                {
-                    stream.Close();
-                    if (subscribed)
-                        stream.ProgressUpdate -= stream_ProgressUpdate;
-                }
+            //    if (stream != null)
+            //    {
+            //        stream.Close();
+            //        if (subscribed)
+            //            stream.ProgressUpdate -= stream_ProgressUpdate;
+            //    }
 
-                HashCalculationIsRunning = false;
-            }
+            //    HashCalculationIsRunning = false;
+            //}
         }
 
         void stream_ProgressUpdate(object sender, ReadProgressEventArgs e)
@@ -455,16 +404,6 @@ namespace HashCalculator.ViewModel
         public void RemoveInputListEntry(InputFileListEntry entry)
         {
             InputFileList.Remove(entry);
-        }
-
-        private string PrintByteArray(byte[] array)
-        {
-            StringBuilder sbByteArray = new StringBuilder();
-
-            for (int i = 0; i < array.Length; i++)
-                sbByteArray.Append(String.Format("{0:X2}", array[i]));
-
-            return sbByteArray.ToString();
         }
 
         private void ExportHashList(object parameter)

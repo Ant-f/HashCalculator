@@ -62,6 +62,7 @@
     <Compile Include="Interface\IFileExistenceChecker.cs" />
     <Compile Include="Interface\IFileHashCodeMatchChecker.cs" />
     <Compile Include="Interface\IFileOperations.cs" />
+    <Compile Include="Interface\IHashAlgorithmSelection.cs" />
     <Compile Include="Interface\IHashCalculatorViewModel.cs" />
     <Compile Include="Interface\IHashCodeCalculationService.cs" />
     <Compile Include="Interface\IHashCodeExporter.cs" />
@@ -73,8 +74,8 @@
     <Compile Include="Service\FileHashCodeMatchChecker.cs" />
     <Compile Include="Service\HashCodeBatchCalculationService.cs" />
     <Compile Include="Service\HashCodeCalculationService.cs" />
-    <Compile Include="Service\HashAlgorithmService.cs" />
     <Compile Include="Service\PropertyChangedSubscriber.cs" />
+    <Compile Include="ViewModel\HashAlgorithmSelection.cs" />
     <Compile Include="ViewModel\HashCalculatorViewModel.cs" />
     <Compile Include="Service\HashCodeExporter.cs" />
     <Compile Include="ViewModel\Model\HashCodeMatchCriteria.cs" />

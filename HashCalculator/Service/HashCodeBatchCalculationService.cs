@@ -50,18 +50,23 @@ namespace HashCalculator.Service
             _hashCodeCalculationService = hashCodeCalculationService;
         }
 
-        public void CalculateHashCodes(HashAlgorithm algorithm, InputFileListEntry[] collection)
+        public void CalculateHashCodes(string algorithmName, InputFileListEntry[] collection)
         {
-            for (int i = 0; i < collection.Length; i++)
+            using (var algorithm = HashAlgorithm.Create(algorithmName))
             {
-                ListProgress = $"{i + 1}/{collection.Length}";
+                if (algorithm != null)
+                {
+                    for (int i = 0; i < collection.Length; i++)
+                    {
+                        ListProgress = $"{i + 1}/{collection.Length}";
 
-                var listEntry = collection[i];
-                var hashCode = _hashCodeCalculationService.CalculateHashCodes(algorithm, listEntry.FilePath);
-                listEntry.CalculatedFileHash = hashCode;
+                        var listEntry = collection[i];
+                        var hashCode = _hashCodeCalculationService.CalculateHashCodes(algorithm, listEntry.FilePath);
+                        listEntry.CalculatedFileHash = hashCode;
+                    }
+                }
+                ListProgress = string.Empty;
             }
-
-            ListProgress = string.Empty;
         }
     }
 }
