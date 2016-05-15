@@ -20,6 +20,9 @@ using HashCalculator.Interface;
 
 namespace HashCalculator.ViewModel
 {
+    /// <summary>
+    /// Class describing hash algorithm selection
+    /// </summary>
     public class HashAlgorithmSelection : PropertyChangedNotifier, IHashAlgorithmSelection
     {
         public const string MD5 = "MD5";
