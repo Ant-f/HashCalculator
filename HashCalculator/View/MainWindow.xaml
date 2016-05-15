@@ -212,9 +212,9 @@
             <TextBlock Text="Algorithm" VerticalAlignment="Center" />
 
             <ComboBox IsEnabled="{Binding HashCalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
-                      ItemsSource="{Binding HashAlgorithmOptions}"
+                      ItemsSource="{Binding HashAlgorithmSelection.HashAlgorithms, Source={StaticResource ViewModelService}}"
                       Margin="5,0,10,0"
-                      SelectedItem="{Binding SelectedHashAlgorithm}"
+                      SelectedItem="{Binding HashAlgorithmSelection.SelectedHashAlgorithm, Source={StaticResource ViewModelService}}"
                       Width="100">
             </ComboBox>
             

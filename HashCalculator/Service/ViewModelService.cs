@@ -27,9 +27,14 @@ namespace HashCalculator.Service
     public class ViewModelService
     {
         private static IHashCalculatorViewModel _viewModel;
+        private static IHashAlgorithmSelection _hashAlgorithmSelection;
 
         public static IHashCalculatorViewModel ViewModel =>
             _viewModel ??
             (_viewModel = App.IocKernel.Get<IHashCalculatorViewModel>());
+
+        public static IHashAlgorithmSelection HashAlgorithmSelection =>
+            _hashAlgorithmSelection ??
+            (_hashAlgorithmSelection = App.IocKernel.Get<IHashAlgorithmSelection>());
     }
 }
