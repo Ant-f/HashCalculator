@@ -40,6 +40,7 @@ namespace HashCalculator
             kernel.Bind<IFileHashCodeMatchChecker>().To<FileHashCodeMatchChecker>().InSingletonScope();
             kernel.Bind<IHashCalculatorViewModel>().To<HashCalculatorViewModel>().InSingletonScope();
             kernel.Bind<IHashCodeExporter>().To<HashCodeExporter>().InSingletonScope();
+            kernel.Bind<IPropertyChangedSubscriber>().To<PropertyChangedSubscriber>().InSingletonScope();
             return kernel;
         }
     }

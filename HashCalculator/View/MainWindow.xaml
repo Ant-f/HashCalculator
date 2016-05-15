@@ -209,9 +209,7 @@
         <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
             
             <!--Algorithm Selection-->
-            <TextBlock Text="Algorithm"
-                       VerticalAlignment="Center">
-            </TextBlock>
+            <TextBlock Text="Algorithm" VerticalAlignment="Center" />
 
             <ComboBox IsEnabled="{Binding HashCalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
                       ItemsSource="{Binding HashAlgorithmOptions}"
