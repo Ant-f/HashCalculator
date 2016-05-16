@@ -207,6 +207,11 @@
 
         <!--Hash calculation actions/options-->
         <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Width" Value="90" />
+                </Style>
+            </StackPanel.Resources>
             
             <!--Algorithm Selection-->
             <TextBlock Text="Algorithm" VerticalAlignment="Center" />
@@ -221,21 +226,18 @@
             <!--Buttons-->
             <Button Command="{Binding CalculateHashCodesCommand}"
                     Content="Calculate Hash"
-                    Margin="0,0,10,0"
-                    Width="90">
+                    Margin="0,0,10,0">
             </Button>
 
             <Button Click="CancelButtonClick"
                     Content="Cancel"
                     Cursor="Arrow"
                     IsEnabled="{Binding HashCalculationIsRunning}"
-                    Margin="0,0,10,0"
-                    Width="90">
+                    Margin="0,0,10,0">
             </Button>
 
             <Button Command="{Binding ExportHashListCommand}"
-                    Content="Export"
-                    Width="90">
+                    Content="Export">
             </Button>
         </StackPanel>
 
