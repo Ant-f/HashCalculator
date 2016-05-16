@@ -64,6 +64,7 @@
     <Compile Include="Interface\IFileOperations.cs" />
     <Compile Include="Interface\IHashAlgorithmSelection.cs" />
     <Compile Include="Interface\IHashCalculatorViewModel.cs" />
+    <Compile Include="Interface\IHashCodeBatchCalculationService.cs" />
     <Compile Include="Interface\IHashCodeCalculationService.cs" />
     <Compile Include="Interface\IHashCodeExporter.cs" />
     <Compile Include="Interface\IPropertyChangedSubscriber.cs" />

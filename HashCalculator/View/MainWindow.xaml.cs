@@ -46,13 +46,6 @@ namespace HashCalculator.View
             ViewModel.AbortHashCalculation();
         }
 
-        private void CalculateHashButtonClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.ClearCalculatedHashes();
-            ViewModel.BuildKnownFileHashList();
-            ViewModel.StartHashCalculationBatch();
-        }
-
         private void DropTargetBorderDrop(object sender, DragEventArgs e)
         {
             var data = e.Data as DataObject;

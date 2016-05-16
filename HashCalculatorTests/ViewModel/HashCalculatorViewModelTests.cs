@@ -519,15 +519,12 @@ namespace HashCalculatorTests.ViewModel
         {
             // Arrange
 
+            const string exportPath = "ExportPath";
+
             var builder = new HashCalculatorViewModelBuilder();
 
             builder.ExportPathPrompterMock.Setup(e => e.ShowPrompt())
-                .Returns("ExportPath");
-
-            builder.HashCodeExporterMock.Setup(e => e.Export(
-                It.IsAny<string>(),
-                It.IsAny<IList<FileHashMetadata>>(),
-                It.IsAny<bool>()));
+                .Returns(exportPath);
 
             var viewModel = builder.CreateViewModel();
 
@@ -537,7 +534,30 @@ namespace HashCalculatorTests.ViewModel
 
             //Assert
 
-            builder.HashCodeExporterMock.VerifyAll();
+            builder.ExportPathPrompterMock.VerifyAll();
+            builder.HashCodeExporterMock.Verify(e => e.Export(
+                exportPath,
+                It.IsAny<IList<FileHashMetadata>>(),
+                It.IsAny<bool>()));
+        }
+
+        [Test]
+        public void CalculateHashCodesCommandUsesHashCodeBatchCalculationService()
+        {
+            // Arrange
+
+            var builder = new HashCalculatorViewModelBuilder();
+            var viewModel = builder.CreateViewModel();
+
+            // Act
+
+            viewModel.CalculateHashCodesCommand.Execute(null);
+
+            // Assert
+
+            builder.HashCodeBatchCalculationServiceMock.Verify(s => s.CalculateHashCodes(
+                It.IsAny<string>(),
+                It.IsAny<IList<InputFileListEntry>>()));
         }
     }
 }

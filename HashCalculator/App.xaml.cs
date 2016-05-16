@@ -39,6 +39,8 @@ namespace HashCalculator
             kernel.Bind<IFileExistenceChecker>().To<FileExistenceChecker>().InSingletonScope();
             kernel.Bind<IFileHashCodeMatchChecker>().To<FileHashCodeMatchChecker>().InSingletonScope();
             kernel.Bind<IHashAlgorithmSelection>().To<HashAlgorithmSelection>().InSingletonScope();
+            kernel.Bind<IHashCodeBatchCalculationService>().To<HashCodeBatchCalculationService>().InSingletonScope();
+            kernel.Bind<IHashCodeCalculationService>().To<HashCodeCalculationService>().InSingletonScope();
             kernel.Bind<IHashCalculatorViewModel>().To<HashCalculatorViewModel>().InSingletonScope();
             kernel.Bind<IHashCodeExporter>().To<HashCodeExporter>().InSingletonScope();
             kernel.Bind<IPropertyChangedSubscriber>().To<PropertyChangedSubscriber>().InSingletonScope();

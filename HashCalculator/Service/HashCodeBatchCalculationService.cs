@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
 using HashCalculator.Interface;
 using HashCalculator.ViewModel.Model;
 using System.Security.Cryptography;
@@ -22,7 +23,7 @@ using HashCalculator.ViewModel;
 
 namespace HashCalculator.Service
 {
-    public class HashCodeBatchCalculationService : PropertyChangedNotifier
+    public class HashCodeBatchCalculationService : PropertyChangedNotifier, IHashCodeBatchCalculationService
     {
         private readonly IHashCodeCalculationService _hashCodeCalculationService;
 
@@ -50,15 +51,15 @@ namespace HashCalculator.Service
             _hashCodeCalculationService = hashCodeCalculationService;
         }
 
-        public void CalculateHashCodes(string algorithmName, InputFileListEntry[] collection)
+        public void CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection)
         {
             using (var algorithm = HashAlgorithm.Create(algorithmName))
             {
                 if (algorithm != null)
                 {
-                    for (int i = 0; i < collection.Length; i++)
+                    for (int i = 0; i < collection.Count; i++)
                     {
-                        ListProgress = $"{i + 1}/{collection.Length}";
+                        ListProgress = $"{i + 1}/{collection.Count}";
 
                         var listEntry = collection[i];
                         var hashCode = _hashCodeCalculationService.CalculateHashCodes(algorithm, listEntry.FilePath);

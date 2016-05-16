@@ -67,6 +67,7 @@
     <Compile Include="Converter\ValidFilePathToBackgroundBrushConverterTests.cs" />
     <Compile Include="Service\FileHashCodeMatchCheckerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\FileOperationsTests.cs" />
     <Compile Include="Service\HashCodeBatchCalculationServiceTests.cs" />
     <Compile Include="Service\HashCodeCalculationServiceTests.cs" />
     <Compile Include="Service\PropertyChangedSubscriberTests.cs" />
@@ -92,6 +93,11 @@
       <Project>{35b6ae24-5270-4fe6-9cf2-21097e71e850}</Project>
       <Name>HashCalculator</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestingData\LoremIpsum.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

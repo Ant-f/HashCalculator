@@ -15,28 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Interface;
-using System.IO;
+using System.Collections.Generic;
+using HashCalculator.ViewModel.Model;
 
-namespace HashCalculator.Service
+namespace HashCalculator.Interface
 {
-    public class FileOperations : IFileOperations
+    public interface IHashCodeBatchCalculationService
     {
-        /// <summary>
-        /// Create a new text file, or overwrite the file at the specified path
-        /// </summary>
-        /// <param name="path">Path to create a new file</param>
-        /// <returns>A TextWriter object to write text with</returns>
-        public TextWriter CreateTextFile(string path)
-        {
-            var streamWriter = File.CreateText(path);
-            return streamWriter;
-        }
+        string ListProgress { get; }
 
-        public Stream ReadFile(string path)
-        {
-            var stream = File.OpenRead(path);
-            return stream;
-        }
+        void CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection);
     }
 }

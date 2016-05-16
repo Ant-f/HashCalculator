@@ -1,0 +1,59 @@
+﻿HashCalculator
+Tool for calculating and comparing file hash sums, e.g. sha1
+Copyright(C) 2016 Anthony Fung
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see<http://www.gnu.org/licenses/>.
+
+
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id elit at orci
+mollis tempor. Cum sociis natoque penatibus et magnis dis parturient montes,
+nascetur ridiculus mus. Praesent ut consectetur ex. Sed semper, erat sed lacinia
+varius, orci sem blandit enim, ac ornare felis urna vel purus. Aenean aliquam ex
+enim, et pretium massa dictum ac. Integer euismod turpis bibendum felis
+efficitur, at convallis quam viverra. Ut pulvinar faucibus efficitur. In mattis
+sapien sit amet ultricies blandit. Nulla in odio et lacus gravida porttitor.
+Aliquam erat volutpat. 
+
+Praesent in velit non nisi accumsan aliquam. Fusce non consequat justo, quis
+volutpat urna. Cras tincidunt dolor diam, sit amet ornare tortor scelerisque in.
+Morbi in nisi tortor. Curabitur et iaculis ante. Aenean quis risus vel lacus
+faucibus aliquam vitae quis nibh. Aenean sodales, elit vel dictum pulvinar,
+nunc tortor egestas nibh, vel sagittis arcu urna eu eros. In hac habitasse
+platea dictumst. Morbi sed leo tortor. Suspendisse ultricies odio augue, aliquam
+interdum nisl malesuada vel. Morbi tincidunt a diam eget convallis. Praesent
+hendrerit lorem mauris, ut congue mauris pulvinar quis. Maecenas pretium
+facilisis eleifend. Nulla bibendum, sapien eu sodales vulputate, ante tellus
+commodo risus, at sodales purus ipsum vel quam. 
+
+Curabitur dignissim hendrerit ex eu lobortis. Ut lobortis arcu a laoreet mattis.
+Sed pulvinar luctus nisl, eget vestibulum quam. Duis eget rhoncus augue, sit
+amet consectetur tortor. In hac habitasse platea dictumst. Suspendisse lacinia
+dui eu ligula dignissim, vitae luctus orci consectetur. Maecenas cursus odio at
+leo consequat, ut iaculis sem pharetra. 
+
+Fusce metus lorem, accumsan eu augue ac, sodales egestas justo. Aliquam erat
+volutpat. Nulla tempus orci et feugiat fringilla. Sed lobortis, erat vitae
+pellentesque fermentum, dolor turpis fringilla lorem, in fermentum sapien sapien
+ut lectus. Mauris sed tempus diam, sed tempor orci. Ut cursus molestie turpis in
+ultrices. Pellentesque sit amet facilisis mauris. Vivamus tincidunt elit at
+egestas ultricies. Suspendisse vehicula gravida mi. Quisque eros mauris, ornare
+quis cursus a, pulvinar ut tellus. 
+
+Nam pretium dolor nec dui iaculis, sit amet iaculis nulla congue. Quisque in
+rhoncus justo. Duis dignissim molestie nulla, sit amet varius enim ultrices sed.
+Praesent tristique aliquet sapien, sit amet interdum nibh rhoncus eu. Donec in
+enim ut mi rutrum euismod in eu odio. Nunc ac dignissim purus. Duis sit amet
+pharetra lacus. Sed vulputate lorem sed velit mollis porta. Proin in metus at mi
+dapibus fringilla. Nulla non viverra turpis. 

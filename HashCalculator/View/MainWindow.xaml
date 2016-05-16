@@ -219,9 +219,8 @@
             </ComboBox>
             
             <!--Buttons-->
-            <Button Click="CalculateHashButtonClick"
+            <Button Command="{Binding CalculateHashCodesCommand}"
                     Content="Calculate Hash"
-                    IsEnabled="{Binding HashCalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
                     Margin="0,0,10,0"
                     Width="90">
             </Button>

@@ -46,6 +46,12 @@ namespace HashCalculatorTests.TestingInfrastructure
         public FileExistenceChecker FileExistenceChecker { get; set; }
 
         /// <summary>
+        /// The HashCodeBatchCalculationService instance to use in the created view model. A mock instance will
+        /// be used if no value is specified.
+        /// </summary>
+        public HashCodeBatchCalculationService HashCodeBatchCalculationService { get; set; }
+
+        /// <summary>
         /// The FileHashCodeMatchChecker instance to use in the created view model. A mock instance will
         /// be used if no value is specified.
         /// </summary>
@@ -85,6 +91,13 @@ namespace HashCalculatorTests.TestingInfrastructure
             = new Mock<IFileExistenceChecker>();
 
         /// <summary>
+        /// A mock IHashCodeBatchCalculationService that can be used to specify desired behaviour. This will only be
+        /// used if no value is specified for the IHashCodeBatchCalculationService property.
+        /// </summary>
+        public Mock<IHashCodeBatchCalculationService> HashCodeBatchCalculationServiceMock { get; }
+            = new Mock<IHashCodeBatchCalculationService>();
+
+        /// <summary>
         /// A mock IFileHashCodeMatchChecker that can be used to specify desired behaviour. This will only be
         /// used if no value is specified for the FileHashCodeMatchChecker property.
         /// </summary>
@@ -118,6 +131,7 @@ namespace HashCalculatorTests.TestingInfrastructure
                 ExportPathPrompter ?? ExportPathPrompterMock.Object,
                 FileExistenceChecker ?? FileExistenceCheckerMock.Object,
                 FileHashCodeMatchChecker ?? FileHashCodeMatchCheckerMock.Object,
+                HashCodeBatchCalculationService ?? HashCodeBatchCalculationServiceMock.Object,
                 HashCodeExporter ?? HashCodeExporterMock.Object,
                 PropertyChangedSubscriber ?? PropertyChangedSubscriberMock.Object);
 

@@ -26,7 +26,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace HashCalculator.ViewModel
@@ -36,6 +35,7 @@ namespace HashCalculator.ViewModel
         private readonly IExportPathPrompter _exportPathPrompter;
         private readonly IFileExistenceChecker _fileExistenceChecker;
         private readonly IFileHashCodeMatchChecker _fileHashCodeMatchChecker;
+        private readonly IHashCodeBatchCalculationService _hashCodeBatchCalculationService;
         private readonly IHashCodeExporter _hashCodeExporter;
         private readonly IPropertyChangedSubscriber _propertyChangedSubscriber;
 
@@ -147,6 +147,7 @@ namespace HashCalculator.ViewModel
             }
         }
 
+        public RelayCommand CalculateHashCodesCommand { get; }
         public RelayCommand ExportHashListCommand { get; }
 
         public HashCalculatorViewModel(
@@ -154,18 +155,25 @@ namespace HashCalculator.ViewModel
             IExportPathPrompter exportPathPrompter,
             IFileExistenceChecker fileExistenceChecker,
             IFileHashCodeMatchChecker fileHashCodeMatchChecker,
+            IHashCodeBatchCalculationService hashCodeBatchCalculationService,
             IHashCodeExporter hashCodeExporter,
             IPropertyChangedSubscriber propertyChangedSubscriber)
         {
             _exportPathPrompter = exportPathPrompter;
             _fileExistenceChecker = fileExistenceChecker;
             _fileHashCodeMatchChecker = fileHashCodeMatchChecker;
+            _hashCodeBatchCalculationService = hashCodeBatchCalculationService;
             _hashCodeExporter = hashCodeExporter;
             _propertyChangedSubscriber = propertyChangedSubscriber;
             _propertyChangedSubscriber.EventHandler = InputFileListEntryPropertyChanged;
 
             InputFileList = new ObservableCollection<InputFileListEntry>();
             InputFileList.CollectionChanged += InputFileListCollectionChanged;
+
+            CalculateHashCodesCommand = new RelayCommand(
+                dispatcherService,
+                param => CalculateFileHash(),
+                param => !HashCalculationIsRunning);
 
             ExportHashListCommand = new RelayCommand(
                 dispatcherService,
@@ -241,12 +249,6 @@ namespace HashCalculator.ViewModel
             return matchCriteria;
         }
 
-        public void ClearCalculatedHashes()
-        {
-            foreach (InputFileListEntry entry in InputFileList)
-                entry.CalculatedFileHash = String.Empty;
-        }
-
         public void BuildKnownFileHashList()
         {
             var knownFileHashSums = KnownFileHashCodesText.Split(NewLineSeparators, StringSplitOptions.RemoveEmptyEntries);
@@ -290,6 +292,11 @@ namespace HashCalculator.ViewModel
 
         private void CalculateFileHash()
         {
+            foreach (InputFileListEntry entry in InputFileList)
+                entry.CalculatedFileHash = String.Empty;
+
+            _hashCodeBatchCalculationService.CalculateHashCodes("sha512", InputFileList);
+
             //HashAlgorithm algorithm = null;
             //ProgressUpdateStream stream = null;
             //bool subscribed = false;

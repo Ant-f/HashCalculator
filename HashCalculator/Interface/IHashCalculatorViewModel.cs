@@ -33,9 +33,9 @@ namespace HashCalculator.Interface
         List<FileHashMetadata> KnownFileHashList { get; }
         string KnownFileHashCodesText { get; set; }
 
+        RelayCommand CalculateHashCodesCommand { get; }
         RelayCommand ExportHashListCommand { get; }
 
-        void ClearCalculatedHashes();
         void BuildKnownFileHashList();
         void StartHashCalculationBatch();
         void AbortHashCalculation();

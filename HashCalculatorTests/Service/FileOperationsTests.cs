@@ -15,28 +15,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Interface;
-using System.IO;
+using HashCalculator.Service;
+using NUnit.Framework;
+using System;
 
-namespace HashCalculator.Service
+namespace HashCalculatorTests.Service
 {
-    public class FileOperations : IFileOperations
+    [TestFixture]
+    public class FileOperationsTests
     {
-        /// <summary>
-        /// Create a new text file, or overwrite the file at the specified path
-        /// </summary>
-        /// <param name="path">Path to create a new file</param>
-        /// <returns>A TextWriter object to write text with</returns>
-        public TextWriter CreateTextFile(string path)
+        [Test]
+        public void ReadFileReturnsFileStream()
         {
-            var streamWriter = File.CreateText(path);
-            return streamWriter;
-        }
+            var fileOperations = new FileOperations();
 
-        public Stream ReadFile(string path)
-        {
-            var stream = File.OpenRead(path);
-            return stream;
+            var runningDir = AppDomain.CurrentDomain.BaseDirectory;
+            var testFilePath = $"{runningDir}\\TestingData\\LoremIpsum.txt";
+
+            Assert.DoesNotThrow(() =>
+            {
+                using (fileOperations.ReadFile(testFilePath))
+                {
+                }
+            });
         }
     }
 }
