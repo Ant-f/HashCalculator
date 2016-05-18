@@ -80,7 +80,8 @@
     <Compile Include="ViewModel\HashCalculatorViewModel.cs" />
     <Compile Include="Service\HashCodeExporter.cs" />
     <Compile Include="ViewModel\Model\HashCodeMatchCriteria.cs" />
-    <Compile Include="ViewModel\ProgressUpdateStream.cs" />
+    <Compile Include="ViewModel\ReadProgressEventArgs.cs" />
+    <Compile Include="ViewModel\ReadProgressFileStream.cs" />
     <Compile Include="ViewModel\PropertyChangedNotifier.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="Service\ViewModelService.cs" />

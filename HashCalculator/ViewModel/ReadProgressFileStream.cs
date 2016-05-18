@@ -20,56 +20,45 @@ using System.IO;
 
 namespace HashCalculator.ViewModel
 {
-    class ReadProgressEventArgs : EventArgs
-    {
-        public double Progress { get; set; }
-
-        public ReadProgressEventArgs(double progress)
-        {
-            Progress = progress;
-        }
-    }
-
-    class ProgressUpdateStream : FileStream
+    /// <summary>
+    /// Subclass of System.IO.FileStream. Raises events during read operations
+    /// to indicate current relative position of the stream, represented as a
+    /// value between 0 and 1
+    /// </summary>
+    public class ReadProgressFileStream : FileStream
     {
         public event EventHandler<ReadProgressEventArgs> ProgressUpdate;
 
-        private long counter = 0;
-        private long updateInterval;
+        private int _percentage;
 
-        public ProgressUpdateStream(string filepath)
+        public ReadProgressFileStream(string filepath)
             : base(filepath, FileMode.Open, FileAccess.Read, FileShare.Read)
         {
-            updateInterval = this.Length / 100;
         }
 
         public override int Read(byte[] array, int offset, int count)
         {
-            CheckFireProgressUpdate(count);
+            UpdateReadPercentage();
             return base.Read(array, offset, count);
         }
 
         public override int ReadByte()
         {
-            CheckFireProgressUpdate(1);
+            UpdateReadPercentage();
             return base.ReadByte();
         }
 
-        private void CheckFireProgressUpdate(int byteCount)
+        private void UpdateReadPercentage()
         {
-            counter += byteCount;
+            var normalisedPercentage = Position/(double) Length;
+            var intPercentage = (int) (normalisedPercentage*100);
 
-            if (counter > updateInterval)
+            if (_percentage != intPercentage)
             {
-                counter %= updateInterval;
-                FireProgressUpdate((double)this.Position / (double)this.Length);
+                ProgressUpdate?.Invoke(this, new ReadProgressEventArgs(normalisedPercentage));
             }
-        }
 
-        private void FireProgressUpdate(double progress)
-        {
-            if (ProgressUpdate != null)
-                ProgressUpdate(this, new ReadProgressEventArgs(progress));
+            _percentage = intPercentage;
         }
     }
 }

@@ -18,26 +18,38 @@
 using HashCalculator.Service;
 using NUnit.Framework;
 using System;
+using HashCalculator.ViewModel;
 
 namespace HashCalculatorTests.Service
 {
     [TestFixture]
     public class FileOperationsTests
     {
-        [Test]
-        public void ReadFileReturnsFileStream()
+        [Test, Explicit]
+        public void ReadFileReturnsReadProgressFileStream()
         {
             var fileOperations = new FileOperations();
 
             var runningDir = AppDomain.CurrentDomain.BaseDirectory;
             var testFilePath = $"{runningDir}\\TestingData\\LoremIpsum.txt";
 
-            Assert.DoesNotThrow(() =>
+            Type fileStreamType = null;
+            var exceptionThrown = false;
+
+            try
             {
-                using (fileOperations.ReadFile(testFilePath))
+                using (var stream = fileOperations.ReadFile(testFilePath))
                 {
+                    fileStreamType = stream.GetType();
                 }
-            });
+            }
+            catch (Exception)
+            {
+                exceptionThrown = true;
+            }
+
+            Assert.IsFalse(exceptionThrown, "Exception should not have been thrown");
+            Assert.AreEqual(typeof(ReadProgressFileStream), fileStreamType);
         }
     }
 }
