@@ -19,26 +19,23 @@ using HashCalculator.Service;
 using NUnit.Framework;
 using System;
 using HashCalculator.ViewModel;
+using HashCalculatorTests.TestingInfrastructure;
 
 namespace HashCalculatorTests.Service
 {
     [TestFixture]
     public class FileOperationsTests
     {
-        [Test, Explicit]
+        [Test, Explicit, Category(Constants.FileSystemTestCategory)]
         public void ReadFileReturnsReadProgressFileStream()
         {
-            var fileOperations = new FileOperations();
-
-            var runningDir = AppDomain.CurrentDomain.BaseDirectory;
-            var testFilePath = $"{runningDir}\\TestingData\\LoremIpsum.txt";
-
             Type fileStreamType = null;
             var exceptionThrown = false;
 
             try
             {
-                using (var stream = fileOperations.ReadFile(testFilePath))
+                var fileOperations = new FileOperations();
+                using (var stream = fileOperations.ReadFile(TestingDataService.TestingDataFilePath))
                 {
                     fileStreamType = stream.GetType();
                 }

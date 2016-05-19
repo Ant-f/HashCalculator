@@ -21,30 +21,28 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using HashCalculatorTests.TestingInfrastructure;
 
 namespace HashCalculatorTests.ViewModel
 {
     [TestFixture]
     public class ReadProgressFileStreamTests
     {
-        [Test, Explicit]
-        public void ReadFileProgressIsBetween0And1()
+        [Test, Explicit, Category(Constants.FileSystemTestCategory)]
+        public void NormalizedReadFileProgressIsBetween0And1()
         {
             // Arrange
 
             var progressValues = new List<double>();
 
-            var eventHandler = new EventHandler<ReadProgressEventArgs>((s, e) =>
+            var eventHandler = new EventHandler<ReadProgressEventArgs>((sender, args) =>
             {
-                progressValues.Add(e.Progress);
+                progressValues.Add(args.NormalizedProgress);
             });
-
-            var runningDir = AppDomain.CurrentDomain.BaseDirectory;
-            var testFilePath = $"{runningDir}\\TestingData\\LoremIpsum.txt";
 
             // Act
 
-            using (var stream = new ReadProgressFileStream(testFilePath))
+            using (var stream = new ReadProgressFileStream(TestingDataService.TestingDataFilePath))
             {
                 stream.ProgressUpdate += eventHandler;
 
@@ -61,30 +59,27 @@ namespace HashCalculatorTests.ViewModel
             Assert.IsNotEmpty(progressValues);
 
             var minValue = progressValues.Min();
-            Assert.IsTrue(minValue >= 0);
+            Assert.That(minValue, Is.GreaterThanOrEqualTo(0));
 
             var maxValue = progressValues.Max();
-            Assert.IsTrue(maxValue <= 1);
+            Assert.That(maxValue, Is.LessThanOrEqualTo(1));
         }
 
-        [Test, Explicit]
-        public void ReadFileProgressValuesAreEvenlyDistributed()
+        [Test, Explicit, Category(Constants.FileSystemTestCategory)]
+        public void NormalizedReadFileProgressValuesAreEvenlyDistributed()
         {
             // Arrange
 
             var progressValues = new List<double>();
 
-            var eventHandler = new EventHandler<ReadProgressEventArgs>((s, e) =>
+            var eventHandler = new EventHandler<ReadProgressEventArgs>((sender, args) =>
             {
-                progressValues.Add(e.Progress);
+                progressValues.Add(args.NormalizedProgress);
             });
-
-            var runningDir = AppDomain.CurrentDomain.BaseDirectory;
-            var testFilePath = $"{runningDir}\\TestingData\\LoremIpsum.txt";
 
             // Act
 
-            using (var stream = new ReadProgressFileStream(testFilePath))
+            using (var stream = new ReadProgressFileStream(TestingDataService.TestingDataFilePath))
             {
                 stream.ProgressUpdate += eventHandler;
 
@@ -100,12 +95,67 @@ namespace HashCalculatorTests.ViewModel
 
             Assert.IsNotEmpty(progressValues);
 
-            Assert.IsTrue(progressValues[0] < 0.1);
-            Assert.IsTrue(progressValues[progressValues.Count-1] > 0.9);
+            var collectionItemDeltaList = new List<double>();
 
-            var average = progressValues.Average();
-            Assert.IsTrue(average > 0.49);
-            Assert.IsTrue(average < 0.51);
+            // Discount the final element: the delta is likely to be smaller due to
+            // calculation rounding and a fixed upper limit
+            var upperLimit = progressValues.Count - 1;
+
+            for (int i = 1; i < upperLimit; i++)
+            {
+                var collectionItemDelta = progressValues[i] - progressValues[i - 1];
+                collectionItemDeltaList.Add(collectionItemDelta);
+            }
+
+            var deltaAverage = collectionItemDeltaList.Average();
+
+            for (int i = 0; i < collectionItemDeltaList.Count; i++)
+            {
+                var itemAverageDelta = Math.Abs(collectionItemDeltaList[i] - deltaAverage);
+                Assert.That(itemAverageDelta, Is.LessThanOrEqualTo(0.01));
+            }
+        }
+
+        [Test, Explicit, Category(Constants.FileSystemTestCategory)]
+        public void PercentageReadFileProgressValuesCorrespondToNormalizedProgress()
+        {
+            // Arrange
+
+            var normalizedValues = new List<double>();
+            var percentageValues = new List<int>();
+
+            var eventHandler = new EventHandler<ReadProgressEventArgs>((sender, args) =>
+            {
+                normalizedValues.Add(args.NormalizedProgress);
+                percentageValues.Add(args.PercentageProgress);
+            });
+
+            // Act
+
+            using (var stream = new ReadProgressFileStream(TestingDataService.TestingDataFilePath))
+            {
+                stream.ProgressUpdate += eventHandler;
+
+                using (var reader = new StreamReader(stream))
+                {
+                    reader.ReadToEnd();
+                }
+
+                stream.ProgressUpdate -= eventHandler;
+            }
+
+            // Assert
+
+            Assert.IsNotEmpty(normalizedValues);
+            Assert.IsNotEmpty(percentageValues);
+
+            Assert.AreEqual(normalizedValues.Count, percentageValues.Count);
+
+            for (int i = 0; i < normalizedValues.Count; i++)
+            {
+                var expectedValue = (int) (normalizedValues[i]*100);
+                Assert.AreEqual(expectedValue, percentageValues[i]);
+            }
         }
     }
 }

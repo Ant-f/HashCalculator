@@ -15,15 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System.Security.Cryptography;
+using System;
 
-namespace HashCalculator.Interface
+namespace HashCalculatorTests.TestingInfrastructure
 {
-    public interface IHashCodeCalculationService
+    internal static class TestingDataService
     {
-        double NormalizedProgress { get; }
-        int PercentageProgress { get; }
-
-        string CalculateHashCodes(HashAlgorithm algorithm, string filePath);
+        public static string TestingDataFilePath
+        {
+            get
+            {
+                var runningDir = AppDomain.CurrentDomain.BaseDirectory;
+                var testFilePath = $"{runningDir}\\TestingData\\LoremIpsum.txt";
+                return testFilePath;
+            }
+        }
     }
 }

@@ -192,8 +192,8 @@ namespace HashCalculatorTests.Service
             // Arrange
 
             Assert.AreEqual(2, entries.Length);
-            Assert.IsTrue(entries.Contains(entry1));
-            Assert.IsTrue(entries.Contains(entry2));
+            Assert.That(entries, Contains.Item(entry1));
+            Assert.That(entries, Contains.Item(entry2));
         }
     }
 }

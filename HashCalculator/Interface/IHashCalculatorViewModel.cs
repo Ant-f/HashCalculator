@@ -27,8 +27,6 @@ namespace HashCalculator.Interface
     {
         bool HashCalculationIsRunning { get; set; }
         bool MatchFullFilePath { get; set; }
-        double NormalizedFileCalculationProgress { get; }
-        int FileCalculationProgressPercentage { get; }
         ObservableCollection<InputFileListEntry> InputFileList { get; }
         List<FileHashMetadata> KnownFileHashList { get; }
         string KnownFileHashCodesText { get; set; }

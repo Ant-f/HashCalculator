@@ -30,11 +30,18 @@ namespace HashCalculator.ViewModel
         /// The relative position within a ReadProgressFileStream,
         /// represented as a value between 0 and 1
         /// </summary>
-        public double Progress { get; private set; }
+        public double NormalizedProgress { get; private set; }
 
-        public ReadProgressEventArgs(double progress)
+        /// <summary>
+        /// The relative position within a ReadProgressFileStream,
+        /// represented as a value between 0 and 100
+        /// </summary>
+        public int PercentageProgress { get; private set; }
+
+        public ReadProgressEventArgs(double normalizedProgress, int percentageProgress)
         {
-            Progress = progress;
+            NormalizedProgress = normalizedProgress;
+            PercentageProgress = percentageProgress;
         }
     }
 }

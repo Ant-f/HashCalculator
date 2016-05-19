@@ -45,8 +45,6 @@ namespace HashCalculator.ViewModel
         private Thread hashCalcThread;
 
         private bool hashCalculationIsRunning = false;
-        private double _normalizedFileCalculationProgress = 0;
-        private int _fileCalculationProgressPercentage;
         private string _knownFileHashCodesText = string.Empty;
         private bool _matchFullFilePath = false;
 
@@ -65,40 +63,6 @@ namespace HashCalculator.ViewModel
                     OnPropertyChanged();
 
                     ExportHashListCommand.EvaluateCanExecutePredicate(null);
-                }
-            }
-        }
-
-        public double NormalizedFileCalculationProgress
-        {
-            get
-            {
-                return _normalizedFileCalculationProgress;
-            }
-
-            private set
-            {
-                if (_normalizedFileCalculationProgress != value)
-                {
-                    _normalizedFileCalculationProgress = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public int FileCalculationProgressPercentage
-        {
-            get
-            {
-                return _fileCalculationProgressPercentage;
-            }
-
-            private set
-            {
-                if (_fileCalculationProgressPercentage != value)
-                {
-                    _fileCalculationProgressPercentage = value;
-                    OnPropertyChanged();
                 }
             }
         }
@@ -377,11 +341,6 @@ namespace HashCalculator.ViewModel
             //}
         }
 
-        void stream_ProgressUpdate(object sender, ReadProgressEventArgs e)
-        {
-            SetCurrentFileCalculationProgress(e.Progress);
-        }
-
         public void AddFilesToInputList(string[] files)
         {
             foreach (string str in files)
@@ -422,12 +381,6 @@ namespace HashCalculator.ViewModel
                 var inputList = InputFileList.Select(itm => itm.HashMetadata).ToArray();
                 _hashCodeExporter.Export(path, inputList, MatchFullFilePath);
             }
-        }
-
-        internal void SetCurrentFileCalculationProgress(double normalizedProgress)
-        {
-            NormalizedFileCalculationProgress = normalizedProgress;
-            FileCalculationProgressPercentage = (int)(normalizedProgress * 100);
         }
     }
 }

@@ -15,27 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Interface;
-using HashCalculator.Service;
-using Moq;
-
 namespace HashCalculatorTests.TestingInfrastructure
 {
-    /// <summary>
-    /// Builds HashCodeCalculationServiceBuilder instances for use in unit tests
-    /// </summary>
-    internal class HashCodeCalculationServiceBuilder
+    internal static class Constants
     {
-        /// <summary>
-        /// A mock IFileOperations that can be used to specify desired behaviour
-        /// </summary>
-        public Mock<IFileOperations> FileOperationsMock { get; }
-            = new Mock<IFileOperations>();
-
-        public HashCodeCalculationService Build()
-        {
-            var service = new HashCodeCalculationService(FileOperationsMock.Object);
-            return service;
-        }
+        public const string FileSystemTestCategory = "FileSystemTest";
     }
 }

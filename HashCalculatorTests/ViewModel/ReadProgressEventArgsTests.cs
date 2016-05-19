@@ -23,16 +23,19 @@ namespace HashCalculatorTests.ViewModel
     [TestFixture]
     public class ReadProgressEventArgsTests
     {
-        [TestCase(0.1)]
-        [TestCase(0.7)]
-        [TestCase(2.9)]
-        [TestCase(8.6)]
-        [TestCase(9.0)]
-        public void ValuePassAsConstructorArgumentSetsProgressProperty(double value)
+        [TestCase(0.01, 1)]
+        [TestCase(0.07, 7)]
+        [TestCase(0.29, 29)]
+        [TestCase(0.86, 86)]
+        [TestCase(0.90, 90)]
+        public void ValuesPassedAsConstructorArgumentSetProgressProperties(
+            double normalizedValue,
+            int percentageValue)
         {
-            var eventArgs = new ReadProgressEventArgs(value);
+            var eventArgs = new ReadProgressEventArgs(normalizedValue, percentageValue);
 
-            Assert.AreEqual(value, eventArgs.Progress);
+            Assert.AreEqual(normalizedValue, eventArgs.NormalizedProgress);
+            Assert.AreEqual(percentageValue, eventArgs.PercentageProgress);
         }
     }
 }

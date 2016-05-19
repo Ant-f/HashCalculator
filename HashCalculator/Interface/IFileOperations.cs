@@ -16,12 +16,13 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using System.IO;
+using HashCalculator.ViewModel;
 
 namespace HashCalculator.Interface
 {
     public interface IFileOperations
     {
         TextWriter CreateTextFile(string path);
-        Stream ReadFile(string path);
+        ReadProgressFileStream ReadFile(string path);
     }
 }

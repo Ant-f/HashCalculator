@@ -168,17 +168,6 @@ namespace HashCalculatorTests.ViewModel
             Assert.AreEqual(filePath2, viewModel.KnownFileHashList[1].FilePath);
         }
 
-        [Test]
-        public void SettingHashCalculationProgressSetsHashCalculationProgressPercentage()
-        {
-            var builder = new HashCalculatorViewModelBuilder();
-            var viewModel = builder.CreateViewModel();
-
-            viewModel.SetCurrentFileCalculationProgress(0.53);
-
-            Assert.AreEqual(53, viewModel.FileCalculationProgressPercentage);
-        }
-
         [TestCase(true, false)]
         [TestCase(false, true)]
         public void AddingEntryToInputFileListSetsFileExistence(

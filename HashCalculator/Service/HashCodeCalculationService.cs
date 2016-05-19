@@ -18,15 +18,53 @@
 using System.Security.Cryptography;
 using System.Text;
 using HashCalculator.Interface;
+using HashCalculator.ViewModel;
 
 namespace HashCalculator.Service
 {
     /// <summary>
     /// Provides methods related to calculating hash codes for files
     /// </summary>
-    public class HashCodeCalculationService : IHashCodeCalculationService
+    public class HashCodeCalculationService : PropertyChangedNotifier, IHashCodeCalculationService
     {
         private readonly IFileOperations _fileOperations;
+
+        private double _normalizedProgress;
+        private int _percentageProgress;
+
+        public double NormalizedProgress
+        {
+            get
+            {
+                return _normalizedProgress;
+            }
+
+            private set
+            {
+                if (_normalizedProgress != value)
+                {
+                    _normalizedProgress = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int PercentageProgress
+        {
+            get
+            {
+                return _percentageProgress;
+            }
+
+            private set
+            {
+                if (_percentageProgress != value)
+                {
+                    _percentageProgress = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public HashCodeCalculationService(IFileOperations fileOperation)
         {
@@ -37,8 +75,14 @@ namespace HashCalculator.Service
         {
             using (var fileStream = _fileOperations.ReadFile(filePath))
             {
+                fileStream.ProgressUpdate += FileStreamProgressUpdate;
+
                 var hash = algorithm.ComputeHash(fileStream);
+
+                fileStream.ProgressUpdate -= FileStreamProgressUpdate;
+
                 var hex = ConvertBytesToHexString(hash);
+
                 return hex;
             }
         }
@@ -55,6 +99,12 @@ namespace HashCalculator.Service
 
             var finalString = sb.ToString();
             return finalString;
+        }
+
+        private void FileStreamProgressUpdate(object sender, ReadProgressEventArgs e)
+        {
+            NormalizedProgress = e.NormalizedProgress;
+            PercentageProgress = e.PercentageProgress;
         }
     }
 }

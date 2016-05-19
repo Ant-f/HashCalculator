@@ -71,10 +71,11 @@
     <Compile Include="Service\HashCodeBatchCalculationServiceTests.cs" />
     <Compile Include="Service\HashCodeCalculationServiceTests.cs" />
     <Compile Include="Service\PropertyChangedSubscriberTests.cs" />
+    <Compile Include="TestingInfrastructure\Constants.cs" />
     <Compile Include="TestingInfrastructure\FileHashMetadataFactory.cs" />
-    <Compile Include="TestingInfrastructure\HashCodeCalculationServiceBuilder.cs" />
     <Compile Include="TestingInfrastructure\HashCalculatorViewModelBuilder.cs" />
     <Compile Include="TestingInfrastructure\HashCodeExporterBuilder.cs" />
+    <Compile Include="TestingInfrastructure\TestingDataService.cs" />
     <Compile Include="TestingInfrastructure\TestingStreamWriter.cs" />
     <Compile Include="UnitTestConstants.cs" />
     <Compile Include="ViewModel\HashCalculatorViewModelTests.cs" />

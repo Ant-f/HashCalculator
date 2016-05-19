@@ -39,7 +39,7 @@ namespace HashCalculator.Service
         /// </summary>
         /// <param name="path">Path to the file to open for reading</param>
         /// <returns>A stream for reading the file</returns>
-        public Stream ReadFile(string path)
+        public ReadProgressFileStream ReadFile(string path)
         {
             var stream = new ReadProgressFileStream(path);
             return stream;

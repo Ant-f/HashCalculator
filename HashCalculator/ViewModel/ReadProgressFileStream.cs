@@ -50,12 +50,13 @@ namespace HashCalculator.ViewModel
 
         private void UpdateReadPercentage()
         {
-            var normalisedPercentage = Position/(double) Length;
-            var intPercentage = (int) (normalisedPercentage*100);
+            var normalizedPercentage = Position/(double) Length;
+            var intPercentage = (int) (normalizedPercentage*100);
 
             if (_percentage != intPercentage)
             {
-                ProgressUpdate?.Invoke(this, new ReadProgressEventArgs(normalisedPercentage));
+                var eventArgs = new ReadProgressEventArgs(normalizedPercentage, intPercentage);
+                ProgressUpdate?.Invoke(this, eventArgs);
             }
 
             _percentage = intPercentage;
