@@ -27,7 +27,25 @@ namespace HashCalculator.Service
     {
         private readonly IHashCodeCalculationService _hashCodeCalculationService;
 
+        private bool _calculationIsRunning = false;
         private string _listProgress;
+
+        public bool CalculationIsRunning
+        {
+            get
+            {
+                return _calculationIsRunning;
+            }
+
+            set
+            {
+                if (_calculationIsRunning != value)
+                {
+                    _calculationIsRunning = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public string ListProgress
         {

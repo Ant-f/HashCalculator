@@ -21,27 +21,34 @@ using Ninject;
 namespace HashCalculator.Service
 {
     /// <summary>
-    /// Service locator for view model and related objects, for use when
-    /// references are required within XAML
+    /// Service locator for view model related objects, for use when references
+    /// are required within XAML
     /// </summary>
     public class ViewModelService
     {
-        private static IHashCalculatorViewModel _viewModel;
+        private static ICommands _commands;
         private static IHashAlgorithmSelection _hashAlgorithmSelection;
+        private static IUserInput _userInput;
 
         /// <summary>
-        /// A reference to the view model
+        /// A reference to the object containing commands
         /// </summary>
-        public static IHashCalculatorViewModel ViewModel =>
-            _viewModel ??
-            (_viewModel = App.IocKernel.Get<IHashCalculatorViewModel>());
+        public static ICommands Commands =>
+            _commands ??
+            (_commands = App.IocKernel.Get<ICommands>());
 
         /// <summary>
-        /// A reference to the object describing the hash algorithm selected
-        /// in the view model
+        /// A reference to the object indicating the selected hash algorithm
         /// </summary>
         public static IHashAlgorithmSelection HashAlgorithmSelection =>
             _hashAlgorithmSelection ??
             (_hashAlgorithmSelection = App.IocKernel.Get<IHashAlgorithmSelection>());
+
+        /// <summary>
+        /// A reference to the object holding data that the user has entered
+        /// </summary>
+        public static IUserInput UserInput =>
+            _userInput ??
+            (_userInput = App.IocKernel.Get<IUserInput>());
     }
 }

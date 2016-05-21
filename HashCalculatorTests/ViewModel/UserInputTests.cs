@@ -16,29 +16,28 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using HashCalculator.Model;
+using HashCalculator.Service;
 using HashCalculator.ViewModel.Model;
 using HashCalculatorTests.TestingInfrastructure;
 using Moq;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading;
-using HashCalculator.Service;
 using static HashCalculatorTests.UnitTestConstants;
 
 namespace HashCalculatorTests.ViewModel
 {
     [TestFixture]
-    public class HashCalculatorViewModelTests
+    public class UserInputTests
     {
         [Test]
         public void ChangingViewModelKnownFileHashCodesTextCausesInputFileListEntryHashMatchCriteriaUpdate()
         {
             // Arrange
 
-            var builder = new HashCalculatorViewModelBuilder();
+            var builder = new UserInputBuilder();
 
             builder.FileHashCodeMatchCheckerMock.Setup(c => c.FindMatchCriteria(
                 It.IsAny<FileHashMetadata>(),
@@ -46,7 +45,7 @@ namespace HashCalculatorTests.ViewModel
                 It.IsAny<bool>()))
                 .Returns(HashCodeMatchCriteria.FileNameMatch | HashCodeMatchCriteria.HashCodeMatch);
 
-            var viewModel = builder.CreateViewModel();
+            var userInput = builder.CreateUserInput();
 
             string raisedPropertyName = null;
             var resetEvent = new ManualResetEvent(false);
@@ -57,12 +56,12 @@ namespace HashCalculatorTests.ViewModel
             };
 
             var entry = new InputFileListEntry("Path");
-            viewModel.InputFileList.Add(entry);
+            userInput.InputFileList.Add(entry);
             entry.PropertyChanged += eventHandler;
 
             // Act
 
-            viewModel.KnownFileHashCodesText = "new known hash codes";
+            userInput.KnownFileHashCodesText = "new known hash codes";
 
             var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
@@ -80,7 +79,7 @@ namespace HashCalculatorTests.ViewModel
         {
             // Arrange
 
-            var builder = new HashCalculatorViewModelBuilder();
+            var builder = new UserInputBuilder();
 
             builder.FileHashCodeMatchCheckerMock.Setup(c => c.FindMatchCriteria(
                 It.IsAny<FileHashMetadata>(),
@@ -88,8 +87,8 @@ namespace HashCalculatorTests.ViewModel
                 It.IsAny<bool>()))
                 .Returns(HashCodeMatchCriteria.FileNameMatch | HashCodeMatchCriteria.HashCodeMatch);
 
-            var viewModel = builder.CreateViewModel();
-            viewModel.KnownFileHashCodesText = "hash codes";
+            var userInput = builder.CreateUserInput();
+            userInput.KnownFileHashCodesText = "hash codes";
 
             string raisedPropertyName = null;
             var resetEvent = new ManualResetEvent(false);
@@ -100,12 +99,12 @@ namespace HashCalculatorTests.ViewModel
             };
 
             var entry = new InputFileListEntry("Path");
-            viewModel.InputFileList.Add(entry);
+            userInput.InputFileList.Add(entry);
             entry.PropertyChanged += eventHandler;
 
             // Act
 
-            viewModel.MatchFullFilePath = true;
+            userInput.MatchFullFilePath = true;
 
             var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
@@ -126,18 +125,18 @@ namespace HashCalculatorTests.ViewModel
             const string hashCode = "HashCode";
             const string filePath = "x:\\filename.txt";
 
-            var builder = new HashCalculatorViewModelBuilder();
-            var viewModel = builder.CreateViewModel();
+            var builder = new UserInputBuilder();
+            var userInput = builder.CreateUserInput();
 
             // Act
 
-            viewModel.KnownFileHashCodesText = $"{hashCode}* {filePath}";
+            userInput.KnownFileHashCodesText = $"{hashCode}* {filePath}";
 
             // Assert
 
-            Assert.AreEqual(1, viewModel.KnownFileHashList.Count);
-            Assert.AreEqual(hashCode, viewModel.KnownFileHashList[0].FileHashCode);
-            Assert.AreEqual(filePath, viewModel.KnownFileHashList[0].FilePath);
+            Assert.AreEqual(1, userInput.KnownFileHashList.Count);
+            Assert.AreEqual(hashCode, userInput.KnownFileHashList[0].FileHashCode);
+            Assert.AreEqual(filePath, userInput.KnownFileHashList[0].FilePath);
         }
 
         [Test]
@@ -150,22 +149,22 @@ namespace HashCalculatorTests.ViewModel
             const string hashCode2 = "HashCode2";
             const string filePath2 = "x:\\filename2.txt";
 
-            var builder = new HashCalculatorViewModelBuilder();
-            var viewModel = builder.CreateViewModel();
+            var builder = new UserInputBuilder();
+            var userInput = builder.CreateUserInput();
 
             // Act
 
-            viewModel.KnownFileHashCodesText = $"{hashCode1}* {filePath1}\r\n{hashCode2}* {filePath2}";
+            userInput.KnownFileHashCodesText = $"{hashCode1}* {filePath1}\r\n{hashCode2}* {filePath2}";
 
             // Assert
 
-            Assert.AreEqual(2, viewModel.KnownFileHashList.Count);
+            Assert.AreEqual(2, userInput.KnownFileHashList.Count);
 
-            Assert.AreEqual(hashCode1, viewModel.KnownFileHashList[0].FileHashCode);
-            Assert.AreEqual(filePath1, viewModel.KnownFileHashList[0].FilePath);
+            Assert.AreEqual(hashCode1, userInput.KnownFileHashList[0].FileHashCode);
+            Assert.AreEqual(filePath1, userInput.KnownFileHashList[0].FilePath);
 
-            Assert.AreEqual(hashCode2, viewModel.KnownFileHashList[1].FileHashCode);
-            Assert.AreEqual(filePath2, viewModel.KnownFileHashList[1].FilePath);
+            Assert.AreEqual(hashCode2, userInput.KnownFileHashList[1].FileHashCode);
+            Assert.AreEqual(filePath2, userInput.KnownFileHashList[1].FilePath);
         }
 
         [TestCase(true, false)]
@@ -184,13 +183,13 @@ namespace HashCalculatorTests.ViewModel
                 resetEvent.Set();
             };
 
-            var builder = new HashCalculatorViewModelBuilder();
+            var builder = new UserInputBuilder();
 
             builder.FileExistenceCheckerMock.Setup(c => c.Exists(It.IsAny<string>()))
                 .Returns(desiredFinalFileExistsState);
 
-            var viewModel = builder.CreateViewModel();
-            viewModel.InputFileList.CollectionChanged += eventHandler;
+            var userInput = builder.CreateUserInput();
+            userInput.InputFileList.CollectionChanged += eventHandler;
 
             var entry = new InputFileListEntry("path")
             {
@@ -199,10 +198,10 @@ namespace HashCalculatorTests.ViewModel
 
             //Act
 
-            viewModel.InputFileList.Add(entry);
+            userInput.InputFileList.Add(entry);
 
             var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
-            viewModel.InputFileList.CollectionChanged -= eventHandler;
+            userInput.InputFileList.CollectionChanged -= eventHandler;
 
             // Assert
 
@@ -228,16 +227,16 @@ namespace HashCalculatorTests.ViewModel
                 resetEvent.Set();
             };
 
-            var builder = new HashCalculatorViewModelBuilder();
+            var builder = new UserInputBuilder();
 
             builder.FileExistenceCheckerMock.Setup(c => c.Exists(It.IsAny<string>()))
                 .Returns(desiredFinalFileExistsState);
 
             var originalEntry = new InputFileListEntry("path");
 
-            var viewModel = builder.CreateViewModel();
-            viewModel.InputFileList.Add(originalEntry);
-            viewModel.InputFileList.CollectionChanged += eventHandler;
+            var userInput = builder.CreateUserInput();
+            userInput.InputFileList.Add(originalEntry);
+            userInput.InputFileList.CollectionChanged += eventHandler;
 
             var newEntry = new InputFileListEntry("path2")
             {
@@ -246,10 +245,10 @@ namespace HashCalculatorTests.ViewModel
 
             //Act
 
-            viewModel.InputFileList[0] = newEntry;
+            userInput.InputFileList[0] = newEntry;
 
             var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
-            viewModel.InputFileList.CollectionChanged -= eventHandler;
+            userInput.InputFileList.CollectionChanged -= eventHandler;
 
             // Assert
 
@@ -264,16 +263,16 @@ namespace HashCalculatorTests.ViewModel
         {
             INotifyPropertyChanged subscribeObject = null;
 
-            var builder = new HashCalculatorViewModelBuilder();
+            var builder = new UserInputBuilder();
 
             builder.PropertyChangedSubscriberMock.Setup(p => p.Subscribe(
                 It.IsAny<INotifyPropertyChanged>()))
                 .Callback<INotifyPropertyChanged>(itm => subscribeObject = itm);
 
-            var viewModel = builder.CreateViewModel();
+            var userInput = builder.CreateUserInput();
             var entry = new InputFileListEntry("Path");
 
-            viewModel.InputFileList.Add(entry);
+            userInput.InputFileList.Add(entry);
 
             builder.PropertyChangedSubscriberMock.VerifyAll();
             Assert.AreEqual(entry, subscribeObject);
@@ -284,17 +283,17 @@ namespace HashCalculatorTests.ViewModel
         {
             INotifyPropertyChanged unsubscribeObject = null;
 
-            var builder = new HashCalculatorViewModelBuilder();
+            var builder = new UserInputBuilder();
 
             builder.PropertyChangedSubscriberMock.Setup(p => p.Unsubscribe(
                 It.IsAny<INotifyPropertyChanged>()))
                 .Callback<INotifyPropertyChanged>(itm => unsubscribeObject = itm);
 
-            var viewModel = builder.CreateViewModel();
+            var userInput = builder.CreateUserInput();
             var entry = new InputFileListEntry("Path");
 
-            viewModel.InputFileList.Add(entry);
-            viewModel.InputFileList.Remove(entry);
+            userInput.InputFileList.Add(entry);
+            userInput.InputFileList.Remove(entry);
 
             builder.PropertyChangedSubscriberMock.VerifyAll();
             Assert.AreEqual(entry, unsubscribeObject);
@@ -308,7 +307,7 @@ namespace HashCalculatorTests.ViewModel
             INotifyPropertyChanged subscribeObject;
             INotifyPropertyChanged unsubscribeObject;
 
-            var builder = new HashCalculatorViewModelBuilder();
+            var builder = new UserInputBuilder();
 
             builder.PropertyChangedSubscriberMock.Setup(p => p.Subscribe(
                 It.IsAny<INotifyPropertyChanged>()))
@@ -318,10 +317,10 @@ namespace HashCalculatorTests.ViewModel
                 It.IsAny<INotifyPropertyChanged>()))
                 .Callback<INotifyPropertyChanged>(itm => unsubscribeObject = itm);
 
-            var viewModel = builder.CreateViewModel();
+            var userInput = builder.CreateUserInput();
             var originalEntry = new InputFileListEntry("Path");
 
-            viewModel.InputFileList.Add(originalEntry);
+            userInput.InputFileList.Add(originalEntry);
 
             subscribeObject = null;
             unsubscribeObject = null;
@@ -330,7 +329,7 @@ namespace HashCalculatorTests.ViewModel
 
             // Act
 
-            viewModel.InputFileList[0] = newEntry;
+            userInput.InputFileList[0] = newEntry;
 
             // Assert
 
@@ -345,16 +344,16 @@ namespace HashCalculatorTests.ViewModel
         {
             // Arrange
 
-            var builder = new HashCalculatorViewModelBuilder();
+            var builder = new UserInputBuilder();
 
-            var viewModel = builder.CreateViewModel();
+            var userInput = builder.CreateUserInput();
             var entry = new InputFileListEntry("Path");
 
-            viewModel.InputFileList.Add(entry);
+            userInput.InputFileList.Add(entry);
 
             // Act
 
-            viewModel.InputFileList.Clear();
+            userInput.InputFileList.Clear();
 
             // Assert
 
@@ -385,14 +384,14 @@ namespace HashCalculatorTests.ViewModel
                 }
             };
 
-            var builder = new HashCalculatorViewModelBuilder();
+            var builder = new UserInputBuilder();
 
             builder.FileExistenceCheckerMock.Setup(f => f.Exists(It.IsAny<string>()))
                 .Returns(true);
 
-            var viewModel = builder.CreateViewModel();
+            var userInput = builder.CreateUserInput();
             entry.PropertyChanged += eventHandler;
-            viewModel.InputFileList.Add(entry);
+            userInput.InputFileList.Add(entry);
 
             // Act
 
@@ -413,7 +412,7 @@ namespace HashCalculatorTests.ViewModel
         public void UpdatingEntryInInputFileListSetsHashCodeMatch()
         {
             // Arrange
-            
+
             var updatedPropertyNames = new HashSet<string>();
             var resetEvent = new ManualResetEvent(false);
 
@@ -433,7 +432,7 @@ namespace HashCalculatorTests.ViewModel
                 }
             };
 
-            var builder = new HashCalculatorViewModelBuilder
+            var builder = new UserInputBuilder
             {
                 PropertyChangedSubscriber = new PropertyChangedSubscriber()
             };
@@ -444,9 +443,9 @@ namespace HashCalculatorTests.ViewModel
                 It.IsAny<bool>()))
                 .Returns(HashCodeMatchCriteria.FileNameMatch);
 
-            var viewModel = builder.CreateViewModel();
+            var userInput = builder.CreateUserInput();
             entry.PropertyChanged += eventHandler;
-            viewModel.InputFileList.Add(entry);
+            userInput.InputFileList.Add(entry);
 
             // Act
 
@@ -462,91 +461,6 @@ namespace HashCalculatorTests.ViewModel
 
             Assert.IsFalse(timeout);
             Assert.AreEqual(HashCodeMatchCriteria.FileNameMatch, entry.HashCodeMatch);
-        }
-
-        [Test]
-        public void SettingHashCalculationIsRunningRaisesExportHashListCommandCanExecuteChanged()
-        {
-            // Arrange
-            
-            var resetEvent = new ManualResetEvent(false);
-
-            var canExecuteRaised = false;
-            var eventHandler = new EventHandler((sender, args) =>
-            {
-                canExecuteRaised = true;
-                resetEvent.Set();
-            });
-
-            var builder = new HashCalculatorViewModelBuilder();
-
-            builder.DispatcherServiceMock.Setup(h => h.BeginInvoke(It.IsAny<Delegate>()))
-                .Callback<Delegate>(method => method.DynamicInvoke());
-
-            var viewModel = builder.CreateViewModel();
-            viewModel.HashCalculationIsRunning = false;
-            viewModel.ExportHashListCommand.EvaluateCanExecutePredicate(null);
-            viewModel.ExportHashListCommand.CanExecuteChanged += eventHandler;
-
-            // Act
-
-            viewModel.HashCalculationIsRunning = true;
-
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
-            viewModel.ExportHashListCommand.CanExecuteChanged -= eventHandler;
-
-            // Assert
-
-            builder.DispatcherServiceMock.VerifyAll();
-
-            Assert.IsFalse(timeout);
-            Assert.IsTrue(canExecuteRaised);
-        }
-
-        [Test]
-        public void ExportCommandCallsHashCodeExporter()
-        {
-            // Arrange
-
-            const string exportPath = "ExportPath";
-
-            var builder = new HashCalculatorViewModelBuilder();
-
-            builder.ExportPathPrompterMock.Setup(e => e.ShowPrompt())
-                .Returns(exportPath);
-
-            var viewModel = builder.CreateViewModel();
-
-            // Act
-
-            viewModel.ExportHashListCommand.Execute(null);
-
-            //Assert
-
-            builder.ExportPathPrompterMock.VerifyAll();
-            builder.HashCodeExporterMock.Verify(e => e.Export(
-                exportPath,
-                It.IsAny<IList<FileHashMetadata>>(),
-                It.IsAny<bool>()));
-        }
-
-        [Test]
-        public void CalculateHashCodesCommandUsesHashCodeBatchCalculationService()
-        {
-            // Arrange
-
-            var builder = new HashCalculatorViewModelBuilder();
-            var viewModel = builder.CreateViewModel();
-
-            // Act
-
-            viewModel.CalculateHashCodesCommand.Execute(null);
-
-            // Assert
-
-            builder.HashCodeBatchCalculationServiceMock.Verify(s => s.CalculateHashCodes(
-                It.IsAny<string>(),
-                It.IsAny<IList<InputFileListEntry>>()));
         }
     }
 }

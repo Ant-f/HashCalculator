@@ -33,6 +33,7 @@ namespace HashCalculator
         private static IKernel CreateIocKernel()
         {
             var kernel = new StandardKernel();
+            kernel.Bind<ICommands>().To<Commands>().InSingletonScope();
             kernel.Bind<IDispatcherService>().To<DispatcherService>().InSingletonScope();
             kernel.Bind<IExportPathPrompter>().To<ExportPathPrompter>().InSingletonScope();
             kernel.Bind<IFileOperations>().To<FileOperations>().InSingletonScope();
@@ -41,9 +42,9 @@ namespace HashCalculator
             kernel.Bind<IHashAlgorithmSelection>().To<HashAlgorithmSelection>().InSingletonScope();
             kernel.Bind<IHashCodeBatchCalculationService>().To<HashCodeBatchCalculationService>().InSingletonScope();
             kernel.Bind<IHashCodeCalculationService>().To<HashCodeCalculationService>().InSingletonScope();
-            kernel.Bind<IHashCalculatorViewModel>().To<HashCalculatorViewModel>().InSingletonScope();
             kernel.Bind<IHashCodeExporter>().To<HashCodeExporter>().InSingletonScope();
             kernel.Bind<IPropertyChangedSubscriber>().To<PropertyChangedSubscriber>().InSingletonScope();
+            kernel.Bind<IUserInput>().To<UserInput>().InSingletonScope();
             return kernel;
         }
     }

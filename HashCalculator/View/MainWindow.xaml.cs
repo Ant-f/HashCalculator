@@ -24,6 +24,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Ninject;
 
 namespace HashCalculator.View
 {
@@ -33,17 +34,19 @@ namespace HashCalculator.View
     public partial class MainWindow : Window
     {
         private bool _dropTargetHasMouseEnterHandler = false;
-        private IHashCalculatorViewModel ViewModel => (IHashCalculatorViewModel) DataContext;
+        private readonly IUserInput _userInput;
 
         public MainWindow()
         {
             InitializeComponent();
             AttachDropTargetMouseEnterHandler();
+
+            _userInput = App.IocKernel.Get<IUserInput>();
         }
 
         private void CancelButtonClick(object sender, EventArgs e)
         {
-            ViewModel.AbortHashCalculation();
+            throw new NotImplementedException();
         }
 
         private void DropTargetBorderDrop(object sender, DragEventArgs e)
@@ -52,7 +55,7 @@ namespace HashCalculator.View
             if (data.ContainsFileDropList())
             {
                 StringCollection collection = data.GetFileDropList();
-                ViewModel.AddFilesToInputList(collection.OfType<string>().ToArray());
+                _userInput.AddFilesToInputList(collection.OfType<string>().ToArray());
             }
 
             AttachDropTargetMouseEnterHandler();
@@ -122,7 +125,7 @@ namespace HashCalculator.View
                 if (exp.ParentBinding.Path.Path == "FilePath")
                 {
                     if (String.IsNullOrWhiteSpace(tb.Text))
-                        ViewModel.RemoveInputListEntry(entry);
+                        _userInput.RemoveInputListEntry(entry);
                     else
                         exp.UpdateSource();
                 }
@@ -132,7 +135,7 @@ namespace HashCalculator.View
                 // For 'DataGrid.NewItemPlaceholder'
                 if (!String.IsNullOrWhiteSpace(tb.Text))
                 {
-                    ViewModel.AddFileToInputList(tb.Text);
+                    _userInput.AddFileToInputList(tb.Text);
                     tb.Text = String.Empty;
                 }
             }

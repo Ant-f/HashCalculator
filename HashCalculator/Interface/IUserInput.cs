@@ -15,28 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Model;
-using HashCalculator.ViewModel.Model;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using HashCalculator.ViewModel;
+using HashCalculator.ViewModel.Model;
 
 namespace HashCalculator.Interface
 {
-    public interface IHashCalculatorViewModel
+    public interface IUserInput
     {
-        bool HashCalculationIsRunning { get; set; }
         bool MatchFullFilePath { get; set; }
         ObservableCollection<InputFileListEntry> InputFileList { get; }
-        List<FileHashMetadata> KnownFileHashList { get; }
-        string KnownFileHashCodesText { get; set; }
 
-        RelayCommand CalculateHashCodesCommand { get; }
-        RelayCommand ExportHashListCommand { get; }
-
-        void BuildKnownFileHashList();
-        void StartHashCalculationBatch();
-        void AbortHashCalculation();
         void AddFilesToInputList(string[] files);
         void AddFileToInputList(string path);
         void RemoveInputListEntry(InputFileListEntry entry);

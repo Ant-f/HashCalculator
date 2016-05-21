@@ -57,17 +57,21 @@
     <Compile Include="Converter\BoolInversionConverter.cs" />
     <Compile Include="Converter\IsBusyToCursorNameConverter.cs" />
     <Compile Include="Converter\ValidFilePathToBackgroundBrushConverter.cs" />
+    <Compile Include="Interface\IAbortCalculation.cs" />
+    <Compile Include="Interface\IBeginCalculation.cs" />
+    <Compile Include="Interface\ICommands.cs" />
     <Compile Include="Interface\IDispatcherService.cs" />
+    <Compile Include="Interface\IExportHashList.cs" />
     <Compile Include="Interface\IExportPathPrompter.cs" />
     <Compile Include="Interface\IFileExistenceChecker.cs" />
     <Compile Include="Interface\IFileHashCodeMatchChecker.cs" />
     <Compile Include="Interface\IFileOperations.cs" />
     <Compile Include="Interface\IHashAlgorithmSelection.cs" />
-    <Compile Include="Interface\IHashCalculatorViewModel.cs" />
     <Compile Include="Interface\IHashCodeBatchCalculationService.cs" />
     <Compile Include="Interface\IHashCodeCalculationService.cs" />
     <Compile Include="Interface\IHashCodeExporter.cs" />
     <Compile Include="Interface\IPropertyChangedSubscriber.cs" />
+    <Compile Include="Interface\IUserInput.cs" />
     <Compile Include="Service\DispatcherService.cs" />
     <Compile Include="Service\ExportPathPrompter.cs" />
     <Compile Include="Service\FileOperations.cs" />
@@ -76,8 +80,11 @@
     <Compile Include="Service\HashCodeBatchCalculationService.cs" />
     <Compile Include="Service\HashCodeCalculationService.cs" />
     <Compile Include="Service\PropertyChangedSubscriber.cs" />
+    <Compile Include="ViewModel\Commands.cs" />
+    <Compile Include="ViewModel\Command\AbortCalculation.cs" />
+    <Compile Include="ViewModel\Command\BeginCalculation.cs" />
+    <Compile Include="ViewModel\Command\ExportHashList.cs" />
     <Compile Include="ViewModel\HashAlgorithmSelection.cs" />
-    <Compile Include="ViewModel\HashCalculatorViewModel.cs" />
     <Compile Include="Service\HashCodeExporter.cs" />
     <Compile Include="ViewModel\Model\HashCodeMatchCriteria.cs" />
     <Compile Include="ViewModel\ReadProgressEventArgs.cs" />
@@ -93,6 +100,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModel\UserInput.cs" />
     <Compile Include="View\AppBrushes.cs" />
     <Compile Include="Converter\HashCodeMatchCriteriaToBackgroundConverter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />

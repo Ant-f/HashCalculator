@@ -73,17 +73,19 @@
     <Compile Include="Service\PropertyChangedSubscriberTests.cs" />
     <Compile Include="TestingInfrastructure\Constants.cs" />
     <Compile Include="TestingInfrastructure\FileHashMetadataFactory.cs" />
-    <Compile Include="TestingInfrastructure\HashCalculatorViewModelBuilder.cs" />
     <Compile Include="TestingInfrastructure\HashCodeExporterBuilder.cs" />
     <Compile Include="TestingInfrastructure\TestingDataService.cs" />
     <Compile Include="TestingInfrastructure\TestingStreamWriter.cs" />
+    <Compile Include="TestingInfrastructure\UserInputBuilder.cs" />
     <Compile Include="UnitTestConstants.cs" />
-    <Compile Include="ViewModel\HashCalculatorViewModelTests.cs" />
+    <Compile Include="ViewModel\Command\BeginCalculationTests.cs" />
+    <Compile Include="ViewModel\Command\ExportHashListTests.cs" />
     <Compile Include="Service\HashCodeExporterTests.cs" />
     <Compile Include="ViewModel\Model\InputFileListEntryTests.cs" />
     <Compile Include="ViewModel\ReadProgressEventArgsTests.cs" />
     <Compile Include="ViewModel\ReadProgressFileStreamTests.cs" />
     <Compile Include="ViewModel\RelayCommandTests.cs" />
+    <Compile Include="ViewModel\UserInputTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
