@@ -86,5 +86,22 @@ namespace HashCalculatorTests.ViewModel.Command
 
             Assert.IsTrue(canExecuteChangedRaised);
         }
+
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        public void CanExecuteReturnsAppropriateValueForCalculationIsRunningValue(
+            bool calculationIsRunning,
+            bool expectedCanExecuteValue)
+        {
+            var builder = new ExportHashListBuilder();
+            builder.HashCodeBatchCalculationServiceMock
+                .Setup(s => s.CalculationIsRunning)
+                .Returns(calculationIsRunning);
+
+            var command = builder.CreatExportHashList();
+
+            var canExecute = command.CanExecute(null);
+            Assert.AreEqual(expectedCanExecuteValue, canExecute);
+        }
     }
 }

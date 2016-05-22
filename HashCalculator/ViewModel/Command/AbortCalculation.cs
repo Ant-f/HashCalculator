@@ -29,7 +29,8 @@ namespace HashCalculator.ViewModel.Command
 
         public override bool CanExecute(object parameter)
         {
-            throw new NotImplementedException();
+            var canExecute = HashCodeBatchCalculationService.CalculationIsRunning;
+            return canExecute;
         }
 
         public override void Execute(object parameter)

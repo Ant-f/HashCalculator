@@ -52,5 +52,22 @@ namespace HashCalculatorTests.ViewModel.Command
 
             Assert.IsTrue(canExecuteChangedRaised);
         }
+
+        [TestCase(true, true)]
+        [TestCase(false, false)]
+        public void CanExecuteReturnsAppropriateValueForCalculationIsRunningValue(
+            bool calculationIsRunning,
+            bool expectedCanExecuteValue)
+        {
+            var builder = new AbortCalculationBuilder();
+            builder.HashCodeBatchCalculationServiceMock
+                .Setup(s => s.CalculationIsRunning)
+                .Returns(calculationIsRunning);
+
+            var command = builder.CreateAbortCalculation();
+
+            var canExecute = command.CanExecute(null);
+            Assert.AreEqual(expectedCanExecuteValue, canExecute);
+        }
     }
 }
