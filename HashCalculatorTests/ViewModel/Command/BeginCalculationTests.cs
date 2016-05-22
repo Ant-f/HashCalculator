@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Interface;
-using HashCalculator.ViewModel.Command;
 using HashCalculator.ViewModel.Model;
+using HashCalculatorTests.TestingInfrastructure;
 using Moq;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using HashCalculatorTests.TestingInfrastructure;
+using System.ComponentModel;
 
 namespace HashCalculatorTests.ViewModel.Command
 {
@@ -32,15 +32,13 @@ namespace HashCalculatorTests.ViewModel.Command
         public void CalculateHashCodesCommandUsesHashCodeBatchCalculationService()
         {
             // Arrange
-            
-            var hashCodeBatchCalculationServiceMock = new Mock<IHashCodeBatchCalculationService>();
 
-            var builder = new UserInputBuilder();
-            var userInput = builder.CreateUserInput();
+            var commandBuilder = new BeginCalculationBuilder();
 
-            var command = new BeginCalculation(
-                hashCodeBatchCalculationServiceMock.Object,
-                userInput);
+            var userInputBuilder = new UserInputBuilder();
+            commandBuilder.UserInput = userInputBuilder.CreateUserInput();
+
+            var command = commandBuilder.CreateBeginCalculation();
 
             // Act
 
@@ -48,9 +46,37 @@ namespace HashCalculatorTests.ViewModel.Command
 
             // Assert
 
-            hashCodeBatchCalculationServiceMock.Verify(s => s.CalculateHashCodes(
+            commandBuilder.HashCodeBatchCalculationServiceMock.Verify(s => s.CalculateHashCodes(
                 It.IsAny<string>(),
                 It.IsAny<IList<InputFileListEntry>>()));
+        }
+
+        [Test]
+        public void CanExecuteChangedIsRaisedWhenBatchCalculationServiceCalculationIsRunningIsChanged()
+        {
+            // Arrange
+            var canExecuteChangedRaised = false;
+
+            var eventHandler = new EventHandler((sender, args) =>
+            {
+                canExecuteChangedRaised = true;
+            });
+
+            var builder = new BeginCalculationBuilder();
+            var command = builder.CreateBeginCalculation();
+            command.CanExecuteChanged += eventHandler;
+
+            // Act
+
+            builder.HashCodeBatchCalculationServiceMock.Raise(s =>
+                s.PropertyChanged += null,
+                new PropertyChangedEventArgs(nameof(builder.HashCodeBatchCalculationService.CalculationIsRunning)));
+
+            command.CanExecuteChanged -= eventHandler;
+
+            // Assert
+
+            Assert.IsTrue(canExecuteChangedRaised);
         }
     }
 }

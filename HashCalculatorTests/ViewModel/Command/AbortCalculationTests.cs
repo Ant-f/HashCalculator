@@ -15,63 +15,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Model;
 using HashCalculatorTests.TestingInfrastructure;
-using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace HashCalculatorTests.ViewModel.Command
 {
     [TestFixture]
-    public class ExportHashListTests
+    public class AbortCalculationTests
     {
-        [Test]
-        public void ExportCommandCallsHashCodeExporter()
-        {
-            // Arrange
-
-            const string exportPath = "ExportPath";
-
-            var commandBuilder = new ExportHashListBuilder();
-
-            commandBuilder.ExportPathPrompterMock.Setup(e => e.ShowPrompt())
-                .Returns(exportPath);
-
-            var userInputBuilder = new UserInputBuilder();
-            commandBuilder.UserInput = userInputBuilder.CreateUserInput();
-
-            var command = commandBuilder.CreatExportHashList();
-
-            // Act
-
-            command.Execute(null);
-
-            //Assert
-
-            commandBuilder.ExportPathPrompterMock.VerifyAll();
-
-            commandBuilder.HashCodeExporterMock.Verify(e => e.Export(
-                exportPath,
-                It.IsAny<IList<FileHashMetadata>>(),
-                It.IsAny<bool>()));
-        }
-
         [Test]
         public void CanExecuteChangedIsRaisedWhenBatchCalculationServiceCalculationIsRunningIsChanged()
         {
             // Arrange
             var canExecuteChangedRaised = false;
-            
+
             var eventHandler = new EventHandler((sender, args) =>
             {
                 canExecuteChangedRaised = true;
             });
 
-            var builder = new ExportHashListBuilder();
-            var command = builder.CreatExportHashList();
+            var builder = new AbortCalculationBuilder();
+            var command = builder.CreateAbortCalculation();
             command.CanExecuteChanged += eventHandler;
 
             // Act

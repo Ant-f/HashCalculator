@@ -172,5 +172,73 @@ namespace HashCalculatorTests.Service
                 It.IsAny<HashAlgorithm>(),
                 It.IsAny<string>()), Times.Never);
         }
+
+        [Test]
+        public void CalculationIsRunningIsFalseOnServiceCreation()
+        {
+            // Arrange
+
+            var calculationServiceMock = new Mock<IHashCodeCalculationService>();
+            var batchCalculationService = new HashCodeBatchCalculationService(calculationServiceMock.Object);
+
+            // Assert
+
+            Assert.IsFalse(batchCalculationService.CalculationIsRunning);
+        }
+
+        [Test]
+        public void CalculateHashCodesSetsCalculationIsRunningToTrue()
+        {
+            // Arrange
+
+            var midCalculationValue = false;
+
+            HashCodeBatchCalculationService batchCalculationService = null;
+
+            var calculationServiceMock = new Mock<IHashCodeCalculationService>();
+            calculationServiceMock.Setup(s => s.CalculateHashCodes(
+                It.IsAny<HashAlgorithm>(),
+                It.IsAny<string>()))
+                .Callback(() => midCalculationValue = batchCalculationService.CalculationIsRunning);
+
+            batchCalculationService = new HashCodeBatchCalculationService(calculationServiceMock.Object);
+
+            var input = new List<InputFileListEntry>
+            {
+                new InputFileListEntry("File.txt")
+            };
+
+            // Act
+
+            batchCalculationService.CalculateHashCodes("sha1", input);
+
+            // Assert
+
+            calculationServiceMock.VerifyAll();
+
+            Assert.IsTrue(midCalculationValue);
+        }
+
+        [Test]
+        public void CalculationIsRunningIsFalseAfterCompletingCalculation()
+        {
+            // Arrange
+
+            var calculationServiceMock = new Mock<IHashCodeCalculationService>();
+            var batchCalculationService = new HashCodeBatchCalculationService(calculationServiceMock.Object);
+
+            var input = new List<InputFileListEntry>
+            {
+                new InputFileListEntry("File.txt")
+            };
+
+            // Act
+
+            batchCalculationService.CalculateHashCodes("sha1", input);
+
+            // Assert
+
+            Assert.IsFalse(batchCalculationService.CalculationIsRunning);
+        }
     }
 }

@@ -16,12 +16,14 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using HashCalculator.ViewModel.Model;
 
 namespace HashCalculator.Interface
 {
-    public interface IHashCodeBatchCalculationService
+    public interface IHashCodeBatchCalculationService : INotifyPropertyChanged
     {
+        bool CalculationIsRunning { get; }
         string ListProgress { get; }
 
         void CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection);

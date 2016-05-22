@@ -25,6 +25,7 @@ namespace HashCalculator.ViewModel.Command
     public class ExportHashList : ICommand
     {
         private readonly IExportPathPrompter _exportPathPrompter;
+        private readonly IHashCodeBatchCalculationService _hashCodeBatchCalculationService;
         private readonly IHashCodeExporter _hashCodeExporter;
         private readonly IUserInput _userInput;
 
@@ -32,10 +33,21 @@ namespace HashCalculator.ViewModel.Command
 
         public ExportHashList(
             IExportPathPrompter exportPathPrompter,
+            IHashCodeBatchCalculationService hashCodeBatchCalculationService,
             IHashCodeExporter hashCodeExporter,
             IUserInput userInput)
         {
             _exportPathPrompter = exportPathPrompter;
+
+            _hashCodeBatchCalculationService = hashCodeBatchCalculationService;
+            _hashCodeBatchCalculationService.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(_hashCodeBatchCalculationService.CalculationIsRunning))
+                {
+                    CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+                }
+            };
+
             _hashCodeExporter = hashCodeExporter;
             _userInput = userInput;
         }

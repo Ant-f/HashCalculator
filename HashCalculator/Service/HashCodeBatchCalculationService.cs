@@ -37,7 +37,7 @@ namespace HashCalculator.Service
                 return _calculationIsRunning;
             }
 
-            set
+            private set
             {
                 if (_calculationIsRunning != value)
                 {
@@ -71,6 +71,8 @@ namespace HashCalculator.Service
 
         public void CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection)
         {
+            CalculationIsRunning = true;
+
             using (var algorithm = HashAlgorithm.Create(algorithmName))
             {
                 if (algorithm != null)
@@ -86,6 +88,8 @@ namespace HashCalculator.Service
                 }
                 ListProgress = string.Empty;
             }
+
+            CalculationIsRunning = false;
         }
     }
 }

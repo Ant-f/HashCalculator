@@ -33,6 +33,14 @@ namespace HashCalculator.ViewModel.Command
             IUserInput userInput)
         {
             _hashCodeBatchCalculationService = hashCodeBatchCalculationService;
+            _hashCodeBatchCalculationService.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(_hashCodeBatchCalculationService.CalculationIsRunning))
+                {
+                    CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+                }
+            };
+
             _userInput = userInput;
         }
 

@@ -30,6 +30,13 @@ namespace HashCalculator.ViewModel.Command
         public AbortCalculation(IHashCodeBatchCalculationService hashCodeBatchCalculationService)
         {
             _hashCodeBatchCalculationService = hashCodeBatchCalculationService;
+            _hashCodeBatchCalculationService.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(_hashCodeBatchCalculationService.CalculationIsRunning))
+                {
+                    CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+                }
+            };
         }
 
         public bool CanExecute(object parameter)
