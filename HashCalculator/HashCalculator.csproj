@@ -70,6 +70,7 @@
     <Compile Include="Interface\IPropertyChangedSubscriber.cs" />
     <Compile Include="Interface\IUserInput.cs" />
     <Compile Include="Ioc\CommandModule.cs" />
+    <Compile Include="Ioc\NinjectContainer.cs" />
     <Compile Include="Ioc\ServiceModule.cs" />
     <Compile Include="Ioc\ViewModelModule.cs" />
     <Compile Include="Service\DispatcherService.cs" />

@@ -24,6 +24,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using HashCalculator.Ioc;
 using Ninject;
 
 namespace HashCalculator.View
@@ -41,7 +42,7 @@ namespace HashCalculator.View
             InitializeComponent();
             AttachDropTargetMouseEnterHandler();
 
-            _userInput = App.IocKernel.Get<IUserInput>();
+            _userInput = NinjectContainer.Kernel.Get<IUserInput>();
         }
 
         private void CancelButtonClick(object sender, EventArgs e)

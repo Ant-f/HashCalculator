@@ -16,6 +16,7 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using HashCalculator.Interface;
+using HashCalculator.Ioc;
 using Ninject;
 
 namespace HashCalculator.Service
@@ -35,20 +36,20 @@ namespace HashCalculator.Service
         /// </summary>
         public static ICommands Commands =>
             _commands ??
-            (_commands = App.IocKernel.Get<ICommands>());
+            (_commands = NinjectContainer.Kernel.Get<ICommands>());
 
         /// <summary>
         /// A reference to the object indicating the selected hash algorithm
         /// </summary>
         public static IHashAlgorithmSelection HashAlgorithmSelection =>
             _hashAlgorithmSelection ??
-            (_hashAlgorithmSelection = App.IocKernel.Get<IHashAlgorithmSelection>());
+            (_hashAlgorithmSelection = NinjectContainer.Kernel.Get<IHashAlgorithmSelection>());
 
         /// <summary>
         /// A reference to the object holding data that the user has entered
         /// </summary>
         public static IUserInput UserInput =>
             _userInput ??
-            (_userInput = App.IocKernel.Get<IUserInput>());
+            (_userInput = NinjectContainer.Kernel.Get<IUserInput>());
     }
 }

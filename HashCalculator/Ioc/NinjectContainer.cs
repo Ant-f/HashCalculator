@@ -15,14 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System.Windows;
+using Ninject;
 
-namespace HashCalculator
+namespace HashCalculator.Ioc
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public static class NinjectContainer
     {
+        public static IKernel Kernel { get; } = CreateKernel();
+
+        private static IKernel CreateKernel()
+        {
+            var kernel = new StandardKernel(
+                new CommandModule(),
+                new ServiceModule(),
+                new ViewModelModule());
+
+            return kernel;
+        }
     }
 }
