@@ -15,12 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
+using System.Windows.Input;
+
 namespace HashCalculator.Interface
 {
     public interface ICommands
     {
-        IAbortCalculation AbortCalculation { get; }
-        IBeginCalculation BeginCalculation { get; }
-        IExportHashList ExportHashList { get; }
+        ICommand AbortCalculation { get; }
+        ICommand BeginCalculation { get; }
+        ICommand ExportHashList { get; }
     }
 }

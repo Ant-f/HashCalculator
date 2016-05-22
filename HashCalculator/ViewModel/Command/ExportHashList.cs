@@ -18,10 +18,11 @@
 using HashCalculator.Interface;
 using System;
 using System.Linq;
+using System.Windows.Input;
 
 namespace HashCalculator.ViewModel.Command
 {
-    public class ExportHashList : IExportHashList
+    public class ExportHashList : ICommand
     {
         private readonly IExportPathPrompter _exportPathPrompter;
         private readonly IHashCodeExporter _hashCodeExporter;

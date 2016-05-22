@@ -17,10 +17,11 @@
 
 using HashCalculator.Interface;
 using System;
+using System.Windows.Input;
 
 namespace HashCalculator.ViewModel.Command
 {
-    public class AbortCalculation : IAbortCalculation
+    public class AbortCalculation : ICommand
     {
         private readonly IHashCodeBatchCalculationService _hashCodeBatchCalculationService;
 

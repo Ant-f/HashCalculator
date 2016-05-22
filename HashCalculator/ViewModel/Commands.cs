@@ -15,24 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 using HashCalculator.Interface;
+using HashCalculator.ViewModel.Command;
 
 namespace HashCalculator.ViewModel
 {
     public class Commands : ICommands
     {
-        public IAbortCalculation AbortCalculation { get; }
-        public IBeginCalculation BeginCalculation { get; }
-        public IExportHashList ExportHashList { get; }
+        public ICommand AbortCalculation { get; }
+        public ICommand BeginCalculation { get; }
+        public ICommand ExportHashList { get; }
 
-        public Commands(
-            IAbortCalculation abortCalculation,
-            IBeginCalculation beginCalculation,
-            IExportHashList exportHashList)
+        public Commands(IList<ICommand> commandCollection)
         {
-            AbortCalculation = abortCalculation;
-            BeginCalculation = beginCalculation;
-            ExportHashList = exportHashList;
+            AbortCalculation = commandCollection.OfType<AbortCalculation>().Single();
+            BeginCalculation = commandCollection.OfType<BeginCalculation>().Single();
+            ExportHashList = commandCollection.OfType<ExportHashList>().Single();
         }
     }
 }

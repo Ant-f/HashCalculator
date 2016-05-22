@@ -57,11 +57,8 @@
     <Compile Include="Converter\BoolInversionConverter.cs" />
     <Compile Include="Converter\IsBusyToCursorNameConverter.cs" />
     <Compile Include="Converter\ValidFilePathToBackgroundBrushConverter.cs" />
-    <Compile Include="Interface\IAbortCalculation.cs" />
-    <Compile Include="Interface\IBeginCalculation.cs" />
     <Compile Include="Interface\ICommands.cs" />
     <Compile Include="Interface\IDispatcherService.cs" />
-    <Compile Include="Interface\IExportHashList.cs" />
     <Compile Include="Interface\IExportPathPrompter.cs" />
     <Compile Include="Interface\IFileExistenceChecker.cs" />
     <Compile Include="Interface\IFileHashCodeMatchChecker.cs" />

@@ -16,9 +16,11 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using System.Windows;
+using System.Windows.Input;
 using HashCalculator.Interface;
 using HashCalculator.Service;
 using HashCalculator.ViewModel;
+using HashCalculator.ViewModel.Command;
 using Ninject;
 
 namespace HashCalculator
@@ -33,6 +35,9 @@ namespace HashCalculator
         private static IKernel CreateIocKernel()
         {
             var kernel = new StandardKernel();
+            kernel.Bind<ICommand>().To<AbortCalculation>().InSingletonScope();
+            kernel.Bind<ICommand>().To<BeginCalculation>().InSingletonScope();
+            kernel.Bind<ICommand>().To<ExportHashList>().InSingletonScope();
             kernel.Bind<ICommands>().To<Commands>().InSingletonScope();
             kernel.Bind<IDispatcherService>().To<DispatcherService>().InSingletonScope();
             kernel.Bind<IExportPathPrompter>().To<ExportPathPrompter>().InSingletonScope();
