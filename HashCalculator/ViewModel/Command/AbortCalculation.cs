@@ -17,34 +17,22 @@
 
 using HashCalculator.Interface;
 using System;
-using System.Windows.Input;
 
 namespace HashCalculator.ViewModel.Command
 {
-    public class AbortCalculation : ICommand
+    public class AbortCalculation : CalculationRunningDependentCommand
     {
-        private readonly IHashCodeBatchCalculationService _hashCodeBatchCalculationService;
-
-        public event EventHandler CanExecuteChanged;
-
         public AbortCalculation(IHashCodeBatchCalculationService hashCodeBatchCalculationService)
+            : base(hashCodeBatchCalculationService)
         {
-            _hashCodeBatchCalculationService = hashCodeBatchCalculationService;
-            _hashCodeBatchCalculationService.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(_hashCodeBatchCalculationService.CalculationIsRunning))
-                {
-                    CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-                }
-            };
         }
 
-        public bool CanExecute(object parameter)
+        public override bool CanExecute(object parameter)
         {
             throw new NotImplementedException();
         }
 
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             throw new NotImplementedException();
             AbortHashCalculation();

@@ -18,46 +18,33 @@
 using HashCalculator.Interface;
 using System;
 using System.Linq;
-using System.Windows.Input;
 
 namespace HashCalculator.ViewModel.Command
 {
-    public class ExportHashList : ICommand
+    public class ExportHashList : CalculationRunningDependentCommand
     {
         private readonly IExportPathPrompter _exportPathPrompter;
-        private readonly IHashCodeBatchCalculationService _hashCodeBatchCalculationService;
         private readonly IHashCodeExporter _hashCodeExporter;
         private readonly IUserInput _userInput;
-
-        public event EventHandler CanExecuteChanged;
 
         public ExportHashList(
             IExportPathPrompter exportPathPrompter,
             IHashCodeBatchCalculationService hashCodeBatchCalculationService,
             IHashCodeExporter hashCodeExporter,
             IUserInput userInput)
+            : base(hashCodeBatchCalculationService)
         {
             _exportPathPrompter = exportPathPrompter;
-
-            _hashCodeBatchCalculationService = hashCodeBatchCalculationService;
-            _hashCodeBatchCalculationService.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(_hashCodeBatchCalculationService.CalculationIsRunning))
-                {
-                    CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-                }
-            };
-
             _hashCodeExporter = hashCodeExporter;
             _userInput = userInput;
         }
 
-        public bool CanExecute(object parameter)
+        public override bool CanExecute(object parameter)
         {
             throw new NotImplementedException();
         }
 
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             Export();
         }
