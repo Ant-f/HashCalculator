@@ -93,7 +93,6 @@
     <Compile Include="ViewModel\Model\InputFileListEntryTests.cs" />
     <Compile Include="ViewModel\ReadProgressEventArgsTests.cs" />
     <Compile Include="ViewModel\ReadProgressFileStreamTests.cs" />
-    <Compile Include="ViewModel\RelayCommandTests.cs" />
     <Compile Include="ViewModel\UserInputTests.cs" />
   </ItemGroup>
   <ItemGroup>
