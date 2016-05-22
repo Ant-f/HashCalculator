@@ -45,11 +45,6 @@ namespace HashCalculator.View
             _userInput = NinjectContainer.Kernel.Get<IUserInput>();
         }
 
-        private void CancelButtonClick(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private void DropTargetBorderDrop(object sender, DragEventArgs e)
         {
             var data = e.Data as DataObject;

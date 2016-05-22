@@ -24,6 +24,7 @@ namespace HashCalculator.Interface
     {
         bool MatchFullFilePath { get; set; }
         ObservableCollection<InputFileListEntry> InputFileList { get; }
+        string KnownFileHashCodesText { get; set; }
 
         void AddFilesToInputList(string[] files);
         void AddFileToInputList(string path);

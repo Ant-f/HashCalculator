@@ -28,6 +28,8 @@ namespace HashCalculator.Service
     public class ViewModelService
     {
         private static ICommands _commands;
+        private static IHashCodeBatchCalculationService _hashCodeBatchCalculationService;
+        private static IHashCodeCalculationService _hashCodeCalculationService;
         private static IHashAlgorithmSelection _hashAlgorithmSelection;
         private static IUserInput _userInput;
 
@@ -37,6 +39,20 @@ namespace HashCalculator.Service
         public static ICommands Commands =>
             _commands ??
             (_commands = NinjectContainer.Kernel.Get<ICommands>());
+
+        /// <summary>
+        /// A reference to the batch calculation service
+        /// </summary>
+        public static IHashCodeBatchCalculationService HashCodeBatchCalculationService =>
+            _hashCodeBatchCalculationService ??
+            (_hashCodeBatchCalculationService = NinjectContainer.Kernel.Get<IHashCodeBatchCalculationService>());
+
+        /// <summary>
+        /// A reference to the calculation service
+        /// </summary>
+        public static IHashCodeCalculationService HashCodeCalculationService =>
+            _hashCodeCalculationService ??
+            (_hashCodeCalculationService = NinjectContainer.Kernel.Get<IHashCodeCalculationService>());
 
         /// <summary>
         /// A reference to the object indicating the selected hash algorithm

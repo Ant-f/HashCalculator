@@ -29,7 +29,7 @@
         <converter:BoolInversionConverter x:Key="BoolInversionConverter" />
         <converter:IsBusyToCursorNameConverter x:Key="IsBusyToCursorNameConverter" />
 
-        <service:ViewModelService x:Key="ViewModelService" />
+        <service:ViewModelService x:Key="ViewModel" />
         
         <view:AppBrushes x:Key="AppBrushes" />
     </Application.Resources>
