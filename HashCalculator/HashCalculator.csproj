@@ -69,6 +69,9 @@
     <Compile Include="Interface\IHashCodeExporter.cs" />
     <Compile Include="Interface\IPropertyChangedSubscriber.cs" />
     <Compile Include="Interface\IUserInput.cs" />
+    <Compile Include="Ioc\CommandModule.cs" />
+    <Compile Include="Ioc\ServiceModule.cs" />
+    <Compile Include="Ioc\ViewModelModule.cs" />
     <Compile Include="Service\DispatcherService.cs" />
     <Compile Include="Service\ExportPathPrompter.cs" />
     <Compile Include="Service\FileOperations.cs" />

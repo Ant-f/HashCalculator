@@ -15,27 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Ioc;
-using Ninject;
-using System.Windows;
+using System.Windows.Input;
+using HashCalculator.Interface;
+using HashCalculator.ViewModel;
+using HashCalculator.ViewModel.Command;
+using Ninject.Modules;
 
-namespace HashCalculator
+namespace HashCalculator.Ioc
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    internal class CommandModule : NinjectModule
     {
-        public static IKernel IocKernel { get; } = CreateIocKernel();
-
-        private static IKernel CreateIocKernel()
+        public override void Load()
         {
-            var kernel = new StandardKernel(
-                new CommandModule(),
-                new ServiceModule(),
-                new ViewModelModule());
-            
-            return kernel;
+            Kernel.Bind<ICommand>().To<AbortCalculation>().InSingletonScope();
+            Kernel.Bind<ICommand>().To<BeginCalculation>().InSingletonScope();
+            Kernel.Bind<ICommand>().To<ExportHashList>().InSingletonScope();
+            Kernel.Bind<ICommands>().To<Commands>().InSingletonScope();
         }
     }
 }
