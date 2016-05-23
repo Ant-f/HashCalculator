@@ -21,13 +21,16 @@ namespace HashCalculator.ViewModel.Command
 {
     public class BeginCalculation : CalculationRunningDependentCommand
     {
+        private readonly IHashAlgorithmSelection _hashAlgorithmSelection;
         private readonly IUserInput _userInput;
 
         public BeginCalculation(
+            IHashAlgorithmSelection hashAlgorithmSelection,
             IHashCodeBatchCalculationService hashCodeBatchCalculationService,
             IUserInput userInput)
             : base(hashCodeBatchCalculationService)
         {
+            _hashAlgorithmSelection = hashAlgorithmSelection;
             _userInput = userInput;
         }
 
@@ -47,7 +50,9 @@ namespace HashCalculator.ViewModel.Command
             foreach (var entry in _userInput.InputFileList)
                 entry.CalculatedFileHash = string.Empty;
 
-            HashCodeBatchCalculationService.CalculateHashCodes("sha512", _userInput.InputFileList);
+            HashCodeBatchCalculationService.CalculateHashCodes(
+                _hashAlgorithmSelection.SelectedHashAlgorithm,
+                _userInput.InputFileList);
         }
     }
 }

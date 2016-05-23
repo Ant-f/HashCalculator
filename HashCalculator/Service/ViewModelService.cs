@@ -55,7 +55,7 @@ namespace HashCalculator.Service
             (_hashCodeCalculationService = NinjectContainer.Kernel.Get<IHashCodeCalculationService>());
 
         /// <summary>
-        /// A reference to the object indicating the selected hash algorithm
+        /// A reference to the object representing the selected hash algorithm
         /// </summary>
         public static IHashAlgorithmSelection HashAlgorithmSelection =>
             _hashAlgorithmSelection ??

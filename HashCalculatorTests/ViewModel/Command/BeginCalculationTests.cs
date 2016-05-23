@@ -22,6 +22,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using HashCalculator.ViewModel;
 
 namespace HashCalculatorTests.ViewModel.Command
 {
@@ -94,6 +95,36 @@ namespace HashCalculatorTests.ViewModel.Command
 
             var canExecute = command.CanExecute(null);
             Assert.AreEqual(expectedCanExecuteValue, canExecute);
+        }
+
+        [TestCase(HashAlgorithmSelection.MD5)]
+        [TestCase(HashAlgorithmSelection.SHA1)]
+        [TestCase(HashAlgorithmSelection.SHA256)]
+        [TestCase(HashAlgorithmSelection.SHA512)]
+        public void CalculateHashCodesCommandUsesSelectedAlgorithm(string selectedAlgorithmName)
+        {
+            // Arrange
+
+            var commandBuilder = new BeginCalculationBuilder();
+
+            var userInputBuilder = new UserInputBuilder();
+            commandBuilder.UserInput = userInputBuilder.CreateUserInput();
+
+            commandBuilder.HashAlgorithmSelectionMock
+                .Setup(s => s.SelectedHashAlgorithm)
+                .Returns(selectedAlgorithmName);
+
+            var command = commandBuilder.CreateBeginCalculation();
+
+            // Act
+
+            command.Execute(null);
+
+            // Assert
+
+            commandBuilder.HashCodeBatchCalculationServiceMock.Verify(s => s.CalculateHashCodes(
+                selectedAlgorithmName,
+                It.IsAny<IList<InputFileListEntry>>()));
         }
     }
 }

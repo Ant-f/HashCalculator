@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
+using System;
 using HashCalculator.Interface;
 using HashCalculator.Service;
 using HashCalculator.ViewModel.Model;
@@ -239,6 +240,45 @@ namespace HashCalculatorTests.Service
             // Assert
 
             Assert.IsFalse(batchCalculationService.CalculationIsRunning);
+        }
+
+        [TestCase(HashAlgorithmSelection.MD5, typeof(MD5))]
+        [TestCase(HashAlgorithmSelection.SHA1, typeof(SHA1))]
+        [TestCase(HashAlgorithmSelection.SHA256, typeof(SHA256))]
+        [TestCase(HashAlgorithmSelection.SHA512, typeof(SHA512))]
+        public void CalculateServiceUsesAlgorithmCorrespondingToNamePassedToBatchCalculationService<T>(
+            string algorithmName,
+            T expectedAlgorithmType)
+            where T : Type
+        {
+            // Arrange
+
+            Type actualAlgorithmType = null;
+
+            var calculationServiceMock = new Mock<IHashCodeCalculationService>();
+            calculationServiceMock.Setup(s => s.CalculateHashCodes(
+                It.IsAny<HashAlgorithm>(),
+                It.IsAny<string>()))
+                .Callback<HashAlgorithm, string>((algorithm, path) =>
+                {
+                    actualAlgorithmType = algorithm.GetType();
+                });
+
+            var batchCalculationService = new HashCodeBatchCalculationService(calculationServiceMock.Object);
+
+            var input = new List<InputFileListEntry>
+            {
+                new InputFileListEntry("File.txt")
+            };
+
+            // Act
+
+            batchCalculationService.CalculateHashCodes(algorithmName, input);
+
+            // Assert
+
+            Assert.NotNull(actualAlgorithmType);
+            Assert.IsTrue(actualAlgorithmType.IsSubclassOf(expectedAlgorithmType));
         }
     }
 }
