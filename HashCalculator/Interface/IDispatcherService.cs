@@ -21,6 +21,6 @@ namespace HashCalculator.Interface
 {
     public interface IDispatcherService
     {
-        void BeginInvoke(Delegate method);
+        void BeginInvoke(Action method);
     }
 }

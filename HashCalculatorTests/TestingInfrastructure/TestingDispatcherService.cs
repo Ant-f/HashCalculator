@@ -16,16 +16,19 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using System;
-using System.Windows;
 using HashCalculator.Interface;
 
-namespace HashCalculator.Service
+namespace HashCalculatorTests.TestingInfrastructure
 {
-    public class DispatcherService : IDispatcherService
+    /// <summary>
+    /// Synchronously invokes the method argument. Used in unit tests, where
+    /// Application.Current.Dispatcher.BeginInvoke(method) would not be suitable
+    /// </summary>
+    internal class TestingDispatcherService : IDispatcherService
     {
         public void BeginInvoke(Action method)
         {
-            Application.Current.Dispatcher.BeginInvoke(method);
+            method();
         }
     }
 }

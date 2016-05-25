@@ -26,25 +26,25 @@ namespace HashCalculatorTests.TestingInfrastructure
     internal class ExportHashListBuilder
     {
         /// <summary>
-        /// The ExportPathPrompter instance to use in the created view model.
+        /// The ExportPathPrompter instance to use in the created command.
         /// A mock instance will be used if no value is specified.
         /// </summary>
         public ExportPathPrompter ExportPathPrompter { get; set; }
 
         /// <summary>
         /// The HashCodeBatchCalculationService instance to use in the created
-        /// view model. A mock instance will be used if no value is specified.
+        /// command. A mock instance will be used if no value is specified.
         /// </summary>
         public HashCodeBatchCalculationService HashCodeBatchCalculationService { get; set; }
 
         /// <summary>
-        /// The HashCodeExporter instance to use in the created view model. A
+        /// The HashCodeExporter instance to use in the created command. A
         /// mock instance will  be used if no value is specified.
         /// </summary>
         public HashCodeExporter HashCodeExporter { get; set; }
 
         /// <summary>
-        /// The UserInput instance to use in the created view model. A mock
+        /// The UserInput instance to use in the created command. A mock
         /// instance will be used if no value is specified.
         /// </summary>
         public UserInput UserInput { get; set; }
@@ -92,6 +92,7 @@ namespace HashCalculatorTests.TestingInfrastructure
         public ExportHashList CreatExportHashList()
         {
             var command = new ExportHashList(
+                new TestingDispatcherService(),
                 ExportPathPrompter ?? ExportPathPrompterMock.Object,
                 HashCodeBatchCalculationService ?? HashCodeBatchCalculationServiceMock.Object,
                 HashCodeExporter ?? HashCodeExporterMock.Object,

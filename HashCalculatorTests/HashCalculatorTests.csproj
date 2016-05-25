@@ -83,6 +83,7 @@
     <Compile Include="TestingInfrastructure\FileHashMetadataFactory.cs" />
     <Compile Include="TestingInfrastructure\HashCodeExporterBuilder.cs" />
     <Compile Include="TestingInfrastructure\TestingDataService.cs" />
+    <Compile Include="TestingInfrastructure\TestingDispatcherService.cs" />
     <Compile Include="TestingInfrastructure\TestingStreamWriter.cs" />
     <Compile Include="TestingInfrastructure\UserInputBuilder.cs" />
     <Compile Include="UnitTestConstants.cs" />

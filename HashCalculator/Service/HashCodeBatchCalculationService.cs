@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using HashCalculator.Interface;
 using HashCalculator.ViewModel.Model;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 using HashCalculator.ViewModel;
 
 namespace HashCalculator.Service
@@ -28,6 +30,7 @@ namespace HashCalculator.Service
         private readonly IHashCodeCalculationService _hashCodeCalculationService;
 
         private bool _calculationIsRunning = false;
+        private CancellationTokenSource _cancellationTokenSource;
         private string _listProgress;
 
         public bool CalculationIsRunning
@@ -69,27 +72,39 @@ namespace HashCalculator.Service
             _hashCodeCalculationService = hashCodeCalculationService;
         }
 
-        public void CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection)
+        public async Task CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection)
         {
-            CalculationIsRunning = true;
-
-            using (var algorithm = HashAlgorithm.Create(algorithmName))
+            await Task.Run(() =>
             {
-                if (algorithm != null)
+                using (_cancellationTokenSource = new CancellationTokenSource())
                 {
-                    for (int i = 0; i < collection.Count; i++)
+                    var cancellationToken = _cancellationTokenSource.Token;
+
+                    CalculationIsRunning = true;
+
+                    using (var algorithm = HashAlgorithm.Create(algorithmName))
                     {
-                        ListProgress = $"{i + 1}/{collection.Count}";
+                        if (algorithm != null)
+                        {
+                            for (int i = 0; i < collection.Count && !cancellationToken.IsCancellationRequested; i++)
+                            {
+                                ListProgress = $"{i + 1}/{collection.Count}";
 
-                        var listEntry = collection[i];
-                        var hashCode = _hashCodeCalculationService.CalculateHashCodes(algorithm, listEntry.FilePath);
-                        listEntry.CalculatedFileHash = hashCode;
+                                var listEntry = collection[i];
+
+                                var hashCode = _hashCodeCalculationService.CalculateHashCodes(
+                                    algorithm,
+                                    listEntry.FilePath);
+
+                                listEntry.CalculatedFileHash = hashCode;
+                            }
+                        }
+                        ListProgress = string.Empty;
                     }
-                }
-                ListProgress = string.Empty;
-            }
 
-            CalculationIsRunning = false;
+                    CalculationIsRunning = false;
+                }
+            });
         }
     }
 }

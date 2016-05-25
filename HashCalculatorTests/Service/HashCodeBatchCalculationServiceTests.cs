@@ -23,6 +23,7 @@ using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using HashCalculator.ViewModel;
 
 namespace HashCalculatorTests.Service
@@ -46,7 +47,7 @@ namespace HashCalculatorTests.Service
         }
 
         [Test]
-        public void HashCodeCalculationServiceIsUsedWithEachInputFileListEntry()
+        public async Task HashCodeCalculationServiceIsUsedWithEachInputFileListEntry()
         {
             // Arrange
 
@@ -71,7 +72,7 @@ namespace HashCalculatorTests.Service
 
             // Act
 
-            service.CalculateHashCodes(HashAlgorithmSelection.SHA1, collection);
+            await service.CalculateHashCodes(HashAlgorithmSelection.SHA1, collection);
 
             //Assert
 
@@ -93,7 +94,7 @@ namespace HashCalculatorTests.Service
         }
 
         [Test]
-        public void ServiceShowsProgressThroughInputListDuringBatchCalculation()
+        public async Task ServiceShowsProgressThroughInputListDuringBatchCalculation()
         {
             // Arrange
 
@@ -111,7 +112,7 @@ namespace HashCalculatorTests.Service
 
             // Act
 
-            batchCalculationService.CalculateHashCodes(HashAlgorithmSelection.SHA1, collection);
+            await batchCalculationService.CalculateHashCodes(HashAlgorithmSelection.SHA1, collection);
 
             //Assert
 
@@ -127,23 +128,18 @@ namespace HashCalculatorTests.Service
         }
 
         [Test]
-        public void ListProgressIsClearedAfterCalculation()
+        public async Task ListProgressIsClearedAfterCalculation()
         {
             // Arrange
 
             var calculationServiceMock = new Mock<IHashCodeCalculationService>();
-
-            calculationServiceMock.Setup(s => s.CalculateHashCodes(
-                It.IsAny<HashAlgorithm>(),
-                It.IsAny<string>()));
-
             var batchCalculationService = new HashCodeBatchCalculationService(calculationServiceMock.Object);
 
             var collection = CreateTestingInputFileListEntryCollection();
 
             // Act
 
-            batchCalculationService.CalculateHashCodes(HashAlgorithmSelection.SHA1, collection);
+            await batchCalculationService.CalculateHashCodes(HashAlgorithmSelection.SHA1, collection);
 
             //Assert
 
@@ -155,7 +151,7 @@ namespace HashCalculatorTests.Service
         }
 
         [Test]
-        public void InvalidAlgorithmNameDoesNotAttemptCalculation()
+        public async Task InvalidAlgorithmNameDoesNotAttemptCalculation()
         {
             // Arrange
 
@@ -165,7 +161,7 @@ namespace HashCalculatorTests.Service
 
             // Act
 
-            batchCalculationService.CalculateHashCodes("Not a hash algorithm name", collection);
+            await batchCalculationService.CalculateHashCodes("Not a hash algorithm name", collection);
 
             // Assert
 
@@ -188,7 +184,7 @@ namespace HashCalculatorTests.Service
         }
 
         [Test]
-        public void CalculateHashCodesSetsCalculationIsRunningToTrue()
+        public async Task CalculateHashCodesSetsCalculationIsRunningToTrue()
         {
             // Arrange
 
@@ -211,7 +207,7 @@ namespace HashCalculatorTests.Service
 
             // Act
 
-            batchCalculationService.CalculateHashCodes("sha1", input);
+            await batchCalculationService.CalculateHashCodes("sha1", input);
 
             // Assert
 
@@ -221,7 +217,7 @@ namespace HashCalculatorTests.Service
         }
 
         [Test]
-        public void CalculationIsRunningIsFalseAfterCompletingCalculation()
+        public async Task CalculationIsRunningIsFalseAfterCompletingCalculation()
         {
             // Arrange
 
@@ -235,7 +231,7 @@ namespace HashCalculatorTests.Service
 
             // Act
 
-            batchCalculationService.CalculateHashCodes("sha1", input);
+            await batchCalculationService.CalculateHashCodes("sha1", input);
 
             // Assert
 
@@ -246,7 +242,7 @@ namespace HashCalculatorTests.Service
         [TestCase(HashAlgorithmSelection.SHA1, typeof(SHA1))]
         [TestCase(HashAlgorithmSelection.SHA256, typeof(SHA256))]
         [TestCase(HashAlgorithmSelection.SHA512, typeof(SHA512))]
-        public void CalculateServiceUsesAlgorithmCorrespondingToNamePassedToBatchCalculationService<T>(
+        public async Task CalculateServiceUsesAlgorithmCorrespondingToNamePassedToBatchCalculationService<T>(
             string algorithmName,
             T expectedAlgorithmType)
             where T : Type
@@ -273,7 +269,7 @@ namespace HashCalculatorTests.Service
 
             // Act
 
-            batchCalculationService.CalculateHashCodes(algorithmName, input);
+            await batchCalculationService.CalculateHashCodes(algorithmName, input);
 
             // Assert
 

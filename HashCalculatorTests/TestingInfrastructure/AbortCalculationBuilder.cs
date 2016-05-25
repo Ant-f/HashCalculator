@@ -26,7 +26,7 @@ namespace HashCalculatorTests.TestingInfrastructure
     {
         /// <summary>
         /// The HashCodeBatchCalculationService instance to use in the created
-        /// view model. A mock instance will be used if no value is specified.
+        /// command. A mock instance will be used if no value is specified.
         /// </summary>
         public HashCodeBatchCalculationService HashCodeBatchCalculationService { get; set; }
 
@@ -49,6 +49,7 @@ namespace HashCalculatorTests.TestingInfrastructure
         public AbortCalculation CreateAbortCalculation()
         {
             var command = new AbortCalculation(
+                new TestingDispatcherService(),
                 HashCodeBatchCalculationService ?? HashCodeBatchCalculationServiceMock.Object);
 
             return command;

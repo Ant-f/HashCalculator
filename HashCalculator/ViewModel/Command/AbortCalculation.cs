@@ -22,8 +22,10 @@ namespace HashCalculator.ViewModel.Command
 {
     public class AbortCalculation : CalculationRunningDependentCommand
     {
-        public AbortCalculation(IHashCodeBatchCalculationService hashCodeBatchCalculationService)
-            : base(hashCodeBatchCalculationService)
+        public AbortCalculation(
+            IDispatcherService dispatcherService,
+            IHashCodeBatchCalculationService hashCodeBatchCalculationService)
+            : base(dispatcherService, hashCodeBatchCalculationService)
         {
         }
 

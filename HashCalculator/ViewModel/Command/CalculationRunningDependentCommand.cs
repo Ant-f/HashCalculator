@@ -28,19 +28,24 @@ namespace HashCalculator.ViewModel.Command
     /// </summary>
     public abstract class CalculationRunningDependentCommand : ICommand
     {
+        private readonly IDispatcherService _dispatcherService;
+
         protected readonly IHashCodeBatchCalculationService HashCodeBatchCalculationService;
 
         public event EventHandler CanExecuteChanged;
 
         protected CalculationRunningDependentCommand(
+            IDispatcherService dispatcherService,
             IHashCodeBatchCalculationService hashCodeBatchCalculationService)
         {
+            _dispatcherService = dispatcherService;
+
             HashCodeBatchCalculationService = hashCodeBatchCalculationService;
             HashCodeBatchCalculationService.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == nameof(HashCodeBatchCalculationService.CalculationIsRunning))
                 {
-                    CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+                    _dispatcherService.BeginInvoke(() => CanExecuteChanged?.Invoke(this, EventArgs.Empty));
                 }
             };
         }

@@ -26,19 +26,19 @@ namespace HashCalculatorTests.TestingInfrastructure
     internal class BeginCalculationBuilder
     {
         /// <summary>
-        /// The HashAlgorithmSelection instance to use in the created view
-        /// model. A mock instance will be used if no value is specified.
+        /// The HashAlgorithmSelection instance to use in the created command.
+        /// A mock instance will be used if no value is specified.
         /// </summary>
         public HashAlgorithmSelection HashAlgorithmSelection { get; set; }
 
         /// <summary>
         /// The HashCodeBatchCalculationService instance to use in the created
-        /// view model. A mock instance will be used if no value is specified.
+        /// command. A mock instance will be used if no value is specified.
         /// </summary>
         public HashCodeBatchCalculationService HashCodeBatchCalculationService { get; set; }
 
         /// <summary>
-        /// The UserInput instance to use in the created view model. A mock
+        /// The UserInput instance to use in the created command. A mock
         /// instance will be used if no value is specified.
         /// </summary>
         public UserInput UserInput { get; set; }
@@ -78,6 +78,7 @@ namespace HashCalculatorTests.TestingInfrastructure
         public BeginCalculation CreateBeginCalculation()
         {
             var command = new BeginCalculation(
+                new TestingDispatcherService(),
                 HashAlgorithmSelection ?? HashAlgorithmSelectionMock.Object,
                 HashCodeBatchCalculationService ?? HashCodeBatchCalculationServiceMock.Object,
                 UserInput ?? UserInputMock.Object);

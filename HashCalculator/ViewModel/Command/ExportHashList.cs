@@ -27,11 +27,12 @@ namespace HashCalculator.ViewModel.Command
         private readonly IUserInput _userInput;
 
         public ExportHashList(
+            IDispatcherService dispatcherService,
             IExportPathPrompter exportPathPrompter,
             IHashCodeBatchCalculationService hashCodeBatchCalculationService,
             IHashCodeExporter hashCodeExporter,
             IUserInput userInput)
-            : base(hashCodeBatchCalculationService)
+            : base(dispatcherService, hashCodeBatchCalculationService)
         {
             _exportPathPrompter = exportPathPrompter;
             _hashCodeExporter = hashCodeExporter;

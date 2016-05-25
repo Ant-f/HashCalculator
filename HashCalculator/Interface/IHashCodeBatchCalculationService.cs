@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using HashCalculator.ViewModel.Model;
 
 namespace HashCalculator.Interface
@@ -26,6 +27,6 @@ namespace HashCalculator.Interface
         bool CalculationIsRunning { get; }
         string ListProgress { get; }
 
-        void CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection);
+        Task CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection);
     }
 }

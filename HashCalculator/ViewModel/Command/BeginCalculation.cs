@@ -25,10 +25,11 @@ namespace HashCalculator.ViewModel.Command
         private readonly IUserInput _userInput;
 
         public BeginCalculation(
+            IDispatcherService dispatcherService,
             IHashAlgorithmSelection hashAlgorithmSelection,
             IHashCodeBatchCalculationService hashCodeBatchCalculationService,
             IUserInput userInput)
-            : base(hashCodeBatchCalculationService)
+            : base(dispatcherService, hashCodeBatchCalculationService)
         {
             _hashAlgorithmSelection = hashAlgorithmSelection;
             _userInput = userInput;
