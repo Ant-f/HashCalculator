@@ -15,16 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System;
 using HashCalculator.Interface;
 using HashCalculator.Service;
+using HashCalculator.ViewModel;
 using HashCalculator.ViewModel.Model;
 using Moq;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using HashCalculator.ViewModel;
 
 namespace HashCalculatorTests.Service
 {
@@ -275,6 +275,38 @@ namespace HashCalculatorTests.Service
 
             Assert.NotNull(actualAlgorithmType);
             Assert.IsTrue(actualAlgorithmType.IsSubclassOf(expectedAlgorithmType));
+        }
+
+        [Test]
+        public async Task AbortCalculationExitsBatchAfterInProgressCalculation()
+        {
+            // Arrange
+
+            HashCodeBatchCalculationService batchCalculationService = null;
+            var collection = CreateTestingInputFileListEntryCollection();
+
+            var calculationServiceMock = new Mock<IHashCodeCalculationService>();
+
+            calculationServiceMock.Setup(s => s.CalculateHashCodes(
+                It.IsAny<HashAlgorithm>(),
+                FileName1))
+                .Callback(() =>
+                {
+                    batchCalculationService.AbortCalculation();
+                });
+
+            batchCalculationService = new HashCodeBatchCalculationService(calculationServiceMock.Object);
+
+            // Act
+
+            await batchCalculationService.CalculateHashCodes(HashAlgorithmSelection.SHA1, collection);
+
+            // Assert
+
+            calculationServiceMock.Verify(x => x.CalculateHashCodes(
+                It.IsAny<HashAlgorithm>(),
+                It.Is<string>(str => str != FileName1)),
+                Times.Never);
         }
     }
 }

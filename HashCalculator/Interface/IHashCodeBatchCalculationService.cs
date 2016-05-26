@@ -27,6 +27,7 @@ namespace HashCalculator.Interface
         bool CalculationIsRunning { get; }
         string ListProgress { get; }
 
+        void AbortCalculation();
         Task CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection);
     }
 }

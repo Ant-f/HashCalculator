@@ -106,5 +106,10 @@ namespace HashCalculator.Service
                 }
             });
         }
+
+        public void AbortCalculation()
+        {
+            _cancellationTokenSource.Cancel();
+        }
     }
 }

@@ -69,5 +69,17 @@ namespace HashCalculatorTests.ViewModel.Command
             var canExecute = command.CanExecute(null);
             Assert.AreEqual(expectedCanExecuteValue, canExecute);
         }
+
+        [Test]
+        public void AbortCalculationCommand()
+        {
+            var builder = new AbortCalculationBuilder();
+            var command = builder.CreateAbortCalculation();
+
+            command.Execute(null);
+
+            builder.HashCodeBatchCalculationServiceMock
+                .Verify(s => s.AbortCalculation());
+        }
     }
 }

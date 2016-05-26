@@ -16,7 +16,6 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using HashCalculator.Interface;
-using System;
 
 namespace HashCalculator.ViewModel.Command
 {
@@ -37,13 +36,12 @@ namespace HashCalculator.ViewModel.Command
 
         public override void Execute(object parameter)
         {
-            throw new NotImplementedException();
             AbortHashCalculation();
         }
 
         private void AbortHashCalculation()
         {
-            //_hashCodeBatchCalculationService.Abort();
+            HashCodeBatchCalculationService.AbortCalculation();
         }
     }
 }
