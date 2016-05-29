@@ -21,7 +21,7 @@ using System.Runtime.CompilerServices;
 namespace HashCalculator.ViewModel
 {
     /// <summary>
-    /// Class that facilitates implementing INotifyPropertyChanged
+    /// Class that facilitates implementing <see cref="INotifyPropertyChanged"/>
     /// </summary>
     public class PropertyChangedNotifier : INotifyPropertyChanged
     {
