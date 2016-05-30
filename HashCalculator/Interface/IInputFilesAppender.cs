@@ -15,18 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System.Collections.ObjectModel;
-using HashCalculator.ViewModel.Model;
-
 namespace HashCalculator.Interface
 {
-    public interface IUserInput
+    public interface IInputFilesAppender
     {
-        bool MatchFullFilePath { get; set; }
-        ObservableCollection<InputFileListEntry> InputFileList { get; }
-        string KnownFileHashCodesText { get; set; }
-
-        void AddFileToInputList(string path);
-        void RemoveInputListEntry(InputFileListEntry entry);
+        void AddFilesToInputList(string[] files);
     }
 }

@@ -26,6 +26,7 @@ namespace HashCalculator.Ioc
         public override void Load()
         {
             Kernel.Bind<IHashAlgorithmSelection>().To<HashAlgorithmSelection>().InSingletonScope();
+            Kernel.Bind<IInputFilesAppender>().To<UserInput>().InSingletonScope();
             Kernel.Bind<IUserInput>().To<UserInput>().InSingletonScope();
         }
     }

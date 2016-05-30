@@ -23,14 +23,20 @@
              xmlns:service="clr-namespace:HashCalculator.Service"
              StartupUri="View\MainWindow.xaml">
     <Application.Resources>
-        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <converter:ValidFilePathToBackgroundBrushConverter x:Key="ValidFilePathToBackgroundBrushConverter" />
-        <converter:HashCodeMatchCriteriaToBackgroundConverter x:Key="HashCodeMatchCriteriaToBackgroundConverter" />
-        <converter:BoolInversionConverter x:Key="BoolInversionConverter" />
-        <converter:IsBusyToCursorNameConverter x:Key="IsBusyToCursorNameConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/HashCalculator;component/View/Control/DragDropHost.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converter:ValidFilePathToBackgroundBrushConverter x:Key="ValidFilePathToBackgroundBrushConverter" />
+            <converter:HashCodeMatchCriteriaToBackgroundConverter x:Key="HashCodeMatchCriteriaToBackgroundConverter" />
+            <converter:BoolInversionConverter x:Key="BoolInversionConverter" />
+            <converter:IsBusyToCursorNameConverter x:Key="IsBusyToCursorNameConverter" />
 
-        <service:ViewModelService x:Key="ViewModel" />
-        
-        <view:AppBrushes x:Key="AppBrushes" />
+            <service:ViewModelService x:Key="ViewModel" />
+
+            <view:AppBrushes x:Key="AppBrushes" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

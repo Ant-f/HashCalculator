@@ -67,6 +67,7 @@
     <Compile Include="Interface\IHashCodeBatchCalculationService.cs" />
     <Compile Include="Interface\IHashCodeCalculationService.cs" />
     <Compile Include="Interface\IHashCodeExporter.cs" />
+    <Compile Include="Interface\IInputFilesAppender.cs" />
     <Compile Include="Interface\IPropertyChangedSubscriber.cs" />
     <Compile Include="Interface\IUserInput.cs" />
     <Compile Include="Ioc\CommandModule.cs" />
@@ -93,6 +94,10 @@
     <Compile Include="ViewModel\ReadProgressFileStream.cs" />
     <Compile Include="ViewModel\PropertyChangedNotifier.cs" />
     <Compile Include="Service\ViewModelService.cs" />
+    <Page Include="View\Control\DragDropHost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -107,6 +112,8 @@
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Model\FileHashMetadata.cs" />
     <Compile Include="ViewModel\Model\InputFileListEntry.cs" />
+    <Compile Include="View\Control\DragDropHost.cs" />
+    <Compile Include="View\Control\DragDropHostInternal.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

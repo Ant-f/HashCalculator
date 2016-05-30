@@ -95,6 +95,7 @@
     <Compile Include="ViewModel\ReadProgressEventArgsTests.cs" />
     <Compile Include="ViewModel\ReadProgressFileStreamTests.cs" />
     <Compile Include="ViewModel\UserInputTests.cs" />
+    <Compile Include="View\Control\DragDropHostInternalTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

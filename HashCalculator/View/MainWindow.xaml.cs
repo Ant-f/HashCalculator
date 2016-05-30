@@ -16,16 +16,13 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using HashCalculator.Interface;
+using HashCalculator.Ioc;
 using HashCalculator.ViewModel.Model;
+using Ninject;
 using System;
-using System.Collections.Specialized;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
-using HashCalculator.Ioc;
-using Ninject;
 
 namespace HashCalculator.View
 {
@@ -34,80 +31,13 @@ namespace HashCalculator.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool _dropTargetHasMouseEnterHandler = false;
         private readonly IUserInput _userInput;
 
         public MainWindow()
         {
             InitializeComponent();
-            AttachDropTargetMouseEnterHandler();
 
             _userInput = NinjectContainer.Kernel.Get<IUserInput>();
-        }
-
-        private void DropTargetBorderDrop(object sender, DragEventArgs e)
-        {
-            var data = e.Data as DataObject;
-            if (data.ContainsFileDropList())
-            {
-                StringCollection collection = data.GetFileDropList();
-                _userInput.AddFilesToInputList(collection.OfType<string>().ToArray());
-            }
-
-            AttachDropTargetMouseEnterHandler();
-            DropTargetBorder.IsHitTestVisible = false;
-        }
-
-        private void DropTargetBorderPreviewDragOver(object sender, DragEventArgs e)
-        {
-            var data = e.Data as DataObject;
-            if (data.ContainsFileDropList())
-            {
-                e.Effects = DragDropEffects.Link;
-            }
-            else
-            {
-                e.Effects = DragDropEffects.None;
-            }
-            e.Handled = true;
-        }
-
-        private void DropTargetBorderMouseEnter(object sender, MouseEventArgs e)
-        {
-            DropTargetBorder.IsHitTestVisible = false;
-        }
-
-        private void inputFileDataGridMouseLeave(object sender, MouseEventArgs e)
-        {
-            DropTargetBorder.IsHitTestVisible = true;
-        }
-
-        private void DropTargetBorderDragEnter(object sender, DragEventArgs e)
-        {
-            RemoveDropTargetMouseEnterHandler();
-        }
-
-        private void DropTargetBorderDragLeave(object sender, DragEventArgs e)
-        {
-            AttachDropTargetMouseEnterHandler();
-        }
-        
-        private void AttachDropTargetMouseEnterHandler()
-        {
-            if (!_dropTargetHasMouseEnterHandler)
-            {
-                _dropTargetHasMouseEnterHandler = true;
-                DropTargetBorder.MouseEnter += DropTargetBorderMouseEnter;
-            }
-        }
-
-        private void RemoveDropTargetMouseEnterHandler()
-        {
-            if (_dropTargetHasMouseEnterHandler)
-            {
-                _dropTargetHasMouseEnterHandler = false;
-                DropTargetBorder.MouseEnter -= DropTargetBorderMouseEnter;
-            }
         }
 
         private void PART_ContentHost_LostFocus(object sender, RoutedEventArgs e)
