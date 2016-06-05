@@ -86,7 +86,6 @@
     <Compile Include="TestingInfrastructure\TestingDispatcherService.cs" />
     <Compile Include="TestingInfrastructure\TestingStreamWriter.cs" />
     <Compile Include="TestingInfrastructure\UserInputBuilder.cs" />
-    <Compile Include="UnitTestConstants.cs" />
     <Compile Include="ViewModel\Command\AbortCalculationTests.cs" />
     <Compile Include="ViewModel\Command\BeginCalculationTests.cs" />
     <Compile Include="ViewModel\Command\ExportHashListTests.cs" />

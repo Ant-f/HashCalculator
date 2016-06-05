@@ -18,8 +18,6 @@
 using HashCalculator.ViewModel.Model;
 using NUnit.Framework;
 using System.ComponentModel;
-using System.Threading;
-using static HashCalculatorTests.UnitTestConstants;
 
 namespace HashCalculatorTests.ViewModel.Model
 {
@@ -29,58 +27,64 @@ namespace HashCalculatorTests.ViewModel.Model
         [Test]
         public void SettingFilePathToSameValueDoesNotRaisePropertyChanged()
         {
+            // Arrange
+
+            const string path = "path";
+
             var propertyChangedRaised = false;
-            var resetEvent = new ManualResetEvent(false);
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 propertyChangedRaised = true;
-                resetEvent.Set();
             };
             
-            var entry = new InputFileListEntry("Path");
+            var entry = new InputFileListEntry(path);
             entry.PropertyChanged += eventHandler;
 
-            entry.FilePath = "Path";
+            // Act
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
+            entry.FilePath = path;
+
             entry.PropertyChanged -= eventHandler;
 
-            Assert.IsTrue(timeout);
+            // Assert
+
             Assert.IsFalse(propertyChangedRaised);
         }
 
         [Test]
-        public void SettingFilePathToDifferentValueDoesRaisePropertyChanged()
+        public void SettingFilePathToDifferentValueRaisesPropertyChanged()
         {
+            // Arrange
+
             string raisedPropertyName = null;
-            var resetEvent = new ManualResetEvent(false);
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 raisedPropertyName = args.PropertyName;
-                resetEvent.Set();
             };
 
             var entry = new InputFileListEntry("Path");
             entry.PropertyChanged += eventHandler;
 
+            // Act
+
             entry.FilePath = "NewPath";
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
 
-            Assert.IsFalse(timeout);
+            // Assert
+
             Assert.AreEqual(nameof(entry.FilePath), raisedPropertyName);
         }
 
         [Test]
         public void SettingHashCodeMatchToSameValueDoesNotRaisePropertyChanged()
         {
+            // Arrange
+
             var propertyChangedRaised = false;
-            var resetEvent = new ManualResetEvent(false);
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 propertyChangedRaised = true;
-                resetEvent.Set();
             };
 
             var entry = new InputFileListEntry("Path")
@@ -89,24 +93,26 @@ namespace HashCalculatorTests.ViewModel.Model
             };
             entry.PropertyChanged += eventHandler;
 
+            // Act
+
             entry.HashCodeMatch = HashCodeMatchCriteria.None;
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
 
-            Assert.IsTrue(timeout);
+            // Assert
+
             Assert.IsFalse(propertyChangedRaised);
         }
 
         [Test]
-        public void SettingHashCodeMatchToDifferentValueDoesRaisePropertyChanged()
+        public void SettingHashCodeMatchToDifferentValueRaisesPropertyChanged()
         {
+            // Arrange
+
             string raisedPropertyName = null;
-            var resetEvent = new ManualResetEvent(false);
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 raisedPropertyName = args.PropertyName;
-                resetEvent.Set();
             };
 
             var entry = new InputFileListEntry("Path")
@@ -115,23 +121,31 @@ namespace HashCalculatorTests.ViewModel.Model
             };
             entry.PropertyChanged += eventHandler;
 
+            // Act
+
             entry.HashCodeMatch = HashCodeMatchCriteria.FileNameMatch;
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
 
-            Assert.IsFalse(timeout);
+            // Assert
+
             Assert.AreEqual(nameof(entry.HashCodeMatch), raisedPropertyName);
         }
 
         [Test]
         public void SettingFilePathSetsHashMetadataFilePath()
         {
+            // Arrange
+
             const string newPath = "newPath";
 
             var input = new InputFileListEntry(string.Empty);
 
+            // Act
+
             input.FilePath = newPath;
+
+            // Assert
 
             Assert.AreEqual(newPath, input.HashMetadata.FilePath);
         }

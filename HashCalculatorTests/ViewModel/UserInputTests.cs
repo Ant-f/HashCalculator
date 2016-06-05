@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading;
-using static HashCalculatorTests.UnitTestConstants;
 
 namespace HashCalculatorTests.ViewModel
 {
@@ -33,7 +32,7 @@ namespace HashCalculatorTests.ViewModel
     public class UserInputTests
     {
         [Test]
-        public void ChangingViewModelKnownFileHashCodesTextCausesInputFileListEntryHashMatchCriteriaUpdate()
+        public void ChangingKnownFileHashCodesTextCausesInputFileListEntryHashMatchCriteriaUpdate()
         {
             // Arrange
 
@@ -48,11 +47,9 @@ namespace HashCalculatorTests.ViewModel
             var userInput = builder.CreateUserInput();
 
             string raisedPropertyName = null;
-            var resetEvent = new ManualResetEvent(false);
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 raisedPropertyName = args.PropertyName;
-                resetEvent.Set();
             };
 
             var entry = new InputFileListEntry("Path");
@@ -63,19 +60,17 @@ namespace HashCalculatorTests.ViewModel
 
             userInput.KnownFileHashCodesText = "new known hash codes";
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
 
             // Assert
 
             builder.FileHashCodeMatchCheckerMock.VerifyAll();
 
-            Assert.IsFalse(timeout);
             Assert.AreEqual(nameof(entry.HashCodeMatch), raisedPropertyName);
         }
 
         [Test]
-        public void ChangingViewModelFullFilePathMatchingCausesInputFileListEntryHashMatchCriteriaUpdate()
+        public void ChangingFullFilePathMatchingCausesInputFileListEntryHashMatchCriteriaUpdate()
         {
             // Arrange
 
@@ -91,11 +86,9 @@ namespace HashCalculatorTests.ViewModel
             userInput.KnownFileHashCodesText = "hash codes";
 
             string raisedPropertyName = null;
-            var resetEvent = new ManualResetEvent(false);
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 raisedPropertyName = args.PropertyName;
-                resetEvent.Set();
             };
 
             var entry = new InputFileListEntry("Path");
@@ -106,19 +99,17 @@ namespace HashCalculatorTests.ViewModel
 
             userInput.MatchFullFilePath = true;
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
 
             // Assert
 
             builder.FileHashCodeMatchCheckerMock.VerifyAll();
 
-            Assert.IsFalse(timeout);
             Assert.AreEqual(nameof(entry.HashCodeMatch), raisedPropertyName);
         }
 
         [Test]
-        public void ChangingViewModelKnownFileHashCodesTextCausesKnownFileHashCodesListToUpdateWithOneHashCode()
+        public void ChangingKnownFileHashCodesTextCausesKnownFileHashCodesListToUpdateWithOneHashCode()
         {
             // Arrange
 
@@ -140,7 +131,7 @@ namespace HashCalculatorTests.ViewModel
         }
 
         [Test]
-        public void ChangingViewModelKnownFileHashCodesTextCausesKnownFileHashCodesListToUpdateWithTwoHashCode()
+        public void ChangingKnownFileHashCodesTextCausesKnownFileHashCodesListToUpdateWithTwoHashCode()
         {
             // Arrange
 
@@ -175,12 +166,10 @@ namespace HashCalculatorTests.ViewModel
             // Arrange
 
             NotifyCollectionChangedAction? raisedAction = null;
-            var resetEvent = new ManualResetEvent(false);
 
             NotifyCollectionChangedEventHandler eventHandler = (sender, args) =>
             {
                 raisedAction = args.Action;
-                resetEvent.Set();
             };
 
             var builder = new UserInputBuilder();
@@ -200,12 +189,10 @@ namespace HashCalculatorTests.ViewModel
 
             userInput.InputFileList.Add(entry);
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             userInput.InputFileList.CollectionChanged -= eventHandler;
 
             // Assert
 
-            Assert.IsFalse(timeout);
             Assert.NotNull(raisedAction);
             Assert.AreEqual(NotifyCollectionChangedAction.Add, raisedAction);
             Assert.AreEqual(desiredFinalFileExistsState, entry.FileExistsAtFilePath);
@@ -219,12 +206,10 @@ namespace HashCalculatorTests.ViewModel
             // Arrange
 
             NotifyCollectionChangedAction? raisedAction = null;
-            var resetEvent = new ManualResetEvent(false);
 
             NotifyCollectionChangedEventHandler eventHandler = (sender, args) =>
             {
                 raisedAction = args.Action;
-                resetEvent.Set();
             };
 
             var builder = new UserInputBuilder();
@@ -247,12 +232,10 @@ namespace HashCalculatorTests.ViewModel
 
             userInput.InputFileList[0] = newEntry;
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             userInput.InputFileList.CollectionChanged -= eventHandler;
 
             // Assert
 
-            Assert.IsFalse(timeout);
             Assert.NotNull(raisedAction);
             Assert.AreEqual(NotifyCollectionChangedAction.Replace, raisedAction);
             Assert.AreEqual(desiredFinalFileExistsState, newEntry.FileExistsAtFilePath);
@@ -366,7 +349,6 @@ namespace HashCalculatorTests.ViewModel
             // Arrange
 
             var updatedPropertyNames = new HashSet<string>();
-            var resetEvent = new ManualResetEvent(false);
 
             var entry = new InputFileListEntry("FilePath.txt")
             {
@@ -376,12 +358,6 @@ namespace HashCalculatorTests.ViewModel
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 updatedPropertyNames.Add(args.PropertyName);
-
-                if (updatedPropertyNames.Contains(nameof(entry.FilePath)) &&
-                    updatedPropertyNames.Contains(nameof(entry.FileExistsAtFilePath)))
-                {
-                    resetEvent.Set();
-                }
             };
 
             var builder = new UserInputBuilder();
@@ -397,15 +373,15 @@ namespace HashCalculatorTests.ViewModel
 
             entry.FilePath = "NewFilePath.txt";
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
 
             // Assert
 
             builder.FileExistenceCheckerMock.VerifyAll();
 
-            Assert.IsFalse(timeout);
             Assert.IsTrue(entry.FileExistsAtFilePath);
+            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.FileExistsAtFilePath));
+            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.FilePath));
         }
 
         [Test]
@@ -414,7 +390,6 @@ namespace HashCalculatorTests.ViewModel
             // Arrange
 
             var updatedPropertyNames = new HashSet<string>();
-            var resetEvent = new ManualResetEvent(false);
 
             var entry = new InputFileListEntry("FilePath.txt")
             {
@@ -424,12 +399,6 @@ namespace HashCalculatorTests.ViewModel
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 updatedPropertyNames.Add(args.PropertyName);
-
-                if (updatedPropertyNames.Contains(nameof(entry.FilePath)) &&
-                    updatedPropertyNames.Contains(nameof(entry.HashCodeMatch)))
-                {
-                    resetEvent.Set();
-                }
             };
 
             var builder = new UserInputBuilder
@@ -451,7 +420,6 @@ namespace HashCalculatorTests.ViewModel
 
             entry.FilePath = "NewFilePath.txt";
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
             builder.PropertyChangedSubscriber.UnsubscribeAll();
 
@@ -459,8 +427,9 @@ namespace HashCalculatorTests.ViewModel
 
             builder.FileExistenceCheckerMock.VerifyAll();
 
-            Assert.IsFalse(timeout);
             Assert.AreEqual(HashCodeMatchCriteria.FileNameMatch, entry.HashCodeMatch);
+            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.FilePath));
+            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.HashCodeMatch));
         }
 
         [Test]
@@ -469,7 +438,6 @@ namespace HashCalculatorTests.ViewModel
             // Arrange
 
             var updatedPropertyNames = new HashSet<string>();
-            var resetEvent = new ManualResetEvent(false);
 
             var entry = new InputFileListEntry("FilePath.txt")
             {
@@ -479,12 +447,6 @@ namespace HashCalculatorTests.ViewModel
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 updatedPropertyNames.Add(args.PropertyName);
-
-                if (updatedPropertyNames.Contains(nameof(entry.FilePath)) &&
-                    updatedPropertyNames.Contains(nameof(entry.FileExistsAtFilePath)))
-                {
-                    resetEvent.Set();
-                }
             };
 
             var builder = new UserInputBuilder();
@@ -502,15 +464,15 @@ namespace HashCalculatorTests.ViewModel
 
             entry.FilePath = string.Empty;
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
 
             // Assert
 
             builder.FileExistenceCheckerMock.VerifyAll();
 
-            Assert.IsFalse(timeout);
             CollectionAssert.DoesNotContain(userInput.InputFileList, entry);
+            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.FileExistsAtFilePath));
+            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.FilePath));
         }
 
         [Test]
@@ -519,18 +481,12 @@ namespace HashCalculatorTests.ViewModel
             // Arrange
             
             var updatedPropertyNames = new HashSet<string>();
-            var resetEvent = new ManualResetEvent(false);
 
             var entry = new InputFileListEntry("FilePath.txt");
 
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 updatedPropertyNames.Add(args.PropertyName);
-
-                if (updatedPropertyNames.Contains(nameof(entry.FilePath)))
-                {
-                    resetEvent.Set();
-                }
             };
 
             var builder = new UserInputBuilder
@@ -546,7 +502,6 @@ namespace HashCalculatorTests.ViewModel
 
             entry.FilePath = string.Empty;
 
-            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
             entry.PropertyChanged -= eventHandler;
             builder.PropertyChangedSubscriber.UnsubscribeAll();
 
@@ -560,7 +515,7 @@ namespace HashCalculatorTests.ViewModel
                 It.IsAny<bool>()),
                 Times.Never);
 
-            Assert.IsFalse(timeout);
+            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.FilePath));
         }
     }
 }
