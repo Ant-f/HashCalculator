@@ -121,11 +121,25 @@ namespace HashCalculator.ViewModel
         /// The <see cref="InputFileListEntry"/> that raised the
         /// <see cref="INotifyPropertyChanged.PropertyChanged"/> event
         /// </param>
-        /// <param name="e"><see cref="PropertyChangedEventArgs"/> associated with the event</param>
-        private void InputFileListEntryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        /// <param name="e">
+        /// <see cref="PropertyChangedEventArgs"/> associated with the event
+        /// </param>
+        private void InputFileListEntryPropertyChanged(
+            object sender,
+            PropertyChangedEventArgs e)
         {
             var entry = sender as InputFileListEntry;
-            if (entry != null)
+            if (entry == null)
+            {
+                return;
+            }
+
+            var emptyPath = string.IsNullOrWhiteSpace(entry.FilePath);
+            if (emptyPath)
+            {
+                InputFileList.Remove(entry);
+            }
+            else
             {
                 entry.HashCodeMatch = CheckFileHashMatch(entry.HashMetadata);
             }
@@ -142,7 +156,9 @@ namespace HashCalculator.ViewModel
         /// <param name="e">
         /// <see cref="NotifyCollectionChangedEventArgs"/> associated with the event
         /// </param>
-        private void InputFileListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void InputFileListCollectionChanged(
+            object sender,
+            NotifyCollectionChangedEventArgs e)
         {
             var newItems = e.NewItems?.Cast<InputFileListEntry>().ToArray();
             var oldItems = e.OldItems?.Cast<InputFileListEntry>().ToArray();

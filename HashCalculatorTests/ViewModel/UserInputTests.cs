@@ -279,7 +279,7 @@ namespace HashCalculatorTests.ViewModel
         }
 
         [Test]
-        public void RemovingEntryToInputFileListUnsubscribesFromEntryPropertyChangedEvents()
+        public void RemovingEntryFromInputFileListUnsubscribesFromEntryPropertyChangedEvents()
         {
             INotifyPropertyChanged unsubscribeObject = null;
 
@@ -461,6 +461,106 @@ namespace HashCalculatorTests.ViewModel
 
             Assert.IsFalse(timeout);
             Assert.AreEqual(HashCodeMatchCriteria.FileNameMatch, entry.HashCodeMatch);
+        }
+
+        [Test]
+        public void UpdatingEntryInInputFileListToHaveEmptyFilePathRemovesEntry()
+        {
+            // Arrange
+
+            var updatedPropertyNames = new HashSet<string>();
+            var resetEvent = new ManualResetEvent(false);
+
+            var entry = new InputFileListEntry("FilePath.txt")
+            {
+                FileExistsAtFilePath = false
+            };
+
+            PropertyChangedEventHandler eventHandler = (sender, args) =>
+            {
+                updatedPropertyNames.Add(args.PropertyName);
+
+                if (updatedPropertyNames.Contains(nameof(entry.FilePath)) &&
+                    updatedPropertyNames.Contains(nameof(entry.FileExistsAtFilePath)))
+                {
+                    resetEvent.Set();
+                }
+            };
+
+            var builder = new UserInputBuilder();
+
+            builder.FileExistenceCheckerMock.Setup(f => f.Exists(It.IsAny<string>()))
+                .Returns(true);
+
+            builder.PropertyChangedSubscriber = new PropertyChangedSubscriber();
+
+            var userInput = builder.CreateUserInput();
+            entry.PropertyChanged += eventHandler;
+            userInput.InputFileList.Add(entry);
+
+            // Act
+
+            entry.FilePath = string.Empty;
+
+            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
+            entry.PropertyChanged -= eventHandler;
+
+            // Assert
+
+            builder.FileExistenceCheckerMock.VerifyAll();
+
+            Assert.IsFalse(timeout);
+            CollectionAssert.DoesNotContain(userInput.InputFileList, entry);
+        }
+
+        [Test]
+        public void UpdatingEntryInInputFileListToHaveEmptyFilePathDoesNotSetsHashCodeMatch()
+        {
+            // Arrange
+            
+            var updatedPropertyNames = new HashSet<string>();
+            var resetEvent = new ManualResetEvent(false);
+
+            var entry = new InputFileListEntry("FilePath.txt");
+
+            PropertyChangedEventHandler eventHandler = (sender, args) =>
+            {
+                updatedPropertyNames.Add(args.PropertyName);
+
+                if (updatedPropertyNames.Contains(nameof(entry.FilePath)))
+                {
+                    resetEvent.Set();
+                }
+            };
+
+            var builder = new UserInputBuilder
+            {
+                PropertyChangedSubscriber = new PropertyChangedSubscriber()
+            };
+
+            var userInput = builder.CreateUserInput();
+            entry.PropertyChanged += eventHandler;
+            userInput.InputFileList.Add(entry);
+
+            // Act
+
+            entry.FilePath = string.Empty;
+
+            var timeout = !resetEvent.WaitOne(EventHandlerTimeout);
+            entry.PropertyChanged -= eventHandler;
+            builder.PropertyChangedSubscriber.UnsubscribeAll();
+
+            // Assert
+
+            builder.FileExistenceCheckerMock.VerifyAll();
+
+            builder.FileHashCodeMatchCheckerMock.Verify(f => f.FindMatchCriteria(
+                It.IsAny<FileHashMetadata>(),
+                It.IsAny<List<FileHashMetadata>>(),
+                It.IsAny<bool>()),
+                Times.Never);
+
+            Assert.IsFalse(timeout);
         }
     }
 }

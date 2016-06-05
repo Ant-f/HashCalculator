@@ -76,7 +76,7 @@
                       Name="InputFileDataGrid">
                 <DataGrid.Resources>
                     <ControlTemplate x:Key="DataGridRowTextBoxTemplate" TargetType="TextBox">
-                        <ScrollViewer LostFocus="PART_ContentHost_LostFocus" Margin="0" x:Name="PART_ContentHost" />
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
                     </ControlTemplate>
                 </DataGrid.Resources>
 
@@ -87,8 +87,11 @@
                             <DataTemplate>
                                 <Grid>
                                     <Border Background="{Binding FileExistsAtFilePath, Converter={StaticResource ValidFilePathToBackgroundBrushConverter}}"
-                                        Opacity="0.92" />
-                                    <TextBox Text="{Binding FilePath}" Template="{StaticResource DataGridRowTextBoxTemplate}" />
+                                            Opacity="0.92">
+                                    </Border>
+                                    <TextBox Template="{StaticResource DataGridRowTextBoxTemplate}"
+                                             Text="{Binding FilePath, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                    </TextBox>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

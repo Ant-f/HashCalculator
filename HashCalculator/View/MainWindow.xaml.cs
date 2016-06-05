@@ -15,14 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using HashCalculator.Interface;
-using HashCalculator.Ioc;
-using HashCalculator.ViewModel.Model;
-using Ninject;
-using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace HashCalculator.View
 {
@@ -31,40 +24,9 @@ namespace HashCalculator.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IUserInput _userInput;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            _userInput = NinjectContainer.Kernel.Get<IUserInput>();
-        }
-
-        private void PART_ContentHost_LostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = e.OriginalSource as TextBox;
-            BindingExpression exp = tb.GetBindingExpression(TextBox.TextProperty);
-            InputFileListEntry entry = exp.DataItem as InputFileListEntry;
-
-            if (entry != null)
-            {
-                if (exp.ParentBinding.Path.Path == "FilePath")
-                {
-                    if (String.IsNullOrWhiteSpace(tb.Text))
-                        _userInput.RemoveInputListEntry(entry);
-                    else
-                        exp.UpdateSource();
-                }
-            }
-            else
-            {
-                // For 'DataGrid.NewItemPlaceholder'
-                if (!String.IsNullOrWhiteSpace(tb.Text))
-                {
-                    _userInput.AddFileToInputList(tb.Text);
-                    tb.Text = String.Empty;
-                }
-            }
         }
     }
 }
