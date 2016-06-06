@@ -29,6 +29,7 @@ namespace HashCalculator.Ioc
         {
             Kernel.Bind<ICommand>().To<AbortCalculation>().InSingletonScope();
             Kernel.Bind<ICommand>().To<BeginCalculation>().InSingletonScope();
+            Kernel.Bind<ICommand>().To<ClearFilePath>().InSingletonScope();
             Kernel.Bind<ICommand>().To<ExportHashList>().InSingletonScope();
             Kernel.Bind<ICommands>().To<Commands>().InSingletonScope();
         }

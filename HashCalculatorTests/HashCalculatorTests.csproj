@@ -76,6 +76,7 @@
     <Compile Include="Service\HashCodeBatchCalculationServiceTests.cs" />
     <Compile Include="Service\HashCodeCalculationServiceTests.cs" />
     <Compile Include="Service\PropertyChangedSubscriberTests.cs" />
+    <Compile Include="TestingInfrastructure\ClearFilePathBuilder.cs" />
     <Compile Include="TestingInfrastructure\AbortCalculationBuilder.cs" />
     <Compile Include="TestingInfrastructure\BeginCalculationBuilder.cs" />
     <Compile Include="TestingInfrastructure\Constants.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="TestingInfrastructure\UserInputBuilder.cs" />
     <Compile Include="ViewModel\Command\AbortCalculationTests.cs" />
     <Compile Include="ViewModel\Command\BeginCalculationTests.cs" />
+    <Compile Include="ViewModel\Command\ClearFilePathTests.cs" />
     <Compile Include="ViewModel\Command\ExportHashListTests.cs" />
     <Compile Include="Service\HashCodeExporterTests.cs" />
     <Compile Include="ViewModel\Model\InputFileListEntryTests.cs" />

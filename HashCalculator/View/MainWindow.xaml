@@ -135,6 +135,30 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn CanUserReorder="False"
+                                            CanUserResize="False"
+                                            CanUserSort="False"
+                                            Width="20">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding Commands.ClearFilePath, Source={StaticResource ViewModel}}"
+                                        CommandParameter="{Binding}">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Grid Background="Transparent">
+                                                <TextBlock FontFamily="Wingdings 2"
+                                                           HorizontalAlignment="Center"
+                                                           Text="Ò"
+                                                           VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </control:DragDropHost>

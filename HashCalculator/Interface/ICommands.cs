@@ -23,6 +23,7 @@ namespace HashCalculator.Interface
     {
         ICommand AbortCalculation { get; }
         ICommand BeginCalculation { get; }
+        ICommand ClearFilePath { get; }
         ICommand ExportHashList { get; }
     }
 }

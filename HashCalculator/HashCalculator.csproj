@@ -86,6 +86,7 @@
     <Compile Include="ViewModel\Command\AbortCalculation.cs" />
     <Compile Include="ViewModel\Command\BeginCalculation.cs" />
     <Compile Include="ViewModel\Command\CalculationRunningDependentCommand.cs" />
+    <Compile Include="ViewModel\Command\ClearFilePath.cs" />
     <Compile Include="ViewModel\Command\ExportHashList.cs" />
     <Compile Include="ViewModel\HashAlgorithmSelection.cs" />
     <Compile Include="Service\HashCodeExporter.cs" />

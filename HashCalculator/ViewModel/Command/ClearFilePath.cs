@@ -15,27 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Input;
 using HashCalculator.Interface;
-using HashCalculator.ViewModel.Command;
+using HashCalculator.ViewModel.Model;
 
-namespace HashCalculator.ViewModel
+namespace HashCalculator.ViewModel.Command
 {
-    public class Commands : ICommands
+    public class ClearFilePath : CalculationRunningDependentCommand
     {
-        public ICommand AbortCalculation { get; }
-        public ICommand BeginCalculation { get; }
-        public ICommand ClearFilePath { get; }
-        public ICommand ExportHashList { get; }
-
-        public Commands(IList<ICommand> commandCollection)
+        public ClearFilePath(
+            IDispatcherService dispatcherService,
+            IHashCodeBatchCalculationService hashCodeBatchCalculationService)
+            : base(dispatcherService, hashCodeBatchCalculationService)
         {
-            AbortCalculation = commandCollection.OfType<AbortCalculation>().Single();
-            BeginCalculation = commandCollection.OfType<BeginCalculation>().Single();
-            ClearFilePath = commandCollection.OfType<ClearFilePath>().Single();
-            ExportHashList = commandCollection.OfType<ExportHashList>().Single();
+        }
+
+        public override bool CanExecute(object parameter)
+        {
+            var canExecute = !HashCodeBatchCalculationService.CalculationIsRunning;
+            return canExecute;
+        }
+
+        public override void Execute(object parameter)
+        {
+            var entry = parameter as InputFileListEntry;
+            if (entry != null)
+            {
+                entry.FilePath = string.Empty;
+            }
         }
     }
 }
