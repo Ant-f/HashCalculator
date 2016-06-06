@@ -19,6 +19,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:control="clr-namespace:HashCalculator.View.Control"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
         DataContext="{StaticResource ViewModel}"
         Height="300"
@@ -31,13 +32,6 @@
         
         <Grid.Resources>
             <Thickness x:Key="LabelMarginThickness">0,0,0,2</Thickness>
-            <Thickness x:Key="ControlMarginThickness">0,0,0,5</Thickness>
-            
-            <Style x:Key="FullPathCheckBoxStyle" TargetType="CheckBox">
-                <Setter Property="HorizontalAlignment" Value="Right" />
-                <Setter Property="Margin" Value="{StaticResource LabelMarginThickness}" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
         </Grid.Resources>
         
         <Grid.RowDefinitions>
@@ -52,18 +46,6 @@
                    Margin="{StaticResource LabelMarginThickness}"
                    Text="Input Files">
         </TextBlock>
-
-        <CheckBox Background="Transparent"
-                  IsChecked="{Binding UserInput.MatchFullFilePath, Mode=TwoWay}"
-                  Grid.Row="0"
-                  Style="{StaticResource FullPathCheckBoxStyle}">
-            
-            <TextBlock Text="Use full path when processing file names" />
-            
-            <ToolTipService.ToolTip>
-                <TextBlock Text="Select this to use a file's full path when comparing/exporting files. Unselect this to only use the file name." />
-            </ToolTipService.ToolTip>
-        </CheckBox>
 
         <!--DataGrid-->
         <control:DragDropHost DropReceiver="{Binding UserInput}"
@@ -82,7 +64,7 @@
 
                 <DataGrid.Columns>
                     <!--'File' Column-->
-                    <DataGridTemplateColumn Header="File" Width="180">
+                    <DataGridTemplateColumn Header="File Name/Path" Width="180">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -116,19 +98,19 @@
                                                         </StackPanel.Resources>
 
                                                         <Border Background="{Binding SuccessBrush, Source={StaticResource AppBrushes}}">
-                                                            <TextBlock Margin="2" Text="Filename and file hash match" />
+                                                            <TextBlock Margin="2" Text="File name and hash sum match" />
                                                         </Border>
 
                                                         <Border Background="{Binding IndeterminateBrush, Source={StaticResource AppBrushes}}">
-                                                            <TextBlock Margin="2" Text="File hash match, no file name match" />
+                                                            <TextBlock Margin="2" Text="Hash sum match, no file name match" />
                                                         </Border>
 
                                                         <Border Background="{Binding ErrorBrush, Source={StaticResource AppBrushes}}">
-                                                            <TextBlock Margin="2" Text="Filename match, file hash mismatch" />
+                                                            <TextBlock Margin="2" Text="File name match, hash sum mismatch" />
                                                         </Border>
 
                                                         <Border Background="{Binding DefaultBrush, Source={StaticResource AppBrushes}}" BorderThickness="0">
-                                                            <TextBlock Margin="2" Text="Neither file name nor file hash match" />
+                                                            <TextBlock Margin="2" Text="No file name or hash sum match" />
                                                         </Border>
                                                     </StackPanel>
                                                 </Border>
@@ -137,7 +119,7 @@
                                     </ToolTip>
                                 </ToolTipService.ToolTip>
 
-                                <TextBlock Text="Hash" IsHitTestVisible="False" />
+                                <TextBlock Text="Calculated Hash Sum" IsHitTestVisible="False" />
                                 <TextBlock Margin="5,0,0,0" Text="(Mouse-over for background colour key)" IsHitTestVisible="False" />
                             </StackPanel>
                         </DataGridTemplateColumn.Header>
@@ -161,7 +143,7 @@
         <GridSplitter Background="Transparent" Grid.Row="2" Height="9" HorizontalAlignment="Stretch" VerticalAlignment="Top" Canvas.ZIndex="2" />
         <Separator Grid.Row="2" IsHitTestVisible="False" Margin="0,3,0,0" Opacity="0.4" VerticalAlignment="Top" />
         
-        <!--Known File Hashes-->
+        <!--Known Hash Sums-->
         <Grid Grid.Row="2" Margin="0,8,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -170,23 +152,8 @@
 
             <TextBlock Grid.Row="0"
                        Margin="{StaticResource LabelMarginThickness}"
-                       Text="Known File Hashes">
+                       Text="Known File Hash Sums">
             </TextBlock>
-
-            <CheckBox IsChecked="{Binding UserInput.MatchFullFilePath, Mode=TwoWay}"
-                      Grid.Row="0"
-                      Style="{StaticResource FullPathCheckBoxStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Use full path when processing file names">
-                        <ToolTipService.ToolTip>
-                            <StackPanel>
-                                <TextBlock Text="Select this to use a file's full path when comparing files. Unselect this to only use the file name." />
-                                <TextBlock Text="The state of this check box should usually match that of the check box for input files." />
-                            </StackPanel>
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-                </StackPanel>
-            </CheckBox>
 
             <TextBox AcceptsReturn="True"
                      FontFamily="Courier New"
@@ -194,60 +161,127 @@
                      Grid.Column="0"
                      Grid.Row="1"
                      IsEnabled="{Binding HashCodeBatchCalculationService.CalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
-                     Margin="{StaticResource ControlMarginThickness}"
-                     Text="{Binding UserInput.KnownFileHashCodesText, Mode=TwoWay, UpdateSourceTrigger=Default}">
+                     Margin="0,0,0,5"
+                     Text="{Binding UserInput.KnownFileHashCodesText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </TextBox>
+
+            <StackPanel Grid.Column="0"
+                        Grid.Row="1"
+                        HorizontalAlignment="Left"
+                        IsHitTestVisible="False"
+                        Margin="2,0,0,0"
+                        VerticalAlignment="Top">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UserInput.KnownFileHashCodesText}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <TextBlock Text="[Hash Sum] *[File Name/Path], e.g." />
+                <TextBlock Text="74765bdad82840ccf94dd8aeb84bcae8 *File.txt" />
+            </StackPanel>
         </Grid>
 
         <!--Hash calculation actions/options-->
-        <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
-            <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Width" Value="90" />
-                </Style>
-            </StackPanel.Resources>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             
-            <!--Algorithm Selection-->
-            <TextBlock Text="Algorithm" VerticalAlignment="Center" />
-
-            <ComboBox IsEnabled="{Binding HashCodeBatchCalculationService.CalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
-                      ItemsSource="{Binding HashAlgorithmSelection.HashAlgorithms}"
-                      Margin="5,0,10,0"
-                      SelectedItem="{Binding HashAlgorithmSelection.SelectedHashAlgorithm}"
-                      Width="100">
-            </ComboBox>
+            <Grid.Resources>
+                <Thickness x:Key="ControlMargin" Right="5" />
+            </Grid.Resources>
             
-            <!--Buttons-->
-            <Button Command="{Binding Commands.BeginCalculation}"
-                    Content="Calculate Hash"
-                    Margin="0,0,10,0">
-            </Button>
+            <!--Progress bar-->
+            <Grid Grid.Column="0"
+                  VerticalAlignment="Center"
+                  Visibility="{Binding HashCodeBatchCalculationService.CalculationIsRunning, Converter={StaticResource BoolToVisibilityConverter}}">
+                
+                <ProgressBar Margin="{StaticResource ControlMargin}"
+                             Maximum="1"
+                             Minimum="0"
+                             Value="{Binding HashCodeCalculationService.NormalizedProgress, Mode=OneWay}">
+                </ProgressBar>
 
-            <Button Command="{Binding Commands.AbortCalculation}"
-                    Content="Cancel"
-                    Cursor="Arrow"
-                    Margin="0,0,10,0">
-            </Button>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Run Text="{Binding HashCodeBatchCalculationService.ListProgress, Mode=OneWay, StringFormat=[\{0\}]}" />
+                    <Run Text="{Binding HashCodeCalculationService.PercentageProgress, Mode=OneWay, StringFormat=\{0\}%}" />
+                </TextBlock>
+            </Grid>
 
-            <Button Command="{Binding Commands.ExportHashList}" Content="Export" />
-        </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <system:Double x:Key="ButtonWidth">86</system:Double>
+                    
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+                        <Setter Property="Width" Value="{StaticResource ButtonWidth}" />
+                    </Style>
 
-        <!--Progress bar-->
-        <StackPanel Grid.Row="3"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center"
-                    Visibility="{Binding HashCodeBatchCalculationService.CalculationIsRunning, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+                        <Setter Property="Width" Value="{StaticResource ButtonWidth}" />
+                    </Style>
 
-            <TextBlock Text="{Binding HashCodeBatchCalculationService.ListProgress, Mode=OneWay}" />
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+                        <Setter Property="Width" Value="{StaticResource ButtonWidth}" />
+                    </Style>
+                </StackPanel.Resources>
 
-            <ProgressBar Margin="5,0"
-                         Maximum="1"
-                         Minimum="0"
-                         Value="{Binding HashCodeCalculationService.NormalizedProgress, Mode=OneWay}"
-                         Width="150">
-            </ProgressBar>
+                <!--Full Path Matching-->
+                <ToggleButton Content="Full Path"
+                              IsChecked="{Binding UserInput.MatchFullFilePath, Mode=TwoWay}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Text="Select this to use a file's full path when comparing/exporting files. Unselect this to only use the file name." />
+                    </ToolTipService.ToolTip>
+                </ToggleButton>
 
-            <TextBlock Text="{Binding HashCodeCalculationService.PercentageProgress, Mode=OneWay, StringFormat=\{0\}%}" />
-        </StackPanel>
+                <!--Algorithm Selection-->
+                <ComboBox IsEnabled="{Binding HashCodeBatchCalculationService.CalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
+                          ItemsSource="{Binding HashAlgorithmSelection.HashAlgorithms}"
+                          SelectedItem="{Binding HashAlgorithmSelection.SelectedHashAlgorithm}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Text="Selected hash algorithm" />
+                    </ToolTipService.ToolTip>
+                </ComboBox>
+
+                <!--Buttons-->
+                <Button Command="{Binding Commands.BeginCalculation}"
+                        Content="Calculate">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Text="Calculate hash sums for files listed under Input Files" />
+                    </ToolTipService.ToolTip>
+                </Button>
+
+                <Button Command="{Binding Commands.AbortCalculation}"
+                        Content="Cancel"
+                        Cursor="Arrow">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Text="Cancel batch hash sum calculation" />
+                    </ToolTipService.ToolTip>
+                </Button>
+
+                <Button Command="{Binding Commands.ExportHashList}"
+                        Content="Export"
+                        Margin="0">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Text="Export calculated hash sums" />
+                    </ToolTipService.ToolTip>
+                </Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
