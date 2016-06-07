@@ -24,7 +24,6 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Threading;
 
 namespace HashCalculatorTests.ViewModel
 {
@@ -344,48 +343,60 @@ namespace HashCalculatorTests.ViewModel
         }
 
         [Test]
-        public void UpdatingEntryInInputFileListSetsFileExistence()
+        public void UpdatingEntryInInputFileListToNewFileNameSetsFileExistence()
         {
             // Arrange
 
             var updatedPropertyNames = new HashSet<string>();
 
-            var entry = new InputFileListEntry("FilePath.txt")
-            {
-                FileExistsAtFilePath = false
-            };
+            var entry = new InputFileListEntry("FilePath.txt");
 
             PropertyChangedEventHandler eventHandler = (sender, args) =>
             {
                 updatedPropertyNames.Add(args.PropertyName);
             };
 
-            var builder = new UserInputBuilder();
+            var builder = new UserInputBuilder
+            {
+                PropertyChangedSubscriber = new PropertyChangedSubscriber()
+            };
 
-            builder.FileExistenceCheckerMock.Setup(f => f.Exists(It.IsAny<string>()))
+            builder.FileExistenceCheckerMock
+                .Setup(f => f.Exists(It.IsAny<string>()))
                 .Returns(true);
 
             var userInput = builder.CreateUserInput();
-            entry.PropertyChanged += eventHandler;
             userInput.InputFileList.Add(entry);
+            // Subscribe to PropertyChanged and set FileExistsAtFilePath to false
+            // after adding entry to InputFileList: adding an entry will evaluate
+            // file existence
+            entry.PropertyChanged += eventHandler;
+            entry.FileExistsAtFilePath = false;
 
             // Act
 
             entry.FilePath = "NewFilePath.txt";
 
             entry.PropertyChanged -= eventHandler;
+            builder.PropertyChangedSubscriber.UnsubscribeAll();
 
             // Assert
 
             builder.FileExistenceCheckerMock.VerifyAll();
 
             Assert.IsTrue(entry.FileExistsAtFilePath);
-            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.FileExistsAtFilePath));
-            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.FilePath));
+
+            CollectionAssert.Contains(
+                updatedPropertyNames,
+                nameof(entry.FileExistsAtFilePath));
+
+            CollectionAssert.Contains(
+                updatedPropertyNames,
+                nameof(entry.FilePath));
         }
 
         [Test]
-        public void UpdatingEntryInInputFileListSetsHashCodeMatch()
+        public void UpdatingEntryInInputFileListToNewFileNameSetsHashCodeMatch()
         {
             // Arrange
 
@@ -406,10 +417,11 @@ namespace HashCalculatorTests.ViewModel
                 PropertyChangedSubscriber = new PropertyChangedSubscriber()
             };
 
-            builder.FileHashCodeMatchCheckerMock.Setup(f => f.FindMatchCriteria(
-                It.IsAny<FileHashMetadata>(),
-                It.IsAny<List<FileHashMetadata>>(),
-                It.IsAny<bool>()))
+            builder.FileHashCodeMatchCheckerMock
+                .Setup(f => f.FindMatchCriteria(
+                    It.IsAny<FileHashMetadata>(),
+                    It.IsAny<List<FileHashMetadata>>(),
+                    It.IsAny<bool>()))
                 .Returns(HashCodeMatchCriteria.FileNameMatch);
 
             var userInput = builder.CreateUserInput();
@@ -427,9 +439,17 @@ namespace HashCalculatorTests.ViewModel
 
             builder.FileExistenceCheckerMock.VerifyAll();
 
-            Assert.AreEqual(HashCodeMatchCriteria.FileNameMatch, entry.HashCodeMatch);
-            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.FilePath));
-            CollectionAssert.Contains(updatedPropertyNames, nameof(entry.HashCodeMatch));
+            Assert.AreEqual(
+                HashCodeMatchCriteria.FileNameMatch,
+                entry.HashCodeMatch);
+
+            CollectionAssert.Contains(
+                updatedPropertyNames,
+                nameof(entry.FilePath));
+
+            CollectionAssert.Contains(
+                updatedPropertyNames,
+                nameof(entry.HashCodeMatch));
         }
 
         [Test]

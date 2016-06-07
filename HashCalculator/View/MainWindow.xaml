@@ -72,7 +72,7 @@
                                             Opacity="0.92">
                                     </Border>
                                     <TextBox Template="{StaticResource DataGridRowTextBoxTemplate}"
-                                             Text="{Binding FilePath, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                             Text="{Binding FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     </TextBox>
                                 </Grid>
                             </DataTemplate>

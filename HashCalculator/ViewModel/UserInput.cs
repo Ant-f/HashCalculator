@@ -141,6 +141,7 @@ namespace HashCalculator.ViewModel
             }
             else
             {
+                entry.FileExistsAtFilePath = _fileExistenceChecker.Exists(entry.FilePath);
                 entry.HashCodeMatch = CheckFileHashMatch(entry.HashMetadata);
             }
         }
