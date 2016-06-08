@@ -44,7 +44,7 @@ namespace HashCalculatorTests.Service
             string hashCode;
             using (var algorithm = SHA1.Create())
             {
-                hashCode = service.CalculateHashCodes(algorithm, TestingDataService.TestingDataFilePath);
+                hashCode = service.CalculateHashCode(algorithm, TestingDataService.TestingDataFilePath);
             }
 
             // Assert
@@ -93,7 +93,7 @@ namespace HashCalculatorTests.Service
             {
                 using (var algorithm = SHA1.Create())
                 {
-                    service.CalculateHashCodes(algorithm, TestingDataService.TestingDataFilePath);
+                    service.CalculateHashCode(algorithm, TestingDataService.TestingDataFilePath);
                 }
             }
             catch (Exception)
@@ -146,7 +146,7 @@ namespace HashCalculatorTests.Service
             {
                 using (var algorithm = SHA1.Create())
                 {
-                    service.CalculateHashCodes(algorithm, TestingDataService.TestingDataFilePath);
+                    service.CalculateHashCode(algorithm, TestingDataService.TestingDataFilePath);
                 }
             }
             catch (Exception)

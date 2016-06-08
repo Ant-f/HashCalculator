@@ -57,13 +57,13 @@ namespace HashCalculatorTests.Service
 
             var calculationServiceMock = new Mock<IHashCodeCalculationService>();
 
-            calculationServiceMock.Setup(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName1))
+            calculationServiceMock.Setup(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName1))
                 .Returns(fileHash1);
 
-            calculationServiceMock.Setup(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName2))
+            calculationServiceMock.Setup(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName2))
                 .Returns(fileHash2);
 
-            calculationServiceMock.Setup(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName3))
+            calculationServiceMock.Setup(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName3))
                 .Returns(fileHash3);
 
             var service = new HashCodeBatchCalculationService(calculationServiceMock.Object);
@@ -76,9 +76,9 @@ namespace HashCalculatorTests.Service
 
             //Assert
 
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName1));
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName2));
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName3));
+            calculationServiceMock.Verify(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName1));
+            calculationServiceMock.Verify(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName2));
+            calculationServiceMock.Verify(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName3));
 
             const string unexpectedPathMessageTemplate = "Unexpected file path for collection index {0}";
             const string unexpectedHashMessageTemplate = "Unexpected hash result for collection index {0}";
@@ -103,7 +103,7 @@ namespace HashCalculatorTests.Service
             HashCodeBatchCalculationService batchCalculationService = null;
             var calculationServiceMock = new Mock<IHashCodeCalculationService>();
 
-            calculationServiceMock.Setup(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), It.IsAny<string>()))
+            calculationServiceMock.Setup(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), It.IsAny<string>()))
                 .Callback(() => progressHistory.Add(batchCalculationService.ListProgress));
 
             batchCalculationService = new HashCodeBatchCalculationService(calculationServiceMock.Object);
@@ -116,9 +116,9 @@ namespace HashCalculatorTests.Service
 
             //Assert
 
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName1));
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName2));
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName3));
+            calculationServiceMock.Verify(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName1));
+            calculationServiceMock.Verify(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName2));
+            calculationServiceMock.Verify(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName3));
 
             Assert.AreEqual(3, progressHistory.Count);
 
@@ -143,9 +143,9 @@ namespace HashCalculatorTests.Service
 
             //Assert
 
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName1));
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName2));
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(It.IsAny<HashAlgorithm>(), FileName3));
+            calculationServiceMock.Verify(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName1));
+            calculationServiceMock.Verify(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName2));
+            calculationServiceMock.Verify(s => s.CalculateHashCode(It.IsAny<HashAlgorithm>(), FileName3));
 
             Assert.IsTrue(string.IsNullOrWhiteSpace(batchCalculationService.ListProgress));
         }
@@ -165,7 +165,7 @@ namespace HashCalculatorTests.Service
 
             // Assert
 
-            calculationServiceMock.Verify(s => s.CalculateHashCodes(
+            calculationServiceMock.Verify(s => s.CalculateHashCode(
                 It.IsAny<HashAlgorithm>(),
                 It.IsAny<string>()), Times.Never);
         }
@@ -193,7 +193,7 @@ namespace HashCalculatorTests.Service
             HashCodeBatchCalculationService batchCalculationService = null;
 
             var calculationServiceMock = new Mock<IHashCodeCalculationService>();
-            calculationServiceMock.Setup(s => s.CalculateHashCodes(
+            calculationServiceMock.Setup(s => s.CalculateHashCode(
                 It.IsAny<HashAlgorithm>(),
                 It.IsAny<string>()))
                 .Callback(() => midCalculationValue = batchCalculationService.CalculationIsRunning);
@@ -252,7 +252,7 @@ namespace HashCalculatorTests.Service
             Type actualAlgorithmType = null;
 
             var calculationServiceMock = new Mock<IHashCodeCalculationService>();
-            calculationServiceMock.Setup(s => s.CalculateHashCodes(
+            calculationServiceMock.Setup(s => s.CalculateHashCode(
                 It.IsAny<HashAlgorithm>(),
                 It.IsAny<string>()))
                 .Callback<HashAlgorithm, string>((algorithm, path) =>
@@ -287,7 +287,7 @@ namespace HashCalculatorTests.Service
 
             var calculationServiceMock = new Mock<IHashCodeCalculationService>();
 
-            calculationServiceMock.Setup(s => s.CalculateHashCodes(
+            calculationServiceMock.Setup(s => s.CalculateHashCode(
                 It.IsAny<HashAlgorithm>(),
                 FileName1))
                 .Callback(() =>
@@ -303,7 +303,7 @@ namespace HashCalculatorTests.Service
 
             // Assert
 
-            calculationServiceMock.Verify(x => x.CalculateHashCodes(
+            calculationServiceMock.Verify(x => x.CalculateHashCode(
                 It.IsAny<HashAlgorithm>(),
                 It.Is<string>(str => str != FileName1)),
                 Times.Never);

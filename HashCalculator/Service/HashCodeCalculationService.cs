@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using HashCalculator.Interface;
@@ -23,15 +24,20 @@ using HashCalculator.ViewModel;
 namespace HashCalculator.Service
 {
     /// <summary>
-    /// Provides methods related to calculating hash codes for files
+    /// Provides methods related to calculating file hash codes
     /// </summary>
-    public class HashCodeCalculationService : PropertyChangedNotifier, IHashCodeCalculationService
+    public class HashCodeCalculationService : PropertyChangedNotifier,
+        IHashCodeCalculationService
     {
         private readonly IFileOperations _fileOperations;
 
         private double _normalizedProgress;
         private int _percentageProgress;
 
+        /// <summary>
+        /// Progress of a running calculation, expressed as a value in the
+        /// range 0 to 1
+        /// </summary>
         public double NormalizedProgress
         {
             get
@@ -49,6 +55,10 @@ namespace HashCalculator.Service
             }
         }
 
+        /// <summary>
+        /// Progress of a running calculation, expressed as a value in the
+        /// range 0 to 100
+        /// </summary>
         public int PercentageProgress
         {
             get
@@ -71,22 +81,50 @@ namespace HashCalculator.Service
             _fileOperations = fileOperation;
         }
 
-        public string CalculateHashCodes(HashAlgorithm algorithm, string filePath)
+        /// <summary>
+        /// Calculate the hash code of the file at the specified location
+        /// </summary>
+        /// <param name="algorithm">
+        /// The algorithm to use when calculating the resultant hash code
+        /// </param>
+        /// <param name="filePath">
+        /// Path to the file to calculate a hash code for
+        /// </param>
+        /// <returns>Hexadecimal representation of the file's hash code</returns>
+        public string CalculateHashCode(HashAlgorithm algorithm, string filePath)
         {
-            using (var fileStream = _fileOperations.ReadFile(filePath))
+            ReadProgressFileStream fileStream = null;
+            string hashCode;
+
+            try
             {
-                fileStream.ProgressUpdate += FileStreamProgressUpdate;
-
-                var hash = algorithm.ComputeHash(fileStream);
-
-                fileStream.ProgressUpdate -= FileStreamProgressUpdate;
-
-                var hex = ConvertBytesToHexString(hash);
-
-                return hex;
+                using (fileStream = _fileOperations.ReadFile(filePath))
+                {
+                    fileStream.ProgressUpdate += FileStreamProgressUpdate;
+                    var hash = algorithm.ComputeHash(fileStream);
+                    hashCode = ConvertBytesToHexString(hash);
+                }
             }
+            catch (Exception)
+            {
+                hashCode = string.Empty;
+            }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    fileStream.ProgressUpdate -= FileStreamProgressUpdate;
+                }
+            }
+
+            return hashCode;
         }
 
+        /// <summary>
+        /// Converts the provided byte array to its Hexadecimal representation
+        /// </summary>
+        /// <param name="bytes">The byte array to convert</param>
+        /// <returns>Hexadecimal representation of the provided byte array</returns>
         internal string ConvertBytesToHexString(byte[] bytes)
         {
             var sb = new StringBuilder();
@@ -100,7 +138,7 @@ namespace HashCalculator.Service
             var finalString = sb.ToString();
             return finalString;
         }
-
+        
         private void FileStreamProgressUpdate(object sender, ReadProgressEventArgs e)
         {
             NormalizedProgress = e.NormalizedProgress;

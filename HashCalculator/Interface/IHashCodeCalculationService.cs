@@ -24,6 +24,6 @@ namespace HashCalculator.Interface
         double NormalizedProgress { get; }
         int PercentageProgress { get; }
 
-        string CalculateHashCodes(HashAlgorithm algorithm, string filePath);
+        string CalculateHashCode(HashAlgorithm algorithm, string filePath);
     }
 }

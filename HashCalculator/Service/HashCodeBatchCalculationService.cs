@@ -92,7 +92,7 @@ namespace HashCalculator.Service
 
                                 var listEntry = collection[i];
 
-                                var hashCode = _hashCodeCalculationService.CalculateHashCodes(
+                                var hashCode = _hashCodeCalculationService.CalculateHashCode(
                                     algorithm,
                                     listEntry.FilePath);
 
