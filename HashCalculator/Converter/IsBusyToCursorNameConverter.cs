@@ -16,16 +16,26 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using System;
+using System.Globalization;
 using System.Windows.Data;
 
 namespace HashCalculator.Converter
 {
+    /// <summary>
+    /// Converts a bool that represents whether the program is in a busy state,
+    /// to the name of an appropriate cursor. Used when setting the cursor according
+    /// to whether hash codes are being calculated.
+    /// </summary>
     public class IsBusyToCursorNameConverter : IValueConverter
     {
         public const string ArrowCursorName = "Arrow";
         public const string WaitCursorName = "Wait";
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             if (value is bool)
             {
@@ -43,7 +53,11 @@ namespace HashCalculator.Converter
             throw new ArgumentException();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             var stringValue = value as string;
             if (stringValue != null)

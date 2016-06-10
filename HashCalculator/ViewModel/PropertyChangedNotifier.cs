@@ -21,13 +21,15 @@ using System.Runtime.CompilerServices;
 namespace HashCalculator.ViewModel
 {
     /// <summary>
-    /// Class that facilitates implementing <see cref="INotifyPropertyChanged"/>
+    /// Classes that need to implement <see cref="INotifyPropertyChanged"/> can
+    /// do so by subclassing this class
     /// </summary>
     public class PropertyChangedNotifier : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged(
+            [CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

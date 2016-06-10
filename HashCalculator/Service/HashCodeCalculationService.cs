@@ -24,7 +24,7 @@ using HashCalculator.ViewModel;
 namespace HashCalculator.Service
 {
     /// <summary>
-    /// Provides methods related to calculating file hash codes
+    /// Provides methods related to calculating hash sums for a single file
     /// </summary>
     public class HashCodeCalculationService : PropertyChangedNotifier,
         IHashCodeCalculationService

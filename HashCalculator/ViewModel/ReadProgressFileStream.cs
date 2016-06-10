@@ -21,9 +21,8 @@ using System.IO;
 namespace HashCalculator.ViewModel
 {
     /// <summary>
-    /// Subclass of System.IO.FileStream. Raises events during read operations
-    /// to indicate current relative position of the stream, represented as a
-    /// value between 0 and 1
+    /// File stream that raises events during read operations to indicate
+    /// the relative position within the stream
     /// </summary>
     public class ReadProgressFileStream : FileStream
     {

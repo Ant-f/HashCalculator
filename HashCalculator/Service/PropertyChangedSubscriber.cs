@@ -23,12 +23,31 @@ using System.Linq;
 
 namespace HashCalculator.Service
 {
+    /// <summary>
+    /// Provides methods to un/subscribe to
+    /// <see cref="INotifyPropertyChanged.PropertyChanged"/>
+    /// </summary>
     public class PropertyChangedSubscriber : IPropertyChangedSubscriber
     {
-        private readonly HashSet<INotifyPropertyChanged> _subscriptions = new HashSet<INotifyPropertyChanged>();
+        private readonly HashSet<INotifyPropertyChanged> _subscriptions
+            = new HashSet<INotifyPropertyChanged>();
 
+        /// <summary>
+        /// A <see cref="PropertyChangedEventHandler"/> to use when subscribing
+        /// to <see cref="INotifyPropertyChanged.PropertyChanged"/>
+        /// </summary>
         public PropertyChangedEventHandler EventHandler { get; set; }
 
+        /// <summary>
+        /// Subscribe to <see cref="INotifyPropertyChanged.PropertyChanged"/>
+        /// of <see cref="obj"/> if not already subscribed
+        /// </summary>
+        /// <param name="obj">
+        /// The <see cref="INotifyPropertyChanged"/> for which
+        /// <see cref="INotifyPropertyChanged.PropertyChanged"/> will be
+        /// subscribed to
+        /// </param>
+        /// <returns>true if subscribed, false otherwise</returns>
         public bool Subscribe(INotifyPropertyChanged obj)
         {
             VerifyEventHandler();
@@ -44,6 +63,16 @@ namespace HashCalculator.Service
             return added;
         }
 
+        /// <summary>
+        /// Unsubscribe from <see cref="INotifyPropertyChanged.PropertyChanged"/>
+        /// of <see cref="obj"/> if already subscribed
+        /// </summary>
+        /// <param name="obj">
+        /// The <see cref="INotifyPropertyChanged"/> for which
+        /// <see cref="INotifyPropertyChanged.PropertyChanged"/> will be
+        /// unsubscribed from
+        /// </param>
+        /// <returns>true if unsubscribed, false otherwise</returns>
         public bool Unsubscribe(INotifyPropertyChanged obj)
         {
             VerifyEventHandler();
@@ -59,6 +88,14 @@ namespace HashCalculator.Service
             return removed;
         }
 
+        /// <summary>
+        /// Unsubscribe from <see cref="INotifyPropertyChanged.PropertyChanged"/>
+        /// for all previously subscriptions
+        /// </summary>
+        /// <returns>
+        /// An array containing the objects where
+        /// <see cref="INotifyPropertyChanged.PropertyChanged"/> was unsubscribed
+        /// </returns>
         public INotifyPropertyChanged[] UnsubscribeAll()
         {
             var subscriptionsArray = _subscriptions.ToArray();

@@ -21,6 +21,10 @@ using Ninject.Modules;
 
 namespace HashCalculator.Ioc
 {
+    /// <summary>
+    /// Ninject module that creates bindings for the services used within the
+    /// application
+    /// </summary>
     internal class ServiceModule : NinjectModule
     {
         public override void Load()

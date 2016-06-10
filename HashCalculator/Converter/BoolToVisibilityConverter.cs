@@ -16,14 +16,23 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
 namespace HashCalculator.Converter
 {
+    /// <summary>
+    /// Converts true to <see cref="Visibility.Visible"/>, and false to
+    /// <see cref="Visibility.Collapsed"/>
+    /// </summary>
     public class BoolToVisibilityConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             if (value is bool)
             {
@@ -41,7 +50,11 @@ namespace HashCalculator.Converter
             throw new ArgumentException();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             if (value is Visibility)
             {

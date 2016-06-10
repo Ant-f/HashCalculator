@@ -15,14 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
+using HashCalculator.Interface;
 using System;
 using System.Windows;
-using HashCalculator.Interface;
 
 namespace HashCalculator.Service
 {
+    /// <summary>
+    /// Service to run methods asynchronously on the main application thread.
+    /// Used by non-UI threads to update UI components.
+    /// </summary>
     public class DispatcherService : IDispatcherService
     {
+        /// <summary>
+        /// Run an <see cref="Action"/> on the main application thread
+        /// </summary>
+        /// <param name="method">The <see cref="Action"/> to run</param>
         public void BeginInvoke(Action method)
         {
             Application.Current.Dispatcher.BeginInvoke(method);

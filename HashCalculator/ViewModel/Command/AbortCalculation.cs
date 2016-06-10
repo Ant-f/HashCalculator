@@ -19,6 +19,10 @@ using HashCalculator.Interface;
 
 namespace HashCalculator.ViewModel.Command
 {
+    /// <summary>
+    /// Aborts an in-progress hash sum calculation batch through a
+    /// <see cref="IHashCodeBatchCalculationService"/>
+    /// </summary>
     public class AbortCalculation : CalculationRunningDependentCommand
     {
         public AbortCalculation(

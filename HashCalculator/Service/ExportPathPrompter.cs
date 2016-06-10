@@ -21,6 +21,10 @@ using HashCalculator.Interface;
 
 namespace HashCalculator.Service
 {
+    /// <summary>
+    /// Used when exporting data to prompt the user for a destination to export
+    /// data to
+    /// </summary>
     public class ExportPathPrompter : IExportPathPrompter
     {
         /// <summary>

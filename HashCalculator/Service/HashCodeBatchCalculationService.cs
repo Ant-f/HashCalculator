@@ -25,7 +25,11 @@ using HashCalculator.ViewModel;
 
 namespace HashCalculator.Service
 {
-    public class HashCodeBatchCalculationService : PropertyChangedNotifier, IHashCodeBatchCalculationService
+    /// <summary>
+    /// Service to calculate the hash sums of multiple files in a single batch
+    /// </summary>
+    public class HashCodeBatchCalculationService : PropertyChangedNotifier,
+        IHashCodeBatchCalculationService
     {
         private readonly IHashCodeCalculationService _hashCodeCalculationService;
 
@@ -33,6 +37,9 @@ namespace HashCalculator.Service
         private CancellationTokenSource _cancellationTokenSource;
         private string _listProgress;
 
+        /// <summary>
+        /// Represents whether a calculation batch is currently in progress
+        /// </summary>
         public bool CalculationIsRunning
         {
             get
@@ -50,6 +57,10 @@ namespace HashCalculator.Service
             }
         }
 
+        /// <summary>
+        /// Indicates the progress of the running calculation batch in terms of
+        /// list items
+        /// </summary>
         public string ListProgress
         {
             get
@@ -67,12 +78,26 @@ namespace HashCalculator.Service
             }
         }
 
-        public HashCodeBatchCalculationService(IHashCodeCalculationService hashCodeCalculationService)
+        public HashCodeBatchCalculationService(
+            IHashCodeCalculationService hashCodeCalculationService)
         {
             _hashCodeCalculationService = hashCodeCalculationService;
         }
 
-        public async Task CalculateHashCodes(string algorithmName, IList<InputFileListEntry> collection)
+        /// <summary>
+        /// Asynchronously calculate hash sums for each file referenced in
+        /// <see cref="collection"/> using the specified hash algorithm
+        /// </summary>
+        /// <param name="algorithmName">
+        /// Name of the hash algorithm to use, e.g. SHA1
+        /// </param>
+        /// <param name="collection">
+        /// List referencing files to calculate hash sums for
+        /// </param>
+        /// <returns>A <see cref="Task"/> that the calculation runs in</returns>
+        public async Task CalculateHashCodes(
+            string algorithmName,
+            IList<InputFileListEntry> collection)
         {
             await Task.Run(() =>
             {
@@ -107,6 +132,10 @@ namespace HashCalculator.Service
             });
         }
 
+        /// <summary>
+        /// Abort the calculation batch after the hash sum calculation for the
+        /// list item that is in progress completes
+        /// </summary>
         public void AbortCalculation()
         {
             _cancellationTokenSource.Cancel();

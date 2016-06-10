@@ -19,11 +19,35 @@ using System.Windows.Media;
 
 namespace HashCalculator.View
 {
+    /// <summary>
+    /// Holds references to <see cref="Brush"/> instances used within the
+    /// input-files data grid
+    /// </summary>
     internal class AppBrushes
     {
-        public static Brush DefaultBrush { get; } = new SolidColorBrush(Colors.White);
-        public static Brush ErrorBrush { get; } = new SolidColorBrush(Colors.Pink);
-        public static Brush SuccessBrush { get; } = new SolidColorBrush(Colors.LightGreen);
-        public static Brush IndeterminateBrush { get; } = new SolidColorBrush(Colors.Yellow);
+        /// <summary>
+        /// The default <see cref="Brush"/> for rows
+        /// </summary>
+        public static Brush DefaultBrush { get; }
+            = new SolidColorBrush(Colors.White);
+
+        /// <summary>
+        /// Used to indicate hash sum mismatches and invalid file paths
+        /// </summary>
+        public static Brush ErrorBrush { get; }
+            = new SolidColorBrush(Colors.Pink);
+
+        /// <summary>
+        /// Used to indicate an ambiguity when matching file hash sums
+        /// </summary>
+        public static Brush IndeterminateBrush { get; }
+            = new SolidColorBrush(Colors.Yellow);
+
+        /// <summary>
+        /// Used to indicate that an exact match for file path and hash sum
+        /// exists
+        /// </summary>
+        public static Brush SuccessBrush { get; }
+            = new SolidColorBrush(Colors.LightGreen);
     }
 }

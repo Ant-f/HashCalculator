@@ -19,6 +19,10 @@ using HashCalculator.Interface;
 
 namespace HashCalculator.ViewModel.Command
 {
+    /// <summary>
+    /// Begins a hash sum calculation batch through a
+    /// <see cref="IHashCodeBatchCalculationService"/>
+    /// </summary>
     public class BeginCalculation : CalculationRunningDependentCommand
     {
         private readonly IHashAlgorithmSelection _hashAlgorithmSelection;

@@ -28,6 +28,9 @@ using System.Linq;
 
 namespace HashCalculator.ViewModel
 {
+    /// <summary>
+    /// View model class used through data bindings with the UI
+    /// </summary>
     public class UserInput : IUserInput, IInputFilesAppender
     {
         private static readonly char[] NewLineSeparators = { '\r', '\n' };

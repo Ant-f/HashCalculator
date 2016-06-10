@@ -16,9 +16,17 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using HashCalculator.Model;
+using System.ComponentModel;
 
 namespace HashCalculator.ViewModel.Model
 {
+    /// <summary>
+    /// Wrapper for <see cref="FileHashMetadata"/> that implements
+    /// <see cref="INotifyPropertyChanged"/> to enable UI classes to respond
+    /// accordingly when properties change. Included additional properties that
+    /// are related to the properties of <see cref="FileHashMetadata"/> and are
+    /// derived external to this class, so they can be represented in the UI
+    /// </summary>
     public class InputFileListEntry : PropertyChangedNotifier
     {
         private bool _fileExistsAtFilePath = false;

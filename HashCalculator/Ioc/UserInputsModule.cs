@@ -21,7 +21,10 @@ using Ninject.Modules;
 
 namespace HashCalculator.Ioc
 {
-    internal class ViewModelModule : NinjectModule
+    /// <summary>
+    /// Ninject module that creates bindings related to user inputs
+    /// </summary>
+    internal class UserInputsModule : NinjectModule
     {
         public override void Load()
         {

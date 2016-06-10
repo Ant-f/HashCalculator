@@ -212,7 +212,7 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <TextBlock Text="[Hash Sum] *[File Name/Path], e.g." />
+                <TextBlock Text="HashSum *FileName/Path, e.g." />
                 <TextBlock Text="74765bdad82840ccf94dd8aeb84bcae8 *File.txt" />
             </StackPanel>
         </Grid>

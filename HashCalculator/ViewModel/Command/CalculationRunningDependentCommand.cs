@@ -22,9 +22,10 @@ using System.Windows.Input;
 namespace HashCalculator.ViewModel.Command
 {
     /// <summary>
-    /// Base class for classes implementing ICommand that should raise
-    /// CanExecuteChanged when the value of
-    /// IHashCodeBatchCalculationService.CalculationIsRunning changes
+    /// Base class for classes implementing <see cref="ICommand"/> that should
+    /// raise <see cref="ICommand.CanExecuteChanged"/> when the value of
+    /// <see cref="IHashCodeBatchCalculationService.CalculationIsRunning"/>
+    /// changes
     /// </summary>
     public abstract class CalculationRunningDependentCommand : ICommand
     {
@@ -43,9 +44,11 @@ namespace HashCalculator.ViewModel.Command
             HashCodeBatchCalculationService = hashCodeBatchCalculationService;
             HashCodeBatchCalculationService.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == nameof(HashCodeBatchCalculationService.CalculationIsRunning))
+                if (args.PropertyName ==
+                    nameof(HashCodeBatchCalculationService.CalculationIsRunning))
                 {
-                    _dispatcherService.BeginInvoke(() => CanExecuteChanged?.Invoke(this, EventArgs.Empty));
+                    _dispatcherService.BeginInvoke(() =>
+                        CanExecuteChanged?.Invoke(this, EventArgs.Empty));
                 }
             };
         }

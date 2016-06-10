@@ -19,6 +19,9 @@ using Ninject;
 
 namespace HashCalculator.Ioc
 {
+    /// <summary>
+    /// Static class that holds a reference to the IoC Kernel
+    /// </summary>
     public static class NinjectContainer
     {
         public static IKernel Kernel { get; } = CreateKernel();
@@ -28,7 +31,7 @@ namespace HashCalculator.Ioc
             var kernel = new StandardKernel(
                 new CommandModule(),
                 new ServiceModule(),
-                new ViewModelModule());
+                new UserInputsModule());
 
             return kernel;
         }

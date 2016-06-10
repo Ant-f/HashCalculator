@@ -25,17 +25,45 @@ using HashCalculator.ViewModel.Model;
 
 namespace HashCalculator.Service
 {
+    /// <summary>
+    /// Service that can check a <see cref="FileHashMetadata"/> against a list of
+    /// <see cref="FileHashMetadata"/> objects for matches in file path and hash
+    /// sum
+    /// </summary>
     public class FileHashCodeMatchChecker : IFileHashCodeMatchChecker
     {
+        /// <summary>
+        /// Compare the property values of a <see cref="FileHashMetadata"/> with
+        /// known data to return a <see cref="HashCodeMatchCriteria"/> indicating
+        /// whether they correspond to known values
+        /// </summary>
+        /// <param name="inputHashCodeMetadata">
+        /// <see cref="FileHashMetadata"/> to compare against known file paths/
+        /// hash sums
+        /// </param>
+        /// <param name="knownHashCodes">
+        /// List containing paths of known files and corresponding hash codes
+        /// </param>
+        /// <param name="fullPathFileNameMatching">
+        /// true to match file name (including extension) only, false to match
+        /// the entire file path
+        /// </param>
+        /// <returns>
+        /// A <see cref="HashCodeMatchCriteria"/> indicating whether the file path,
+        /// hash sum, or both in <see cref="inputHashCodeMetadata"/> match with any
+        /// values in <see cref="knownHashCodes"/>
+        /// </returns>
         public HashCodeMatchCriteria FindMatchCriteria(
             FileHashMetadata inputHashCodeMetadata,
             List<FileHashMetadata> knownHashCodes,
             bool fullPathFileNameMatching)
         {
-            // Set 'inputFileName' as either file name only, or the full path depending on fullPathFileNameMatching
+            // Set 'inputFileName' as either file name only, or the full path
+            // depending on 'fullPathFileNameMatching'
 
-            var inputFileName = fullPathFileNameMatching ?
-                inputHashCodeMetadata.FilePath : Path.GetFileName(inputHashCodeMetadata.FilePath);
+            var inputFileName = fullPathFileNameMatching
+                ? inputHashCodeMetadata.FilePath
+                : Path.GetFileName(inputHashCodeMetadata.FilePath);
 
             FileHashMetadata[] matchingNameMetadata;
 

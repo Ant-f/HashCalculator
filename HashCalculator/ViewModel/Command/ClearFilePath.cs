@@ -20,6 +20,11 @@ using HashCalculator.ViewModel.Model;
 
 namespace HashCalculator.ViewModel.Command
 {
+    /// <summary>
+    /// Sets <see cref="InputFileListEntry.FilePath"/> to an empty string.
+    /// Bound to a button on each input-files data grid row that clears
+    /// the file path and, as a result, removes the row from the grid.
+    /// </summary>
     public class ClearFilePath : CalculationRunningDependentCommand
     {
         public ClearFilePath(

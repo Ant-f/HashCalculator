@@ -17,14 +17,25 @@
 
 using HashCalculator.View;
 using System;
+using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Media;
 using HashCalculator.ViewModel.Model;
 
 namespace HashCalculator.Converter
 {
+    /// <summary>
+    /// Converts a <see cref="HashCodeMatchCriteria"/> value to a specific
+    /// <see cref="Brush"/> whose colour represents it. Used to visually represent
+    /// different combinations of whether there is a file name/hash code match.
+    /// </summary>
     public class HashCodeMatchCriteriaToBackgroundConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             if (value is HashCodeMatchCriteria)
             {
@@ -59,7 +70,11 @@ namespace HashCalculator.Converter
             throw new ArgumentException();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             throw new NotSupportedException();
         }

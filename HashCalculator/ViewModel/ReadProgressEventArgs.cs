@@ -20,21 +20,18 @@ using System;
 namespace HashCalculator.ViewModel
 {
     /// <summary>
-    /// Class used to contain information about the relative position
-    /// within a ReadProgressFileStream, represented as a value
-    /// between 0 and 1
+    /// Contain information about the relative position within a
+    /// <see cref="ReadProgressFileStream"/>
     /// </summary>
     public class ReadProgressEventArgs : EventArgs
     {
         /// <summary>
-        /// The relative position within a ReadProgressFileStream,
-        /// represented as a value between 0 and 1
+        /// The relative position expressed as a value between 0 and 1
         /// </summary>
         public double NormalizedProgress { get; private set; }
 
         /// <summary>
-        /// The relative position within a ReadProgressFileStream,
-        /// represented as a value between 0 and 100
+        /// The relative position expressed as a value between 0 and 100
         /// </summary>
         public int PercentageProgress { get; private set; }
 

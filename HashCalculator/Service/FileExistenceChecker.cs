@@ -22,6 +22,13 @@ namespace HashCalculator.Service
 {
     public class FileExistenceChecker : IFileExistenceChecker
     {
+        /// <summary>
+        /// Checks whether a file exists at the provided path
+        /// </summary>
+        /// <param name="filePath">The path to the file</param>
+        /// <returns>
+        /// true if a file exists at the specified path, false otherwise
+        /// </returns>
         public bool Exists(string filePath)
         {
             var exists = File.Exists(filePath);

@@ -21,9 +21,11 @@ using HashCalculator.Interface;
 namespace HashCalculator.ViewModel
 {
     /// <summary>
-    /// Class describing hash algorithm selection
+    /// Contains a list of selectable hashing algorithms. Used by the UI
+    /// through data bindings to allow selection of a hashing algorithm.
     /// </summary>
-    public class HashAlgorithmSelection : PropertyChangedNotifier, IHashAlgorithmSelection
+    public class HashAlgorithmSelection : PropertyChangedNotifier,
+        IHashAlgorithmSelection
     {
         public const string MD5 = "MD5";
         public const string SHA1 = "SHA1";

@@ -23,6 +23,10 @@ using HashCalculator.ViewModel.Command;
 
 namespace HashCalculator.ViewModel
 {
+    /// <summary>
+    /// View model class for UI bindings. Groups together the commands used
+    /// within the application.
+    /// </summary>
     public class Commands : ICommands
     {
         public ICommand AbortCalculation { get; }

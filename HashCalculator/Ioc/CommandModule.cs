@@ -23,6 +23,10 @@ using Ninject.Modules;
 
 namespace HashCalculator.Ioc
 {
+    /// <summary>
+    /// Ninject module that creates bindings for the commands used within the
+    /// application. Buttons within the application UI are bound to these commands.
+    /// </summary>
     internal class CommandModule : NinjectModule
     {
         public override void Load()

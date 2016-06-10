@@ -73,7 +73,7 @@
     <Compile Include="Ioc\CommandModule.cs" />
     <Compile Include="Ioc\NinjectContainer.cs" />
     <Compile Include="Ioc\ServiceModule.cs" />
-    <Compile Include="Ioc\ViewModelModule.cs" />
+    <Compile Include="Ioc\UserInputsModule.cs" />
     <Compile Include="Service\DispatcherService.cs" />
     <Compile Include="Service\ExportPathPrompter.cs" />
     <Compile Include="Service\FileOperations.cs" />

@@ -18,8 +18,7 @@
 namespace HashCalculator.Model
 {
     /// <summary>
-    /// Represents a mapping of the target at the specified file path, and a
-    /// corresponding hash code
+    /// Class to store data about a file's path and hash sum
     /// </summary>
     public class FileHashMetadata
     {

@@ -17,14 +17,23 @@
 
 using HashCalculator.View;
 using System;
+using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
 namespace HashCalculator.Converter
 {
+    /// <summary>
+    /// Converts a bool that represents whether a file path is valid, to a brush
+    /// that visually conveys this. Used to highlight invalid file paths.
+    /// </summary>
     public class ValidFilePathToBackgroundBrushConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             if (value is bool)
             {
@@ -42,7 +51,11 @@ namespace HashCalculator.Converter
             throw new ArgumentException();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             var brushValue = value as Brush;
             if (brushValue != null)

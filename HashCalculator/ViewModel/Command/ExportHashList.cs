@@ -20,6 +20,11 @@ using System.Linq;
 
 namespace HashCalculator.ViewModel.Command
 {
+    /// <summary>
+    /// Initiate an export of files and their corresponding calculated hash sums
+    /// in the format [HashSum *FileName/Path], e.g.
+    /// 74765bdad82840ccf94dd8aeb84bcae8 *File.txt
+    /// </summary>
     public class ExportHashList : CalculationRunningDependentCommand
     {
         private readonly IExportPathPrompter _exportPathPrompter;

@@ -16,13 +16,21 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using System;
+using System.Globalization;
 using System.Windows.Data;
 
 namespace HashCalculator.Converter
 {
+    /// <summary>
+    /// Converts true to false, and false to true
+    /// </summary>
     public class BoolInversionConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             if (value is bool)
             {
@@ -32,7 +40,11 @@ namespace HashCalculator.Converter
             throw new ArgumentException();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             if (value is bool)
             {

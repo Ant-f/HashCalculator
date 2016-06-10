@@ -21,6 +21,9 @@ using HashCalculator.ViewModel;
 
 namespace HashCalculator.Service
 {
+    /// <summary>
+    /// Provides methods for interacting with files
+    /// </summary>
     public class FileOperations : IFileOperations
     {
         /// <summary>
