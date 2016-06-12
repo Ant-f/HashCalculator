@@ -68,7 +68,7 @@
 
                 <DataGrid.Columns>
                     <!--'File' Column-->
-                    <DataGridTemplateColumn Header="File Name/Path" Width="180">
+                    <DataGridTemplateColumn Header="Path" Width="180">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -123,8 +123,8 @@
                                     </ToolTip>
                                 </ToolTipService.ToolTip>
 
-                                <TextBlock Text="Calculated Hash Sum" IsHitTestVisible="False" />
-                                <TextBlock Margin="5,0,0,0" Text="(Mouse-over for background colour key)" IsHitTestVisible="False" />
+                                <TextBlock IsHitTestVisible="False" Text="Calculated Hash Sum" />
+                                <TextBlock FontStyle="Italic" IsHitTestVisible="False" Margin="5,0,0,0" Text="(mouse cursor here for row background colour key)" />
                             </StackPanel>
                         </DataGridTemplateColumn.Header>
 
@@ -173,6 +173,31 @@
             </DataGrid>
         </control:DragDropHost>
 
+        <!--Helper Text Watermark-->
+        <TextBlock Grid.Column="0"
+                   Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   IsHitTestVisible="False"
+                   Margin="0,16,0,0"
+                   VerticalAlignment="Center">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UserInput.InputFileList.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+
+            <TextBlock FontSize="16"
+                       FontWeight="Bold"
+                       Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                       Text="Drag Files Here">
+            </TextBlock>
+        </TextBlock>
+
         <!--Grid splitter-->
         <GridSplitter Background="Transparent" Grid.Row="2" Height="9" HorizontalAlignment="Stretch" VerticalAlignment="Top" Canvas.ZIndex="2" />
         <Separator Grid.Row="2" IsHitTestVisible="False" Margin="0,3,0,0" Opacity="0.4" VerticalAlignment="Top" />
@@ -186,7 +211,7 @@
 
             <TextBlock Grid.Row="0"
                        Margin="{StaticResource LabelMarginThickness}"
-                       Text="Known File Hash Sums">
+                       Text="Known Hash Sums">
             </TextBlock>
 
             <TextBox AcceptsReturn="True"
@@ -199,6 +224,7 @@
                      Text="{Binding UserInput.KnownFileHashCodesText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </TextBox>
 
+            <!--Helper Text Watermark-->
             <StackPanel Grid.Column="0"
                         Grid.Row="1"
                         HorizontalAlignment="Left"
@@ -218,6 +244,7 @@
 
                 <StackPanel.Resources>
                     <Style TargetType="TextBlock">
+                        <Setter Property="FontStyle" Value="Italic" />
                         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                     </Style>
                 </StackPanel.Resources>
