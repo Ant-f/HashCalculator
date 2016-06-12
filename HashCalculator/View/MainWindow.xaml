@@ -53,13 +53,17 @@
                               IsEnabled="{Binding HashCodeBatchCalculationService.CalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
                               Margin="0,0,0,2">
             <DataGrid AutoGenerateColumns="False"
+                      HorizontalGridLinesBrush="LightGray"
                       IsEnabled="{Binding HashCodeBatchCalculationService.CalculationIsRunning, Converter={StaticResource BoolInversionConverter}}"
                       ItemsSource="{Binding UserInput.InputFileList}"
-                      Name="InputFileDataGrid">
+                      Name="InputFileDataGrid"
+                      VerticalGridLinesBrush="LightGray">
                 <DataGrid.Resources>
                     <ControlTemplate x:Key="DataGridRowTextBoxTemplate" TargetType="TextBox">
                         <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
                     </ControlTemplate>
+                    
+                    <system:Double x:Key="RowBackgroundOpacity">0.8</system:Double>
                 </DataGrid.Resources>
 
                 <DataGrid.Columns>
@@ -69,7 +73,7 @@
                             <DataTemplate>
                                 <Grid>
                                     <Border Background="{Binding FileExistsAtFilePath, Converter={StaticResource ValidFilePathToBackgroundBrushConverter}}"
-                                            Opacity="0.92">
+                                            Opacity="{StaticResource RowBackgroundOpacity}">
                                     </Border>
                                     <TextBox Template="{StaticResource DataGridRowTextBoxTemplate}"
                                              Text="{Binding FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -129,13 +133,14 @@
                             <DataTemplate>
                                 <Grid>
                                     <Border Background="{Binding HashCodeMatch, Converter={StaticResource HashCodeMatchCriteriaToBackgroundConverter}}"
-                                        Opacity="0.92" />
+                                            Opacity="{StaticResource RowBackgroundOpacity}" />
                                     <TextBox IsReadOnly="True" Text="{Binding CalculatedFileHash, Mode=OneWay}" Template="{StaticResource DataGridRowTextBoxTemplate}" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
+                    <!--Clear Row Button Column-->
                     <DataGridTemplateColumn CanUserReorder="False"
                                             CanUserResize="False"
                                             CanUserSort="False"
@@ -146,8 +151,13 @@
                                         CommandParameter="{Binding}">
                                     <Button.Template>
                                         <ControlTemplate>
-                                            <Grid Background="Transparent">
+                                            <Grid>
+                                                <Border Background="{Binding DefaultBrush, Source={StaticResource AppBrushes}}"
+                                                        Opacity="{StaticResource RowBackgroundOpacity}">
+                                                </Border>
+                                                
                                                 <TextBlock FontFamily="Wingdings 2"
+                                                           Foreground="Gray"
                                                            HorizontalAlignment="Center"
                                                            Text="Ò"
                                                            VerticalAlignment="Center">
