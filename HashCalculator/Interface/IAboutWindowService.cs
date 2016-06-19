@@ -15,16 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System.Windows.Input;
+using HashCalculator.View;
+using System.Windows;
 
 namespace HashCalculator.Interface
 {
-    public interface ICommands
+    public interface IAboutWindowService
     {
-        ICommand AbortCalculation { get; }
-        ICommand BeginCalculation { get; }
-        ICommand ClearFilePath { get; }
-        ICommand ExportHashList { get; }
-        ICommand ShowAbout { get; }
+        string Apache2 { get; }
+        string Gpl3 { get; }
+
+        About CreateAboutWindow(Window owner);
+        void ShowModal(About aboutWindow);
     }
 }

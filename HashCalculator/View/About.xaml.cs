@@ -15,16 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System.Windows.Input;
+using System.Windows;
 
-namespace HashCalculator.Interface
+namespace HashCalculator.View
 {
-    public interface ICommands
+    /// <summary>
+    /// Interaction logic for About.xaml
+    /// </summary>
+    public partial class About : Window
     {
-        ICommand AbortCalculation { get; }
-        ICommand BeginCalculation { get; }
-        ICommand ClearFilePath { get; }
-        ICommand ExportHashList { get; }
-        ICommand ShowAbout { get; }
+        public About()
+        {
+            InitializeComponent();
+        }
     }
 }

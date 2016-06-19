@@ -23,6 +23,8 @@
         Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
         DataContext="{StaticResource ViewModel}"
         Height="300"
+        x:Name="ApplicationWindow"
+        x:FieldModifier="private"
         Title="File Hash Calculator"
         Width="700">
     <Grid Cursor="{Binding HashCodeBatchCalculationService.CalculationIsRunning,
@@ -46,6 +48,39 @@
                    Margin="{StaticResource LabelMarginThickness}"
                    Text="Input Files">
         </TextBlock>
+
+        <Button Content="About..."
+                Command="{Binding Commands.ShowAbout}"
+                CommandParameter="{Binding ElementName=ApplicationWindow}"
+                Grid.Row="0"
+                HorizontalAlignment="Right">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.2"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="ContentTextBlock"
+                                                        Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                                                        To="CornflowerBlue">
+                                        </ColorAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed" />
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <TextBlock FontStyle="Italic" Name="ContentTextBlock" Text="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
 
         <!--DataGrid-->
         <control:DragDropHost DropReceiver="{Binding UserInput}"

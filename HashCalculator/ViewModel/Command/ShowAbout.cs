@@ -15,28 +15,37 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System.Windows.Input;
 using HashCalculator.Interface;
-using HashCalculator.ViewModel;
-using HashCalculator.ViewModel.Command;
-using Ninject.Modules;
+using System;
+using System.Windows;
+using System.Windows.Input;
 
-namespace HashCalculator.Ioc
+namespace HashCalculator.ViewModel.Command
 {
     /// <summary>
-    /// Ninject module that creates bindings for the commands used within the
-    /// application. Buttons within the application UI are bound to these commands.
+    /// Display a window with information about the application
     /// </summary>
-    internal class CommandModule : NinjectModule
+    public class ShowAbout : ICommand
     {
-        public override void Load()
+        private readonly IAboutWindowService _aboutWindowService;
+
+        public event EventHandler CanExecuteChanged;
+
+        public ShowAbout(IAboutWindowService aboutWindowService)
         {
-            Kernel.Bind<ICommand>().To<AbortCalculation>().InSingletonScope();
-            Kernel.Bind<ICommand>().To<BeginCalculation>().InSingletonScope();
-            Kernel.Bind<ICommand>().To<ClearFilePath>().InSingletonScope();
-            Kernel.Bind<ICommand>().To<ExportHashList>().InSingletonScope();
-            Kernel.Bind<ICommand>().To<ShowAbout>().InSingletonScope();
-            Kernel.Bind<ICommands>().To<Commands>().InSingletonScope();
+            _aboutWindowService = aboutWindowService;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object parameter)
+        {
+            var owner = (Window) parameter;
+            var about = _aboutWindowService.CreateAboutWindow(owner);
+            _aboutWindowService.ShowModal(about);
         }
     }
 }

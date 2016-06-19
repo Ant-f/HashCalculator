@@ -57,6 +57,7 @@
     <Compile Include="Converter\BoolInversionConverter.cs" />
     <Compile Include="Converter\IsBusyToCursorNameConverter.cs" />
     <Compile Include="Converter\ValidFilePathToBackgroundBrushConverter.cs" />
+    <Compile Include="Interface\IAboutWindowService.cs" />
     <Compile Include="Interface\ICommands.cs" />
     <Compile Include="Interface\IDispatcherService.cs" />
     <Compile Include="Interface\IExportPathPrompter.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Ioc\NinjectContainer.cs" />
     <Compile Include="Ioc\ServiceModule.cs" />
     <Compile Include="Ioc\UserInputsModule.cs" />
+    <Compile Include="Service\AboutWindowService.cs" />
     <Compile Include="Service\DispatcherService.cs" />
     <Compile Include="Service\ExportPathPrompter.cs" />
     <Compile Include="Service\FileOperations.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="ViewModel\Command\CalculationRunningDependentCommand.cs" />
     <Compile Include="ViewModel\Command\ClearFilePath.cs" />
     <Compile Include="ViewModel\Command\ExportHashList.cs" />
+    <Compile Include="ViewModel\Command\ShowAbout.cs" />
     <Compile Include="ViewModel\HashAlgorithmSelection.cs" />
     <Compile Include="Service\HashCodeExporter.cs" />
     <Compile Include="ViewModel\Model\HashCodeMatchCriteria.cs" />
@@ -95,6 +98,10 @@
     <Compile Include="ViewModel\ReadProgressFileStream.cs" />
     <Compile Include="ViewModel\PropertyChangedNotifier.cs" />
     <Compile Include="Service\ViewModelService.cs" />
+    <Page Include="View\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Control\DragDropHost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -108,6 +115,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModel\UserInput.cs" />
+    <Compile Include="View\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AppBrushes.cs" />
     <Compile Include="Converter\HashCodeMatchCriteriaToBackgroundConverter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
@@ -138,6 +148,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\LICENSE">
+      <Link>License\LICENSE</Link>
+    </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -151,7 +164,11 @@
   <ItemGroup>
     <Resource Include="HashCalculator.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="..\Ninject\ApacheLicenseVersion2.0.txt">
+      <Link>License\Ninject\ApacheLicenseVersion2.0.txt</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -33,6 +33,7 @@ namespace HashCalculator.ViewModel
         public ICommand BeginCalculation { get; }
         public ICommand ClearFilePath { get; }
         public ICommand ExportHashList { get; }
+        public ICommand ShowAbout { get; }
 
         public Commands(IList<ICommand> commandCollection)
         {
@@ -40,6 +41,7 @@ namespace HashCalculator.ViewModel
             BeginCalculation = commandCollection.OfType<BeginCalculation>().Single();
             ClearFilePath = commandCollection.OfType<ClearFilePath>().Single();
             ExportHashList = commandCollection.OfType<ExportHashList>().Single();
+            ShowAbout = commandCollection.OfType<ShowAbout>().Single();
         }
     }
 }

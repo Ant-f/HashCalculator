@@ -27,11 +27,19 @@ namespace HashCalculator.Service
     /// </summary>
     public class ViewModelService
     {
+        private static IAboutWindowService _aboutWindowService;
         private static ICommands _commands;
         private static IHashCodeBatchCalculationService _hashCodeBatchCalculationService;
         private static IHashCodeCalculationService _hashCodeCalculationService;
         private static IHashAlgorithmSelection _hashAlgorithmSelection;
         private static IUserInput _userInput;
+
+        /// <summary>
+        /// A reference to the about-window service
+        /// </summary>
+        public static IAboutWindowService AboutWindowService =>
+            _aboutWindowService ??
+            (_aboutWindowService = NinjectContainer.Kernel.Get<IAboutWindowService>());
 
         /// <summary>
         /// A reference to the object containing commands

@@ -29,6 +29,7 @@ namespace HashCalculator.Ioc
     {
         public override void Load()
         {
+            Kernel.Bind<IAboutWindowService>().To<AboutWindowService>().InSingletonScope();
             Kernel.Bind<IDispatcherService>().To<DispatcherService>().InSingletonScope();
             Kernel.Bind<IExportPathPrompter>().To<ExportPathPrompter>().InSingletonScope();
             Kernel.Bind<IFileExistenceChecker>().To<FileExistenceChecker>().InSingletonScope();
