@@ -1,25 +1,34 @@
-# HashCalculator
-Tool for calculating and comparing file hash sums. Can calculate MD5, SHA1,
-SHA256, and SHA512.
+# File Hash Calculator
+File Hash Calculator is a small Windows utility that can calculate and compare file hash sums. The following algorithms are supported:
 
-This is a re-architecture/rewrite of a small WPF program I wrote that can
-calculate and compare file hash sums on Windows.
+* MD5
+* SHA1
+* SHA256
+* SHA512
+
+## Requirements
+
+File Hash Calculator requires .NET Framework 4.6.1 - this is supported on Windows
+7 (SP1) and upwards.
 
 ## Installation
 
-Once built, the following files are required for correct operation
+Pre-built binaries are available on the [Releases](https://github.com/Ant-f/HashCalculator/releases) page.
+
+Alternatively, you can build your own binaries from source if you prefer. Once
+built, the following files are required for correct operation:
 
 * HashCalculator.exe
 * Ninject.dll
 
 ## Features
 
-1. MD5, SHA1, SHA256, and SHA512 algorithms
+1. Can generate hash sums using MD5, SHA1, SHA256, and SHA512 algorithms
 
-2. Easy to use. Drag and Drop to add files. Optionally compares calculated hash
-   sums and offers visual feedback
+2. Easy to use: simply drag and drop to add files. Known hash sums can optionally
+  be added for comparison, with visual feedback
 
-3. Small footprint. The files required for operation total approximately 260 KB
+3. Small footprint: the files required for operation total approximately 260 KB
 
 ## Usage
 
@@ -29,14 +38,13 @@ Once built, the following files are required for correct operation
 * Edit the file _Path_ if needed for different files. The cell background will
   change colour if the file path is invalid.
 
-* To remove files, either delete the entire path or click on the button in the
-  right-most column
+* Remove files by either deleting the entire path, or by clicking on the button
+  in the right-most column
 
-* Select the hash algorithm to use in the combo box near the bottom of the
-  program window
+* Select the algorithm to use in the drop-down box near the bottom of the app window
 
-* Optionally enter hash sums that should match the calculated hash sums in the
-  format
+* Optionally enter known hash sums that should match the calculated hash sums in
+  the format
 
   HashSum *FileName/FilePath
 
@@ -55,9 +63,10 @@ Once built, the following files are required for correct operation
 
 ## License
 
-This program is distributable under the terms and conditions of the GNU General
-Public License Version 3; see LICENSE for more information.
+File Hash Calculator is distributable under the terms and conditions of the GNU
+General Public License Version 3. The full text of the GNU General Public License
+Version 3 can be viewed [here](https://github.com/Ant-f/HashCalculator/blob/master/LICENSE).
 
-This program uses the third party open source software Ninject under the terms
-and conditions of the Apache License Version 2.0; for more information see
-./Ninject/ApacheLicenseVersion2.0.txt
+File Hash Calculator uses the third party open source library Ninject under the
+terms and conditions of the Apache License Version 2.0. The full text of the
+Apache License Version 2.0 can be viewed [here](https://github.com/Ant-f/HashCalculator/blob/master/Ninject/ApacheLicenseVersion2.0.txt).
