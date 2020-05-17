@@ -1,6 +1,6 @@
 ﻿<!--HashCalculator
     Tool for calculating and comparing file hash sums, e.g. sha1
-    Copyright(C) 2016 Anthony Fung
+    Copyright(C) 2016 - 2020 Anthony Fung
    
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@
         
         <StackPanel Grid.Column="1" Grid.Row="0" Margin="5,0,0,5" VerticalAlignment="Center">
             <TextBlock FontWeight="Bold" Text="File Hash Calculator" />
-            <TextBlock FontWeight="Bold" Text="Copyright(C) 2016 Anthony Fung" />
+            <TextBlock FontWeight="Bold" Text="Copyright © 2016 - 2020 Anthony Fung" />
         </StackPanel>
 
         <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1">
