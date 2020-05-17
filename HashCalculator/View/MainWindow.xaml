@@ -1,6 +1,6 @@
 ﻿<!--HashCalculator
     Tool for calculating and comparing file hash sums, e.g. sha1
-    Copyright(C) 2016 Anthony Fung
+    Copyright(C) 2016 - 2020 Anthony Fung
    
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,13 +20,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:control="clr-namespace:HashCalculator.View.Control"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:model="clr-namespace:HashCalculator.ViewModel.Model"
         Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
         DataContext="{StaticResource ViewModel}"
         Height="300"
         x:Name="ApplicationWindow"
         x:FieldModifier="private"
         Title="File Hash Calculator"
+        UseLayoutRounding="True"
         Width="700">
+
     <Grid Cursor="{Binding HashCodeBatchCalculationService.CalculationIsRunning,
                            Converter={StaticResource IsBusyToCursorNameConverter}}"
           Margin="5"
@@ -105,7 +108,7 @@
                     <!--'File' Column-->
                     <DataGridTemplateColumn Header="Path" Width="180">
                         <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="model:InputFileListEntry">
                                 <Grid>
                                     <Border Background="{Binding FileExistsAtFilePath, Converter={StaticResource ValidFilePathToBackgroundBrushConverter}}"
                                             Opacity="{StaticResource RowBackgroundOpacity}">
@@ -165,7 +168,7 @@
 
                         <!--Column Body-->
                         <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="model:InputFileListEntry">
                                 <Grid>
                                     <Border Background="{Binding HashCodeMatch, Converter={StaticResource HashCodeMatchCriteriaToBackgroundConverter}}"
                                             Opacity="{StaticResource RowBackgroundOpacity}" />
@@ -190,13 +193,12 @@
                                                 <Border Background="{Binding DefaultBrush, Source={StaticResource AppBrushes}}"
                                                         Opacity="{StaticResource RowBackgroundOpacity}">
                                                 </Border>
-                                                
-                                                <TextBlock FontFamily="Wingdings 2"
-                                                           Foreground="Gray"
-                                                           HorizontalAlignment="Center"
-                                                           Text="Ò"
-                                                           VerticalAlignment="Center">
-                                                </TextBlock>
+
+                                                <Image Height="10"
+                                                       HorizontalAlignment="Center"
+                                                       Source="../Images/Cross.png"
+                                                       VerticalAlignment="Center">
+                                                </Image>
                                             </Grid>
                                         </ControlTemplate>
                                     </Button.Template>
