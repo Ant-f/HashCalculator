@@ -21,7 +21,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("HashCalculator")]
 [assembly: AssemblyDescription("Tool for calculating and comparing file hash sums, e.g. sha1")]
 [assembly: AssemblyProduct("HashCalculator")]
-[assembly: AssemblyCopyright("Copyright © 2016 Anthony Fung")]
+[assembly: AssemblyCopyright("Copyright © 2016 - 2020 Anthony Fung")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -33,7 +33,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
 
 [assembly: InternalsVisibleTo("HashCalculatorTests")]
