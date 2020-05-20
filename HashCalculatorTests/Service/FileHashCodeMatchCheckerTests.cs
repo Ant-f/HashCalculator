@@ -1,6 +1,6 @@
 ﻿// HashCalculator
 // Tool for calculating and comparing file hash sums, e.g. sha1
-// Copyright(C) 2016 Anthony Fung
+// Copyright(C) 2016 - 2020 Anthony Fung
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -40,14 +40,16 @@ namespace HashCalculatorTests.Service
             return inputFileListEntry;
         }
 
-        [Test]
-        public void FileNameMatchAndHashCodeMatchUsingFileName()
+        [TestCase("HashCode")]
+        [TestCase("hashcode")]
+        [TestCase("Hash Code")]
+        public void FileNameMatchAndHashCodeMatchUsingFileName(string knownHashCode)
         {
             var inputFileListEntry = CreateInputFileListEntry("X:\\Testfile.txt", "HashCode");
 
             var knownHashCodes = new List<FileHashMetadata>
             {
-                CreateFileHashMetadata("Testfile.txt", "HashCode")
+                CreateFileHashMetadata("Testfile.txt", knownHashCode)
             };
             
             var checker = new FileHashCodeMatchChecker();

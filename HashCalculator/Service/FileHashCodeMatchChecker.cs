@@ -92,9 +92,17 @@ namespace HashCalculator.Service
                 criteria |= HashCodeMatchCriteria.FileNameMatch;
             }
 
-            if (knownHashCodes.Any(knownHashMetadata =>
-                string.Compare(inputHashCodeMetadata.FileHashCode, knownHashMetadata.FileHashCode,
-                    StringComparison.OrdinalIgnoreCase) == 0))
+            var isMatch = knownHashCodes.Any(knownHashMetadata =>
+            {
+                var noSpaces = knownHashMetadata.FileHashCode.Replace(" ", string.Empty);
+                
+                return string.Compare(
+                    inputHashCodeMetadata.FileHashCode,
+                    noSpaces,
+                    StringComparison.OrdinalIgnoreCase) == 0;
+            });
+
+            if (isMatch)
             {
                 // Hash code match
                 criteria |= HashCodeMatchCriteria.HashCodeMatch;
