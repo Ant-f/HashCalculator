@@ -1,6 +1,6 @@
 ﻿// HashCalculator
 // Tool for calculating and comparing file hash sums, e.g. sha1
-// Copyright(C) 2016 Anthony Fung
+// Copyright(C) 2016 - 2020 Anthony Fung
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -92,8 +92,8 @@ namespace HashCalculator.Service
                 criteria |= HashCodeMatchCriteria.FileNameMatch;
             }
 
-            if (knownHashCodes.Any(knownHashMetdata =>
-                string.Compare(inputHashCodeMetadata.FileHashCode, knownHashMetdata.FileHashCode,
+            if (knownHashCodes.Any(knownHashMetadata =>
+                string.Compare(inputHashCodeMetadata.FileHashCode, knownHashMetadata.FileHashCode,
                     StringComparison.OrdinalIgnoreCase) == 0))
             {
                 // Hash code match
